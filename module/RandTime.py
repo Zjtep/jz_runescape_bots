@@ -1,7 +1,7 @@
 import random
 import time
 
-def randTime(x,y,z,fdigit, sdigit, tdigit):#sleeps in  miliseconds from fdigit.sdigit+tdigit+random
+def randTime(x,y,z,f_digit, s_digit, t_digit):#sleeps in  miliseconds from fdigit.sdigit+tdigit+random
     """x, y, z are the minimum millisecs"""
     """fdigit, etc. are maximum values"""
     #global timer
@@ -11,12 +11,12 @@ def randTime(x,y,z,fdigit, sdigit, tdigit):#sleeps in  miliseconds from fdigit.s
     n = str(n)
     n = n[2:]
     
-    fdigit = str(random.randint(x,fdigit))
-    sdigit = str(random.randint(y,sdigit))
-    tdigit = str(random.randint(z,tdigit))
+    f_digit = str(random.randint(x,f_digit))
+    s_digit = str(random.randint(y,s_digit))
+    t_digit = str(random.randint(z,t_digit))
 
     
-    milisecs = fdigit+'.'+sdigit+tdigit+n
+    milisecs = f_digit+'.'+s_digit+t_digit+n
     milisecs = float(milisecs)
     #print("waiting {}".format(milisecs))
     #timer += milisecs

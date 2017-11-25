@@ -1,5 +1,5 @@
 import pyautogui
-from library import RandTime
+from module import RandTime
 import random
 
 import time
