@@ -1,0 +1,5 @@
+http://answers.opencv.org/question/94845/python-opencv-extracting-xy-coordinates-of-point-features-on-an-image/
+
+https://pythonprogramming.net/template-matching-python-opencv-tutorial/
+
+https://www.lfd.uci.edu/~gohlke/pythonlibs/
