@@ -35,3 +35,7 @@ def shoot(x1,y1,x2,y2, *args, **kwargs):
 
 def this(x1,y1,x2,y2, *args, **kwargs):
     return shoot(x1,y1,x2,y2, *args, **kwargs)
+
+def showRectangle(img,coord_list):
+    cv2.rectangle(img, (coord_list[0], coord_list[1]), (coord_list[2], coord_list[3]), (0, 255, 100), 1)
+
