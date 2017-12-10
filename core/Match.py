@@ -3,7 +3,7 @@ import cv2
 import numpy as np
 import os
 
-def this(img_pat, img_temp):
+def this_old(img_pat, img_temp):
     """pass img_pat as a cv2 image format, img_temp as a file
     Passed Function to do w/e after finding img_temp"""
     cwd  = os.getcwd()
@@ -24,7 +24,7 @@ def this(img_pat, img_temp):
     
     return loc, w, h 
 
-def images(img_pat, img_temp,x,y, func):
+def images_old(img_pat, img_temp,x,y, func):
     w, h = img_temp.shape[::-1]
     try:
         res = cv2.matchTemplate(img_temp,img_pat,cv2.TM_CCOEFF_NORMED)
@@ -42,3 +42,27 @@ def images(img_pat, img_temp,x,y, func):
 
     #return loc to be iterable outisde the function
     #also sometimes width and height of image is needed
+
+
+
+def this(img_rgb,img_file,x,y):
+    """pass img_rgb as a cv2 image format, img_file as a file
+    Passed Function to do w/e after finding img_file"""
+    img_gray = cv2.cvtColor(img_rgb, cv2.COLOR_BGR2GRAY)
+    # img_file = cv2.imread(r'C:\Users\PPC\git\RS_BOT_2.0\gen_item_9.png', 0)
+    # print template
+
+    w, h = img_file.shape[::-1]
+
+    res = cv2.matchTemplate(img_gray, img_file, cv2.TM_CCOEFF_NORMED)
+    threshold = 0.9
+    loc = np.where(res >= threshold)
+
+    for pt in zip(*loc[::-1]):
+        pt += (pt[0]+x, pt[1]+y)
+        return list(pt)
+        # cv2.rectangle(img_rgb, pt, (pt[0] + 1036, pt[1] + 539), (0,255,255), 2)
+        # print pt
+        # print w,h
+
+    return [0, 0, 0, 0]

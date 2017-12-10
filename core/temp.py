@@ -92,12 +92,25 @@ import Screenshot
 # RandTime.randTime(0,0,0,0,0,9)#time between click
 
 
-import Mouse
-import RandTime
+# import Mouse
+# import RandTime
+#
+# Mouse.win32Click(1776,690)
+# RandTime.randTime(0, 0, 0, 0, 0,25)  # time between click
+# Mouse.win32Click(1775,655)
+# RandTime.randTime(0, 0, 0, 0, 0,25)  # time between click
+# Mouse.win32Click(1828,644)
 
-Mouse.win32Click(1776,690)
-RandTime.randTime(0, 0, 0, 0, 0,25)  # time between click
-Mouse.win32Click(1775,655)
-RandTime.randTime(0, 0, 0, 0, 0,25)  # time between click
-Mouse.win32Click(1828,644)
+import Match
+import Screenshot
+img_rgb = cv2.imread(r'C:\Users\PPC\git\RS_BOT_2.0\ababa.png')
+img_file = cv2.imread(r'C:\Users\PPC\git\RS_BOT_2.0\d_hide.png', 0)
+p1 = Match.this(img_rgb,"trsah")
+print p1
 
+Screenshot.showRectangle(img_rgb, p1)
+
+cv2.imshow('Detected', img_rgb,img_file)
+cv2.waitKey(0)
+cv2.destroyAllWindows()
+#
