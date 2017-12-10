@@ -2,33 +2,39 @@ import pyautogui
 # from core import RandTime
 import RandTime
 import random
-
+import win32api, win32con
 import time
 
 def click():
     #autopy.mouse.click()
     # pyautogui.moveTo(100, 200)
-    pyautogui.mouseDown(button='right')
+    pyautogui.mouseDown(button='left')
     RandTime.randTime(0,1,0,0,2,9)#time between click
-    pyautogui.mouseUp(button='right')
+    # RandTime.randTime(0, 0, 0, 0, 0, 1)  # time between click
+    pyautogui.mouseUp(button='left')
 
 def moveMouseTo(x,y,speed):
     # if duration:
 
         # duration_of_move=duration
+    # print x,y
+    curr_x, curr_y = pyautogui.position()
+    # calculates the distance from current position to target position
+    distance = int(((x - curr_x) ** 2 + (y - curr_y) ** 2) ** speed)
+    # calculates a random time to make the move take based on the distance
+    duration_of_move = (distance * random.random() / 2000) + speed
+    # move the mouse to our position and takes the time of our duration just
+    # calculated
+    pyautogui.moveTo(x, y, duration_of_move, pyautogui.easeInOutQuad)
+    # pyautogui.moveTo(x, y, duration_of_move, pyautogui.easeOutElastic)
+
+def win32Click(x,y):
+    print x, y
+    win32api.SetCursorPos((x,y))
+    win32api.mouse_event(win32con.MOUSEEVENTF_LEFTDOWN,x,y,0,0)
+    RandTime.randTime(0, 0, 0, 0, 0,50)  # time between click
+    win32api.mouse_event(win32con.MOUSEEVENTF_LEFTUP,x,y,0,0)
 
 
-    while(True):
-        try:
-            cur_x, cur_y = pyautogui.position()
-            distance = int(((x - cur_x)**2 + (y - cur_y)**2)**0.5)
-            # calculates a random time to make the move take based on the distance
-            # duration_of_move = (distance * random.random() / 2000) + 0.5
-            duration_of_move = (distance * random.random() / 2000) + speed
-            print duration_of_move
-            pyautogui.moveTo(x, y, duration_of_move, pyautogui.easeInOutQuad)
-            #pyautogui.moveTo(x, y, duration_of_move, pyautogui.easeOutElastic)
-            break
-        except:
-            print('paused for 10 seconds')
-            time.sleep(10)
+def randCoord(x):
+    return(random.randint(10, x))

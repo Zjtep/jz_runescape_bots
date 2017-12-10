@@ -57,15 +57,47 @@ import Screenshot
 #     time.sleep(0.01)
 
 
-import RS
-import Screenshot
+# import RS
+# import Screenshot
+#
+#
+# img_rgb = cv2.imread(r'C:\Users\PPC\git\RS_BOT_2.0\ababa.png')
+#
+# pt = RS.getFullPosition(img_rgb)
+# # Screenshot.showRectangle(img_rgb, pt)
+# cv2.imshow('Detected', img_rgb)
+# cv2.waitKey(0)
+# cv2.destroyAllWindows()
+
+# import RandTime
+# import win32api, win32con
+#
+# def click(x,y):
+#     win32api.SetCursorPos((x,y))
+#     win32api.mouse_event(win32con.MOUSEEVENTF_LEFTDOWN,x,y,0,0)
+#     win32api.mouse_event(win32con.MOUSEEVENTF_LEFTUP,x,y,0,0)
+#
+#
+# click(500,500)
+# RandTime.randTime(0,0,0,0,0,9)#time between click
+# click(800,800)
+# RandTime.randTime(0,0,0,0,0,9)#time between click
+# click(900,900)
+# RandTime.randTime(0,0,0,0,0,9)#time between click
+# click(500,500)
+# RandTime.randTime(0,0,0,0,0,9)#time between click
+# click(800,800)
+# RandTime.randTime(0,0,0,0,0,9)#time between click
+# click(900,900)
+# RandTime.randTime(0,0,0,0,0,9)#time between click
 
 
-img_rgb = cv2.imread(r'C:\Users\PPC\git\RS_BOT_2.0\ababa.png')
+import Mouse
+import RandTime
 
-pt = RS.getFullPosition(img_rgb)
-# Screenshot.showRectangle(img_rgb, pt)
-cv2.imshow('Detected', img_rgb)
-cv2.waitKey(0)
-cv2.destroyAllWindows()
+Mouse.win32Click(1776,690)
+RandTime.randTime(0, 0, 0, 0, 0,25)  # time between click
+Mouse.win32Click(1775,655)
+RandTime.randTime(0, 0, 0, 0, 0,25)  # time between click
+Mouse.win32Click(1828,644)
 
