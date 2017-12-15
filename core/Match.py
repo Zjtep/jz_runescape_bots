@@ -65,4 +65,4 @@ def this(img_rgb,img_file,x,y):
         # print pt
         # print w,h
 
-    return [0, 0, 0, 0]
+    return None

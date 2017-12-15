@@ -44,7 +44,7 @@ def getFullPosition(img_rgb):
         # print pt
         # print w,h
 
-    return [0, 0, 0, 0]
+    return None
 
 
 def getGamePosition(win_coord):
@@ -61,14 +61,28 @@ def getChatPosition(win_coord):
     start_coord = [win_coord[0] + off_set[0], win_coord[1] + off_set[1]]
     return [start_coord[0], start_coord[1], start_coord[0] + window_size[0], start_coord[1] + window_size[1]]
 
-def getInventoryPosition(win_coord):
+def getInventoryStartPosition(win_coord):
     off_set = [563, 244]
     window_size = [166, 253]
 
     start_coord = [win_coord[0] + off_set[0], win_coord[1] + off_set[1]]
     return [start_coord[0], start_coord[1], start_coord[0] + window_size[0], start_coord[1] + window_size[1]]
 
-def getItemPosition(win_coord):
+def getPrayerStartPosition(win_coord):
+    off_set = [553, 243]
+    window_size = [185, 253]
+
+    start_coord = [win_coord[0] + off_set[0], win_coord[1] + off_set[1]]
+    return [start_coord[0], start_coord[1], start_coord[0] + window_size[0], start_coord[1] + window_size[1]]
+
+def getTopMenuStartPosition(win_coord):
+    off_set = [530, 201]
+    window_size = [232, 37]
+
+    start_coord = [win_coord[0] + off_set[0], win_coord[1] + off_set[1]]
+    return [start_coord[0], start_coord[1], start_coord[0] + window_size[0], start_coord[1] + window_size[1]]
+
+def getAllInventoryPosition(win_coord):
     item_size = 36
     spacing = 7
 
@@ -95,6 +109,49 @@ def getItemPosition(win_coord):
         y2 += item_size
 
     return item
+
+def getAllPrayerPosition(win_coord):
+    item_size = 37
+
+    item = []
+
+    x1 = win_coord[0]
+    y1 = win_coord[1]
+    x2 = win_coord[0] + item_size
+    y2 = win_coord[1] + item_size
+
+    for m in range(6):
+        for n in range(5):
+            # print n
+
+            item.append([x1, y1, x2, y2])
+
+            x1 += item_size
+            x2 += item_size
+        x1 = win_coord[0]
+        x2 = win_coord[0] + item_size
+        y1 += item_size
+        y2 += item_size
+
+    return item
+
+def getAllTopMenuPosition(win_coord):
+    item_size = [33,36]
+
+    item = []
+    x1 = win_coord[0]
+    y1 = win_coord[1]
+    x2 = win_coord[0] + item_size[0]
+    y2 = win_coord[1] + item_size[1]
+
+    for m in range(7):
+        item.append([x1, y1, x2, y2])
+
+        x1 += item_size[0]
+        x2 += item_size[0]
+
+    return item
+
 def getMapPosition(win_coord):
     off_set = [573, 41]
     window_size = [144, 151]
@@ -102,69 +159,71 @@ def getMapPosition(win_coord):
     start_coord = [win_coord[0] + off_set[0], win_coord[1] + off_set[1]]
     return [start_coord[0], start_coord[1], start_coord[0] + window_size[0], start_coord[1] + window_size[1]]
 
-def getHpPosition(win_coord):
+def getDisplayHpPosition(win_coord):
     off_set = [523, 88]
     window_size = [22, 15]
 
     start_coord = [win_coord[0] + off_set[0], win_coord[1] + off_set[1]]
     return [start_coord[0], start_coord[1], start_coord[0] + window_size[0], start_coord[1] + window_size[1]]
 
-def getPrayerPosition(win_coord):
+def getDisplayPrayerPosition(win_coord):
     off_set = [524, 122]
     window_size = [22, 15]
 
     start_coord = [win_coord[0] + off_set[0], win_coord[1] + off_set[1]]
     return [start_coord[0], start_coord[1], start_coord[0] + window_size[0], start_coord[1] + window_size[1]]
 
-def getRunPosition(win_coord):
+def getDisplayRunPosition(win_coord):
     off_set = [536, 154]
     window_size = [22, 15]
 
     start_coord = [win_coord[0] + off_set[0], win_coord[1] + off_set[1]]
     return [start_coord[0], start_coord[1], start_coord[0] + window_size[0], start_coord[1] + window_size[1]]
 
-def getSpecPosition(win_coord):
+def getDisplaySpecPosition(win_coord):
     off_set = [566, 179]
     window_size = [22, 15]
 
     start_coord = [win_coord[0] + off_set[0], win_coord[1] + off_set[1]]
     return [start_coord[0], start_coord[1], start_coord[0] + window_size[0], start_coord[1] + window_size[1]]
 
-def getMenuPosition(win_coord):
-    off_set = [530, 201]
-    item_size = [33,36]
-
-    start_coord = [win_coord[0] + off_set[0], win_coord[1] + off_set[1]]
-
-    item = []
-    x1 = start_coord[0]
-    y1 = start_coord[1]
-    x2 = start_coord[0] + item_size[0]
-    y2 = start_coord[1] + item_size[1]
-
-    for m in range(7):
-        item.append([x1, y1, x2, y2])
-
-        x1 += item_size[0]
-        x2 += item_size[0]
 
 
-    off_set = [530, 499]
-    start_coord = [win_coord[0] + off_set[0], win_coord[1] + off_set[1]]
-
-    x1 = start_coord[0]
-    y1 = start_coord[1]
-    x2 = start_coord[0] + item_size[0]
-    y2 = start_coord[1] + item_size[1]
-
-    for m in range(7):
-        item.append([x1, y1, x2, y2])
-
-        x1 += item_size[0]
-        x2 += item_size[0]
-
-    # print item
-    return item
+# def getMenuPosition(win_coord):
+#     off_set = [530, 201]
+#     item_size = [33,36]
+#
+#     start_coord = [win_coord[0] + off_set[0], win_coord[1] + off_set[1]]
+#
+#     item = []
+#     x1 = start_coord[0]
+#     y1 = start_coord[1]
+#     x2 = start_coord[0] + item_size[0]
+#     y2 = start_coord[1] + item_size[1]
+#
+#     for m in range(7):
+#         item.append([x1, y1, x2, y2])
+#
+#         x1 += item_size[0]
+#         x2 += item_size[0]
+#
+#
+#     off_set = [530, 499]
+#     start_coord = [win_coord[0] + off_set[0], win_coord[1] + off_set[1]]
+#
+#     x1 = start_coord[0]
+#     y1 = start_coord[1]
+#     x2 = start_coord[0] + item_size[0]
+#     y2 = start_coord[1] + item_size[1]
+#
+#     for m in range(7):
+#         item.append([x1, y1, x2, y2])
+#
+#         x1 += item_size[0]
+#         x2 += item_size[0]
+#
+#     # print item
+#     return item
 
 
 
@@ -207,7 +266,7 @@ def getMenuPosition(win_coord):
 # pt4 = getChatPosition(pt)
 # cv2.rectangle(img_rgb, (pt4[0], pt4[1]), (pt4[2], pt4[3]), (0, 255, 100), 1)
 #
-# pt5 = getInventoryPosition(pt)
+# pt5 = getInventoryStartPosition(pt)
 # # cv2.rectangle(img_rgb, (pt5[0], pt5[1]), (pt5[2], pt5[3]), (0, 255, 100), 1)
 #
 # temp_list = getItemPosition(pt5)
@@ -227,7 +286,7 @@ def getMenuPosition(win_coord):
 # pt6 = getHpPosition(pt)
 # cv2.rectangle(img_rgb, (pt6[0], pt6[1]), (pt6[2], pt6[3]), (0, 255, 100), 1)
 #
-# pt7 = getPrayerPosition(pt)
+# pt7 = getPrayerStartPosition(pt)
 # cv2.rectangle(img_rgb, (pt7[0], pt7[1]), (pt7[2], pt7[3]), (0, 255, 100), 1)
 #
 # pt8 = getRunPosition(pt)
