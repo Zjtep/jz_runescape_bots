@@ -82,6 +82,27 @@ def getTopMenuStartPosition(win_coord):
     start_coord = [win_coord[0] + off_set[0], win_coord[1] + off_set[1]]
     return [start_coord[0], start_coord[1], start_coord[0] + window_size[0], start_coord[1] + window_size[1]]
 
+def getNormalMagicStartPosition(win_coord):
+    off_set = [563, 252]
+    window_size = [169, 253]
+
+    start_coord = [win_coord[0] + off_set[0], win_coord[1] + off_set[1]]
+    return [start_coord[0], start_coord[1], start_coord[0] + window_size[0], start_coord[1] + window_size[1]]
+
+def getAncientMagicStartPosition(win_coord):
+    off_set = [570, 247]
+    window_size = [160, 253]
+
+    start_coord = [win_coord[0] + off_set[0], win_coord[1] + off_set[1]]
+    return [start_coord[0], start_coord[1], start_coord[0] + window_size[0], start_coord[1] + window_size[1]]
+
+def getLunarMagicStartPosition(win_coord):
+    off_set = [559, 245]
+    window_size = [173, 253]
+
+    start_coord = [win_coord[0] + off_set[0], win_coord[1] + off_set[1]]
+    return [start_coord[0], start_coord[1], start_coord[0] + window_size[0], start_coord[1] + window_size[1]]
+
 def getAllInventoryPosition(win_coord):
     item_size = 36
     spacing = 7
@@ -151,6 +172,88 @@ def getAllTopMenuPosition(win_coord):
         x2 += item_size[0]
 
     return item
+
+def getRegularMagicMenuPosition(win_coord):
+    item_size = 24
+
+    item = []
+
+    x1 = win_coord[0]
+    y1 = win_coord[1]
+    x2 = win_coord[0] + item_size
+    y2 = win_coord[1] + item_size
+
+    for m in range(10):
+        for n in range(7):
+            # print n
+
+            item.append([x1, y1, x2, y2])
+
+            x1 += item_size
+            x2 += item_size
+        x1 = win_coord[0]
+        x2 = win_coord[0] + item_size
+        y1 += item_size
+        y2 += item_size
+
+    return item
+
+def getAncientMagicMenuPosition(win_coord):
+    item_size = [25,27]
+    spacing = 18
+
+    item = []
+
+    x1 = win_coord[0]
+    y1 = win_coord[1]
+    x2 = win_coord[0]+item_size[0]
+    y2 = win_coord[1]+item_size[1]
+
+    for m in range(7):
+        for n in range(4):
+            # print n
+
+            item.append([x1, y1, x2, y2])
+
+            x1 += item_size[0]
+            x2 += item_size[0]
+            x1 +=spacing
+            x2 +=spacing
+        x1 = win_coord[0]
+        x2 = win_coord[0]+item_size[0]
+        y1 += item_size[1]
+        y2 += item_size[1]
+
+    return item
+
+def getLunarMagicMenuPosition(win_coord):
+    item_size = [27,29]
+    spacing = 2
+
+    item = []
+
+    x1 = win_coord[0]
+    y1 = win_coord[1]
+    x2 = win_coord[0]+item_size[0]
+    y2 = win_coord[1]+item_size[1]
+
+    for m in range(8):
+        for n in range(6):
+            # print n
+
+            item.append([x1, y1, x2, y2])
+
+            x1 += item_size[0]
+            x2 += item_size[0]
+            x1 +=spacing
+            x2 +=spacing
+        x1 = win_coord[0]
+        x2 = win_coord[0]+item_size[0]
+        y1 += item_size[1]
+        y2 += item_size[1]
+
+    return item
+
 
 def getMapPosition(win_coord):
     off_set = [573, 41]

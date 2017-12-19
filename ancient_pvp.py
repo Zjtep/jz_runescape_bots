@@ -13,19 +13,6 @@ import os
 CURRENT_WORKING_DIRECTORY = os.getcwd()
 
 
-def keyWasUnPressed():
-    print "keyWasUnPressed"
-
-
-def keyWasPressed():
-    print "keyWasPressed"
-
-
-def isKeyPressed(key):
-    # "if the high-order bit is 1, the key is down; otherwise, it is up."
-    return (win32api.GetKeyState(key) & (1 << 7)) != 0
-
-
 def setMainWindow():
     img = pyautogui.screenshot('ababa.png')
     img_rgb = cv2.imread(r'C:\Users\PPC\git\RS_BOT_2.0\ababa.png')
@@ -67,9 +54,10 @@ def getGearList(dir):
 
 
 def item_click(inventory_coord, item_coord, size):
-    Mouse.moveMouseTo(inventory_coord[0] + item_coord[0] + Mouse.randCoord(size),
-                      inventory_coord[1] + item_coord[1] + Mouse.randCoord(size), 0.5)
+    # Mouse.quickMoveMouseTo(inventory_coord[0] + item_coord[0] + Mouse.randCoord(size),
+    #                   inventory_coord[1] + item_coord[1] + Mouse.randCoord(size))
     # Mouse.click()
+    Mouse.win32Click(inventory_coord[0] + item_coord[0] + Mouse.randCoord(size),inventory_coord[1] + item_coord[1] + Mouse.randCoord(size))
 
 
 def equipItems(inventory_ss, inventory_coord, item_type):
@@ -105,6 +93,7 @@ def changeMenu(inventory_ss, inventory_coord, item_type):
 
     prayer_list = getGearList(prayer_path)
 
+
     for item in prayer_list:
         img_file = cv2.imread(item, 0)
         p1 = Match.this(inventory_ss, img_file, 5, 5)
@@ -112,25 +101,70 @@ def changeMenu(inventory_ss, inventory_coord, item_type):
             item_click(inventory_coord, p1, 17)
 
 
-if __name__ == '__main__':
-    window_coord = setMainWindow()
-    inventory_coord = RS.getInventoryStartPosition(window_coord)
-    inventory_ss = Screenshot.shoot(inventory_coord[0], inventory_coord[1], inventory_coord[2], inventory_coord[3],
-                                    "rgb")
+def equipRangePrayer():
+    print "Range Prayer"
 
-    prayer_coord = RS.getPrayerStartPosition(window_coord)
-    prayer_ss = Screenshot.shoot(prayer_coord[0], prayer_coord[1], prayer_coord[2], prayer_coord[3], "rgb")
-
-    top_menu_coord = RS.getPrayerStartPosition(window_coord)
-    top_menu_ss = Screenshot.shoot(top_menu_coord[0], top_menu_coord[1], top_menu_coord[2], top_menu_coord[3], "rgb")
-
-    # inventory_ss = cv2.imread(r'C:\Users\PPC\git\RS_BOT_2.0\inventory_03.png')
+def equipMagicPrayer():
+    print "Magic Prayer"
 
 
 
+
+
+
+HUMAN_KEYPRESS_TIME = 0.3
+
+def press_key(vk_code):
+    state = int(win32api.GetKeyState(vk_code))
+    if state == -127 or state == -128:
+        return 1 # Key was pressed.
+    else:
+        return 0 # Key was released.
+
+if __name__ == "__main__":
+
+    # p_key = 80
+    q_key = 81
+    e_key = 69
+    w_key = 87
+    # r_key = 84
+
+    while True:
+
+        if press_key(q_key):
+            print("Q key was pressed.")
+            time.sleep(HUMAN_KEYPRESS_TIME)
+        if press_key(e_key):
+            print("E key was pressed.")
+            time.sleep(HUMAN_KEYPRESS_TIME)
+        if press_key(w_key):
+            print("W key was pressed.")
+            time.sleep(HUMAN_KEYPRESS_TIME)
+
+
+
+
+
+
+
+# window_coord = setMainWindow()
+    # inventory_coord = RS.getInventoryStartPosition(window_coord)
+    # inventory_ss = Screenshot.shoot(inventory_coord[0], inventory_coord[1], inventory_coord[2], inventory_coord[3],
+    #                                 "rgb")
+    #
+    # prayer_coord = RS.getPrayerStartPosition(window_coord)
+    # prayer_ss = Screenshot.shoot(prayer_coord[0], prayer_coord[1], prayer_coord[2], prayer_coord[3], "rgb")
+    #
+    # top_menu_coord = RS.getTopMenuStartPosition(window_coord)
+    # top_menu_ss = Screenshot.shoot(top_menu_coord[0], top_menu_coord[1], top_menu_coord[2], top_menu_coord[3], "rgb")
+    #
+    # # inventory_ss = cv2.imread(r'C:\Users\PPC\git\RS_BOT_2.0\inventory_03.png')
+    #
+    #
+    #
     # equipItems(inventory_ss,inventory_coord,"range")
     # activePrayer(prayer_ss, prayer_coord, "range")
-    changeMenu(top_menu_coord, top_menu_ss, "menu")
+    # changeMenu(top_menu_ss, top_menu_coord, "menu")
 
 
 

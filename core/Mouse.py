@@ -47,6 +47,7 @@ def quickMoveMouseTo(x,y):
 def win32Click(x,y):
     print x, y
     win32api.SetCursorPos((x,y))
+    RandTime.randTime(0, 0, 0, 0, 1, 50)  # time between click
     win32api.mouse_event(win32con.MOUSEEVENTF_LEFTDOWN,x,y,0,0)
     RandTime.randTime(0, 0, 0, 0, 0,50)  # time between click
     win32api.mouse_event(win32con.MOUSEEVENTF_LEFTUP,x,y,0,0)
