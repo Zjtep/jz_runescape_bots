@@ -1,19 +1,30 @@
 import win32api
 import time
-from core import RS
+
 import pyautogui
 import cv2
+from core import RS
 from core import Screenshot
 from core import Mouse
+from core import Keyboard
+from core import RandTime
 from core import Match
 import os
 
+from core import GameConstants
 # mouse.moveMouseTo(800,200)
 
 CURRENT_WORKING_DIRECTORY = os.getcwd()
 
 
-def setMainWindow():
+def press_key(vk_code):
+    state = int(win32api.GetKeyState(vk_code))
+    if state == -127 or state == -128:
+        return 1 # Key was pressed.
+    else:
+        return 0 # Key was released.
+
+def getRunescapeWindow():
     img = pyautogui.screenshot('ababa.png')
     img_rgb = cv2.imread(r'C:\Users\PPC\git\RS_BOT_2.0\ababa.png')
 
@@ -54,10 +65,10 @@ def getGearList(dir):
 
 
 def item_click(inventory_coord, item_coord, size):
-    # Mouse.quickMoveMouseTo(inventory_coord[0] + item_coord[0] + Mouse.randCoord(size),
-    #                   inventory_coord[1] + item_coord[1] + Mouse.randCoord(size))
-    # Mouse.click()
-    Mouse.win32Click(inventory_coord[0] + item_coord[0] + Mouse.randCoord(size),inventory_coord[1] + item_coord[1] + Mouse.randCoord(size))
+    Mouse.moveMouseTo(inventory_coord[0] + item_coord[0] + Mouse.randCoord(size),
+                      inventory_coord[1] + item_coord[1] + Mouse.randCoord(size),0.5)
+    Mouse.click()
+    # Mouse.win32Click(inventory_coord[0] + item_coord[0] + Mouse.randCoord(size),inventory_coord[1] + item_coord[1] + Mouse.randCoord(size))
 
 
 def equipItems(inventory_ss, inventory_coord, item_type):
@@ -101,12 +112,45 @@ def changeMenu(inventory_ss, inventory_coord, item_type):
             item_click(inventory_coord, p1, 17)
 
 
-def equipRangePrayer():
-    print "Range Prayer"
+def equipRangePrayer(window_coord):
+    # print "Range Prayer"
+    Keyboard.press("prayer")
+    prayer_coord = RS.getPrayerStartPosition(window_coord)
+    prayer_ss = Screenshot.shoot(prayer_coord[0], prayer_coord[1], prayer_coord[2], prayer_coord[3], "rgb")
+    activePrayer(prayer_ss, prayer_coord, "range")
 
-def equipMagicPrayer():
-    print "Magic Prayer"
+def equipMagicPrayer(window_coord):
+    Keyboard.press("prayer")
+    prayer_coord = RS.getPrayerStartPosition(window_coord)
+    prayer_ss = Screenshot.shoot(prayer_coord[0], prayer_coord[1], prayer_coord[2], prayer_coord[3], "rgb")
+    activePrayer(prayer_ss, prayer_coord, "mage")
 
+def equipRangeItems(window_coord):
+    Keyboard.press("inventory")
+    inventory_coord = RS.getInventoryStartPosition(window_coord)
+    inventory_ss = Screenshot.shoot(inventory_coord[0], inventory_coord[1], inventory_coord[2], inventory_coord[3],
+                                    "rgb")
+    equipItems(inventory_ss,inventory_coord,"range")
+
+def equipMageItems(window_coord):
+    Keyboard.press("inventory")
+    inventory_coord = RS.getInventoryStartPosition(window_coord)
+    inventory_ss = Screenshot.shoot(inventory_coord[0], inventory_coord[1], inventory_coord[2], inventory_coord[3],
+                                    "rgb")
+    equipItems(inventory_ss,inventory_coord,"mage")
+
+def changeToRange(window_coord):
+    curr_x, curr_y = pyautogui.position()
+    equipRangePrayer(window_coord)
+    equipRangeItems(window_coord)
+    Mouse.moveMouseTo(curr_x+ Mouse.randCoord(25),curr_y+ Mouse.randCoord(25),0.5)
+
+
+def changeToMagic(window_coord):
+    curr_x, curr_y = pyautogui.position()
+    equipMagicPrayer(window_coord)
+    equipMageItems(window_coord)
+    Mouse.moveMouseTo(curr_x+ Mouse.randCoord(25),curr_y+ Mouse.randCoord(25),0.5)
 
 
 
@@ -114,32 +158,27 @@ def equipMagicPrayer():
 
 HUMAN_KEYPRESS_TIME = 0.3
 
-def press_key(vk_code):
-    state = int(win32api.GetKeyState(vk_code))
-    if state == -127 or state == -128:
-        return 1 # Key was pressed.
-    else:
-        return 0 # Key was released.
 
 if __name__ == "__main__":
 
-    # p_key = 80
-    q_key = 81
-    e_key = 69
-    w_key = 87
-    # r_key = 84
+    window_coord = getRunescapeWindow()
+
+    print window_coord
+
 
     while True:
-
-        if press_key(q_key):
+        if press_key(GameConstants.KEY_Q):
             print("Q key was pressed.")
+            changeToRange(window_coord)
             time.sleep(HUMAN_KEYPRESS_TIME)
-        if press_key(e_key):
+        elif press_key(GameConstants.KEY_W):
+            print("W key was pressed.")
+            changeToMagic(window_coord)
+            time.sleep(HUMAN_KEYPRESS_TIME)
+        elif press_key(GameConstants.KEY_E):
             print("E key was pressed.")
             time.sleep(HUMAN_KEYPRESS_TIME)
-        if press_key(w_key):
-            print("W key was pressed.")
-            time.sleep(HUMAN_KEYPRESS_TIME)
+
 
 
 
