@@ -28,16 +28,16 @@ def moveMouseTo(x,y,speed):
     pyautogui.moveTo(x, y, duration_of_move, pyautogui.easeInOutQuad)
     # pyautogui.moveTo(x, y, duration_of_move, pyautogui.easeOutElastic)
 
-def quickMoveMouseTo(x,y):
+def quickMoveMouseTo(x,y,speed):
     # if duration:
 
         # duration_of_move=duration
     # print x,y
     curr_x, curr_y = pyautogui.position()
     # calculates the distance from current position to target position
-    distance = int(((x - curr_x) ** 2 + (y - curr_y) ** 2) ** 0.1)
+    distance = int(((x - curr_x) ** 2 + (y - curr_y) ** 2) ** speed)
     # calculates a random time to make the move take based on the distance
-    duration_of_move = (distance * random.random() / 2000) + 0.1
+    duration_of_move = (distance * random.random() / 2000) + speed
     # move the mouse to our position and takes the time of our duration just
     # calculated
     pyautogui.moveTo(x, y, duration_of_move)
@@ -47,9 +47,9 @@ def quickMoveMouseTo(x,y):
 def win32Click(x,y):
     print x, y
     win32api.SetCursorPos((x,y))
-    RandTime.randTime(0, 0, 0, 0, 1, 50)  # time between click
+    RandTime.randTime(0, 0, 0, 0, 0, 28)  # time between click
     win32api.mouse_event(win32con.MOUSEEVENTF_LEFTDOWN,x,y,0,0)
-    RandTime.randTime(0, 0, 0, 0, 0,50)  # time between click
+    RandTime.randTime(0, 0, 0, 0, 0,28)  # time between click
     win32api.mouse_event(win32con.MOUSEEVENTF_LEFTUP,x,y,0,0)
 
 

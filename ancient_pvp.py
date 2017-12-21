@@ -65,19 +65,25 @@ def getGearList(dir):
 
 
 def item_click(inventory_coord, item_coord, size):
-    Mouse.moveMouseTo(inventory_coord[0] + item_coord[0] + Mouse.randCoord(size),
-                      inventory_coord[1] + item_coord[1] + Mouse.randCoord(size),0.5)
-    Mouse.click()
-    # Mouse.win32Click(inventory_coord[0] + item_coord[0] + Mouse.randCoord(size),inventory_coord[1] + item_coord[1] + Mouse.randCoord(size))
+    # Mouse.moveMouseTo(inventory_coord[0] + item_coord[0] + Mouse.randCoord(size),
+    #                   inventory_coord[1] + item_coord[1] + Mouse.randCoord(size),0.5)
+    # Mouse.click()
+    Mouse.win32Click(inventory_coord[0] + item_coord[0] + Mouse.randCoord(size),inventory_coord[1] + item_coord[1] + Mouse.randCoord(size))
 
 
 def equipItems(inventory_ss, inventory_coord, item_type):
-    gear_path = os.path.join(CURRENT_WORKING_DIRECTORY, r"library\pvp_macro")
-    gear_path = os.path.join(gear_path, item_type + "\items")
-
-    print gear_path
+    gear_path = None
+    if item_type == "mage":
+        gear_path = os.path.join(CURRENT_WORKING_DIRECTORY, r"library\pvp_macro\mage\items")
+    elif item_type == "range":
+        gear_path = os.path.join(CURRENT_WORKING_DIRECTORY, r"library\pvp_macro\range\items")
+    elif item_type == "melee":
+        gear_path = os.path.join(CURRENT_WORKING_DIRECTORY, r"library\pvp_macro\melee\items")
+    elif item_type == "spec":
+        gear_path = os.path.join(CURRENT_WORKING_DIRECTORY, r"library\pvp_macro\spec\items")
 
     gear_list = getGearList(gear_path)
+    # print gear_list
     for item in gear_list:
         img_file = cv2.imread(item, 0)
         p1 = Match.this(inventory_ss, img_file, 5, 5)
@@ -87,9 +93,15 @@ def equipItems(inventory_ss, inventory_coord, item_type):
 
 
 def activePrayer(inventory_ss, inventory_coord, item_type):
-    prayer_path = os.path.join(CURRENT_WORKING_DIRECTORY, r"library\pvp_macro")
-    prayer_path = os.path.join(prayer_path, item_type + "\prayer")
-
+    prayer_path = None
+    if item_type == "mage":
+        prayer_path = os.path.join(CURRENT_WORKING_DIRECTORY, r"library\pvp_macro\mage\prayer")
+    elif item_type == "range":
+        prayer_path = os.path.join(CURRENT_WORKING_DIRECTORY, r"library\pvp_macro\range\prayer")
+    elif item_type == "melee":
+        prayer_path = os.path.join(CURRENT_WORKING_DIRECTORY, r"library\pvp_macro\melee\prayer")
+    elif item_type == "spec":
+        prayer_path = os.path.join(CURRENT_WORKING_DIRECTORY, r"library\pvp_macro\spec\prayer")
     prayer_list = getGearList(prayer_path)
 
     for item in prayer_list:
@@ -103,58 +115,57 @@ def changeMenu(inventory_ss, inventory_coord, item_type):
     prayer_path = os.path.join(prayer_path, item_type)
 
     prayer_list = getGearList(prayer_path)
-
-
     for item in prayer_list:
         img_file = cv2.imread(item, 0)
         p1 = Match.this(inventory_ss, img_file, 5, 5)
         if p1:
             item_click(inventory_coord, p1, 17)
 
-
-def equipRangePrayer(window_coord):
+def equipPrayerMenu(window_coord,prayer_type):
     # print "Range Prayer"
     Keyboard.press("prayer")
     prayer_coord = RS.getPrayerStartPosition(window_coord)
     prayer_ss = Screenshot.shoot(prayer_coord[0], prayer_coord[1], prayer_coord[2], prayer_coord[3], "rgb")
-    activePrayer(prayer_ss, prayer_coord, "range")
+    activePrayer(prayer_ss, prayer_coord, prayer_type)
 
-def equipMagicPrayer(window_coord):
-    Keyboard.press("prayer")
-    prayer_coord = RS.getPrayerStartPosition(window_coord)
-    prayer_ss = Screenshot.shoot(prayer_coord[0], prayer_coord[1], prayer_coord[2], prayer_coord[3], "rgb")
-    activePrayer(prayer_ss, prayer_coord, "mage")
-
-def equipRangeItems(window_coord):
+def equipItemMenu(window_coord,item_type):
     Keyboard.press("inventory")
     inventory_coord = RS.getInventoryStartPosition(window_coord)
     inventory_ss = Screenshot.shoot(inventory_coord[0], inventory_coord[1], inventory_coord[2], inventory_coord[3],
                                     "rgb")
-    equipItems(inventory_ss,inventory_coord,"range")
+    equipItems(inventory_ss,inventory_coord,item_type)
 
-def equipMageItems(window_coord):
-    Keyboard.press("inventory")
-    inventory_coord = RS.getInventoryStartPosition(window_coord)
-    inventory_ss = Screenshot.shoot(inventory_coord[0], inventory_coord[1], inventory_coord[2], inventory_coord[3],
-                                    "rgb")
-    equipItems(inventory_ss,inventory_coord,"mage")
-
+def equipSpecMenu(window_coord):
+    Keyboard.press("spec")
+    spec_coord = RS.getSpecPositon(window_coord)
+    Mouse.win32Click(spec_coord[0] + Mouse.randCoord(140),
+                     spec_coord[1] + Mouse.randCoord(20))
 def changeToRange(window_coord):
     curr_x, curr_y = pyautogui.position()
-    equipRangePrayer(window_coord)
-    equipRangeItems(window_coord)
-    Mouse.moveMouseTo(curr_x+ Mouse.randCoord(25),curr_y+ Mouse.randCoord(25),0.5)
+    # equipPrayerMenu(window_coord,"range")
+    equipItemMenu(window_coord,"range")
+    Mouse.moveMouseTo(curr_x+ Mouse.randCoord(25),curr_y+ Mouse.randCoord(25),0.1)
 
 
 def changeToMagic(window_coord):
     curr_x, curr_y = pyautogui.position()
-    equipMagicPrayer(window_coord)
-    equipMageItems(window_coord)
-    Mouse.moveMouseTo(curr_x+ Mouse.randCoord(25),curr_y+ Mouse.randCoord(25),0.5)
+    # equipPrayerMenu(window_coord, "mage")
+    equipItemMenu(window_coord,"mage")
+    Mouse.moveMouseTo(curr_x+ Mouse.randCoord(25),curr_y+ Mouse.randCoord(25),0.1)
 
+def changeToMelee(window_coord):
+    curr_x, curr_y = pyautogui.position()
+    # equipPrayerMenu(window_coord, "melee")
+    equipItemMenu(window_coord,"melee")
+    Mouse.moveMouseTo(curr_x+ Mouse.randCoord(25),curr_y+ Mouse.randCoord(25),0.1)
 
-
-
+def changeToSpec(window_coord):
+    curr_x, curr_y = pyautogui.position()
+    # equipPrayerMenu(window_coord, "spec")
+    equipItemMenu(window_coord,"spec")
+    time.sleep(0.5)
+    equipSpecMenu(window_coord)
+    Mouse.moveMouseTo(curr_x+ Mouse.randCoord(25),curr_y+ Mouse.randCoord(25),0.1)
 
 HUMAN_KEYPRESS_TIME = 0.3
 
@@ -177,6 +188,11 @@ if __name__ == "__main__":
             time.sleep(HUMAN_KEYPRESS_TIME)
         elif press_key(GameConstants.KEY_E):
             print("E key was pressed.")
+            changeToMelee(window_coord)
+            time.sleep(HUMAN_KEYPRESS_TIME)
+        elif press_key(GameConstants.KEY_R):
+            print("R key was pressed.")
+            changeToSpec(window_coord)
             time.sleep(HUMAN_KEYPRESS_TIME)
 
 

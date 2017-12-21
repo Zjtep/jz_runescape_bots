@@ -103,6 +103,13 @@ def getLunarMagicStartPosition(win_coord):
     start_coord = [win_coord[0] + off_set[0], win_coord[1] + off_set[1]]
     return [start_coord[0], start_coord[1], start_coord[0] + window_size[0], start_coord[1] + window_size[1]]
 
+def getSpecPositon(win_coord):
+    off_set = [570, 445]
+    window_size = [148, 20]
+
+    start_coord = [win_coord[0] + off_set[0], win_coord[1] + off_set[1]]
+    return [start_coord[0], start_coord[1], start_coord[0] + window_size[0], start_coord[1] + window_size[1]]
+
 def getAllInventoryPosition(win_coord):
     item_size = 36
     spacing = 7
