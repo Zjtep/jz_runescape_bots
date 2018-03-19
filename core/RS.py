@@ -22,13 +22,13 @@ def getFullPosition(img_rgb):
     # cv2.imwrite('temp.png', img)
 
 
-    # img_rgb = cv2.imread(r'C:\Users\PPC\git\RS_BOT_2.0\library\reference\full_screen_04.jpg')
-    # img_rgb = cv2.imread(r'C:\Users\PPC\git\RS_BOT_2.0\library\reference\full_window2.JPG')
+    # img_rgb = cv2.imread(r'C:\Users\PPC\git\RS_BOT_2.0\lib\reference\full_screen_04.jpg')
+    # img_rgb = cv2.imread(r'C:\Users\PPC\git\RS_BOT_2.0\lib\reference\full_window2.JPG')
 
     # img_rgb = cv2.imread(r'C:\Users\PPC\git\RS_BOT_2.0\module\temp.png')
 
     img_gray = cv2.cvtColor(img_rgb, cv2.COLOR_BGR2GRAY)
-    template = cv2.imread(r'C:\Users\PPC\git\RS_BOT_2.0\library\reference\osbuddy_logo.png', 0)
+    template = cv2.imread(r'C:\Users\PPC\git\RS_BOT_2.0\lib\reference\osbuddy_logo.png', 0)
     # print template
 
     w, h = template.shape[::-1]
@@ -54,12 +54,14 @@ def getGamePosition(win_coord):
     start_coord = [win_coord[0] + off_set[0], win_coord[1] + off_set[1]]
     return [start_coord[0], start_coord[1], start_coord[0] + window_size[0], start_coord[1] + window_size[1]]
 
+
 def getChatPosition(win_coord):
     off_set = [8, 378]
     window_size = [490, 113]
 
     start_coord = [win_coord[0] + off_set[0], win_coord[1] + off_set[1]]
     return [start_coord[0], start_coord[1], start_coord[0] + window_size[0], start_coord[1] + window_size[1]]
+
 
 def getInventoryStartPosition(win_coord):
     off_set = [563, 244]
@@ -68,12 +70,14 @@ def getInventoryStartPosition(win_coord):
     start_coord = [win_coord[0] + off_set[0], win_coord[1] + off_set[1]]
     return [start_coord[0], start_coord[1], start_coord[0] + window_size[0], start_coord[1] + window_size[1]]
 
+
 def getPrayerStartPosition(win_coord):
     off_set = [553, 243]
     window_size = [185, 253]
 
     start_coord = [win_coord[0] + off_set[0], win_coord[1] + off_set[1]]
     return [start_coord[0], start_coord[1], start_coord[0] + window_size[0], start_coord[1] + window_size[1]]
+
 
 def getTopMenuStartPosition(win_coord):
     off_set = [530, 201]
@@ -82,12 +86,14 @@ def getTopMenuStartPosition(win_coord):
     start_coord = [win_coord[0] + off_set[0], win_coord[1] + off_set[1]]
     return [start_coord[0], start_coord[1], start_coord[0] + window_size[0], start_coord[1] + window_size[1]]
 
+
 def getNormalMagicStartPosition(win_coord):
     off_set = [563, 252]
     window_size = [169, 253]
 
     start_coord = [win_coord[0] + off_set[0], win_coord[1] + off_set[1]]
     return [start_coord[0], start_coord[1], start_coord[0] + window_size[0], start_coord[1] + window_size[1]]
+
 
 def getAncientMagicStartPosition(win_coord):
     off_set = [570, 247]
@@ -96,6 +102,7 @@ def getAncientMagicStartPosition(win_coord):
     start_coord = [win_coord[0] + off_set[0], win_coord[1] + off_set[1]]
     return [start_coord[0], start_coord[1], start_coord[0] + window_size[0], start_coord[1] + window_size[1]]
 
+
 def getLunarMagicStartPosition(win_coord):
     off_set = [559, 245]
     window_size = [173, 253]
@@ -103,12 +110,14 @@ def getLunarMagicStartPosition(win_coord):
     start_coord = [win_coord[0] + off_set[0], win_coord[1] + off_set[1]]
     return [start_coord[0], start_coord[1], start_coord[0] + window_size[0], start_coord[1] + window_size[1]]
 
+
 def getSpecPositon(win_coord):
     off_set = [570, 445]
     window_size = [148, 20]
 
     start_coord = [win_coord[0] + off_set[0], win_coord[1] + off_set[1]]
     return [start_coord[0], start_coord[1], start_coord[0] + window_size[0], start_coord[1] + window_size[1]]
+
 
 def getAllInventoryPosition(win_coord):
     item_size = 36
@@ -118,8 +127,8 @@ def getAllInventoryPosition(win_coord):
 
     x1 = win_coord[0]
     y1 = win_coord[1]
-    x2 = win_coord[0]+item_size
-    y2 = win_coord[1]+item_size
+    x2 = win_coord[0] + item_size
+    y2 = win_coord[1] + item_size
 
     for m in range(7):
         for n in range(4):
@@ -129,14 +138,15 @@ def getAllInventoryPosition(win_coord):
 
             x1 += item_size
             x2 += item_size
-            x1 +=spacing
-            x2 +=spacing
+            x1 += spacing
+            x2 += spacing
         x1 = win_coord[0]
-        x2 = win_coord[0]+item_size
+        x2 = win_coord[0] + item_size
         y1 += item_size
         y2 += item_size
 
     return item
+
 
 def getAllPrayerPosition(win_coord):
     item_size = 37
@@ -163,8 +173,9 @@ def getAllPrayerPosition(win_coord):
 
     return item
 
+
 def getAllTopMenuPosition(win_coord):
-    item_size = [33,36]
+    item_size = [33, 36]
 
     item = []
     x1 = win_coord[0]
@@ -179,6 +190,7 @@ def getAllTopMenuPosition(win_coord):
         x2 += item_size[0]
 
     return item
+
 
 def getRegularMagicMenuPosition(win_coord):
     item_size = 24
@@ -205,16 +217,17 @@ def getRegularMagicMenuPosition(win_coord):
 
     return item
 
+
 def getAncientMagicMenuPosition(win_coord):
-    item_size = [25,27]
+    item_size = [25, 27]
     spacing = 18
 
     item = []
 
     x1 = win_coord[0]
     y1 = win_coord[1]
-    x2 = win_coord[0]+item_size[0]
-    y2 = win_coord[1]+item_size[1]
+    x2 = win_coord[0] + item_size[0]
+    y2 = win_coord[1] + item_size[1]
 
     for m in range(7):
         for n in range(4):
@@ -224,25 +237,26 @@ def getAncientMagicMenuPosition(win_coord):
 
             x1 += item_size[0]
             x2 += item_size[0]
-            x1 +=spacing
-            x2 +=spacing
+            x1 += spacing
+            x2 += spacing
         x1 = win_coord[0]
-        x2 = win_coord[0]+item_size[0]
+        x2 = win_coord[0] + item_size[0]
         y1 += item_size[1]
         y2 += item_size[1]
 
     return item
 
+
 def getLunarMagicMenuPosition(win_coord):
-    item_size = [27,29]
+    item_size = [27, 29]
     spacing = 2
 
     item = []
 
     x1 = win_coord[0]
     y1 = win_coord[1]
-    x2 = win_coord[0]+item_size[0]
-    y2 = win_coord[1]+item_size[1]
+    x2 = win_coord[0] + item_size[0]
+    y2 = win_coord[1] + item_size[1]
 
     for m in range(8):
         for n in range(6):
@@ -252,10 +266,10 @@ def getLunarMagicMenuPosition(win_coord):
 
             x1 += item_size[0]
             x2 += item_size[0]
-            x1 +=spacing
-            x2 +=spacing
+            x1 += spacing
+            x2 += spacing
         x1 = win_coord[0]
-        x2 = win_coord[0]+item_size[0]
+        x2 = win_coord[0] + item_size[0]
         y1 += item_size[1]
         y2 += item_size[1]
 
@@ -269,12 +283,14 @@ def getMapPosition(win_coord):
     start_coord = [win_coord[0] + off_set[0], win_coord[1] + off_set[1]]
     return [start_coord[0], start_coord[1], start_coord[0] + window_size[0], start_coord[1] + window_size[1]]
 
+
 def getDisplayHpPosition(win_coord):
     off_set = [523, 88]
     window_size = [22, 15]
 
     start_coord = [win_coord[0] + off_set[0], win_coord[1] + off_set[1]]
     return [start_coord[0], start_coord[1], start_coord[0] + window_size[0], start_coord[1] + window_size[1]]
+
 
 def getDisplayPrayerPosition(win_coord):
     off_set = [524, 122]
@@ -283,6 +299,7 @@ def getDisplayPrayerPosition(win_coord):
     start_coord = [win_coord[0] + off_set[0], win_coord[1] + off_set[1]]
     return [start_coord[0], start_coord[1], start_coord[0] + window_size[0], start_coord[1] + window_size[1]]
 
+
 def getDisplayRunPosition(win_coord):
     off_set = [536, 154]
     window_size = [22, 15]
@@ -290,14 +307,13 @@ def getDisplayRunPosition(win_coord):
     start_coord = [win_coord[0] + off_set[0], win_coord[1] + off_set[1]]
     return [start_coord[0], start_coord[1], start_coord[0] + window_size[0], start_coord[1] + window_size[1]]
 
+
 def getDisplaySpecPosition(win_coord):
     off_set = [566, 179]
     window_size = [22, 15]
 
     start_coord = [win_coord[0] + off_set[0], win_coord[1] + off_set[1]]
     return [start_coord[0], start_coord[1], start_coord[0] + window_size[0], start_coord[1] + window_size[1]]
-
-
 
 # def getMenuPosition(win_coord):
 #     off_set = [530, 201]
@@ -338,23 +354,23 @@ def getDisplaySpecPosition(win_coord):
 
 
 
-    # x1 = win_coord[0]
-    # y1 = win_coord[1]
-    # y2 = win_coord[1]+ item_size
-    # for x in range(4):
-    #
-    #     offset_x = item_size + (x*item_size)
-    #
-    #     x2 = win_coord[0] + offset_x+(x*spacing)
-    #     if x > 0:
-    #         # x2 = win_coord[0] + offset_x + (x * spacing)
-    #         x2 = win_coord[0] + offset_x +(x*spacing)
-    #
-    #
-    #
-    #
-    #     item.append([x1, y1, x2, y2])
-    #     # x1 += offset_x + spacing
+# x1 = win_coord[0]
+# y1 = win_coord[1]
+# y2 = win_coord[1]+ item_size
+# for x in range(4):
+#
+#     offset_x = item_size + (x*item_size)
+#
+#     x2 = win_coord[0] + offset_x+(x*spacing)
+#     if x > 0:
+#         # x2 = win_coord[0] + offset_x + (x * spacing)
+#         x2 = win_coord[0] + offset_x +(x*spacing)
+#
+#
+#
+#
+#     item.append([x1, y1, x2, y2])
+#     # x1 += offset_x + spacing
 
 
 
@@ -362,7 +378,7 @@ def getDisplaySpecPosition(win_coord):
 
 
 
-# img_rgb = cv2.imread(r'C:\Users\PPC\git\RS_BOT_2.0\library\reference\full_screen_04.jpg')
+# img_rgb = cv2.imread(r'C:\Users\PPC\git\RS_BOT_2.0\lib\reference\full_screen_04.jpg')
 #
 # pt = getFullPosition()
 # cv2.rectangle(img_rgb, (pt[0], pt[1]), (pt[2], pt[3]), (0, 255, 100), 3)

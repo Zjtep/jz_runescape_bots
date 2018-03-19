@@ -15,7 +15,8 @@ from core import GameConstants
 # mouse.moveMouseTo(800,200)
 
 CURRENT_WORKING_DIRECTORY = os.getcwd()
-
+WINDOWS_COORD = 0
+GAME_MIDDLE_COORD = 0
 
 def press_key(vk_code):
     state = int(win32api.GetKeyState(vk_code))
@@ -110,6 +111,25 @@ def activePrayer(inventory_ss, inventory_coord, item_type):
         if p1:
             item_click(inventory_coord, p1, 17)
 
+def activeAncientMagic(inventory_ss, inventory_coord):
+
+    barrage_path = os.path.join(CURRENT_WORKING_DIRECTORY, r"library\pvp_macro\mage\ancient\ice_barrage.png")
+    blitz_path = os.path.join(CURRENT_WORKING_DIRECTORY, r"library\pvp_macro\mage\ancient\ice_blitz.png")
+
+
+    img_file = cv2.imread(barrage_path, 0)
+    p1 = Match.this(inventory_ss, img_file, 5, 5)
+    if p1:
+        item_click(inventory_coord, p1, 17)
+        return
+
+    img_file = cv2.imread(blitz_path, 0)
+    p1 = Match.this(inventory_ss, img_file, 5, 5)
+    if p1:
+        item_click(inventory_coord, p1, 17)
+        return
+
+
 def changeMenu(inventory_ss, inventory_coord, item_type):
     prayer_path = os.path.join(CURRENT_WORKING_DIRECTORY, r"library\pvp_macro")
     prayer_path = os.path.join(prayer_path, item_type)
@@ -121,79 +141,99 @@ def changeMenu(inventory_ss, inventory_coord, item_type):
         if p1:
             item_click(inventory_coord, p1, 17)
 
-def equipPrayerMenu(window_coord,prayer_type):
+def equipPrayerMenu(prayer_type):
     # print "Range Prayer"
     Keyboard.press("prayer")
-    prayer_coord = RS.getPrayerStartPosition(window_coord)
+    prayer_coord = RS.getPrayerStartPosition(WINDOWS_COORD)
     prayer_ss = Screenshot.shoot(prayer_coord[0], prayer_coord[1], prayer_coord[2], prayer_coord[3], "rgb")
     activePrayer(prayer_ss, prayer_coord, prayer_type)
 
-def equipItemMenu(window_coord,item_type):
+def equipItemMenu(item_type):
     Keyboard.press("inventory")
-    inventory_coord = RS.getInventoryStartPosition(window_coord)
+    inventory_coord = RS.getInventoryStartPosition(WINDOWS_COORD)
     inventory_ss = Screenshot.shoot(inventory_coord[0], inventory_coord[1], inventory_coord[2], inventory_coord[3],
                                     "rgb")
     equipItems(inventory_ss,inventory_coord,item_type)
 
-def equipSpecMenu(window_coord):
+def equipSpecMenu():
     Keyboard.press("spec")
-    spec_coord = RS.getSpecPositon(window_coord)
+    spec_coord = RS.getSpecPositon(WINDOWS_COORD)
     Mouse.win32Click(spec_coord[0] + Mouse.randCoord(140),
                      spec_coord[1] + Mouse.randCoord(20))
-def changeToRange(window_coord):
+
+def equipAncientSpell():
+    ancient_coord = RS.getAncientMagicStartPosition(WINDOWS_COORD)
+    inventory_ss = Screenshot.shoot(ancient_coord[0], ancient_coord[1], ancient_coord[2], ancient_coord[3],
+                                    "rgb")
+
+    activeAncientMagic(inventory_ss,ancient_coord)
+
+def changeToRange():
     curr_x, curr_y = pyautogui.position()
-    # equipPrayerMenu(window_coord,"range")
-    equipItemMenu(window_coord,"range")
+    equipPrayerMenu("range")
+    equipItemMenu("range")
+    # Mouse.moveMouseTo(curr_x+ Mouse.randCoord(25),curr_y+ Mouse.randCoord(25),0.1)
+    Mouse.moveMouseTo(GAME_MIDDLE_COORD[0] + Mouse.randCoord(25), GAME_MIDDLE_COORD[1] + Mouse.randCoord(25), 0.1)
+
+def changeToMagic():
+    curr_x, curr_y = pyautogui.position()
+    equipPrayerMenu("mage")
+    equipItemMenu("mage")
+    Keyboard.press("magic")
+    # equipAncientSpell()
+    # Mouse.moveMouseTo(spec_coord[0]+20+ Mouse.randCoord(25),spec_coord[1]+ Mouse.randCoord(25)-35,0.1)
+    Mouse.moveMouseTo(GAME_MIDDLE_COORD[0] + Mouse.randCoord(25), GAME_MIDDLE_COORD[1] + Mouse.randCoord(25), 0.1)
+
+def changeToMelee():
+    curr_x, curr_y = pyautogui.position()
+    equipPrayerMenu( "melee")
+    equipItemMenu("melee")
     Mouse.moveMouseTo(curr_x+ Mouse.randCoord(25),curr_y+ Mouse.randCoord(25),0.1)
 
-
-def changeToMagic(window_coord):
+def changeToSpec():
     curr_x, curr_y = pyautogui.position()
-    # equipPrayerMenu(window_coord, "mage")
-    equipItemMenu(window_coord,"mage")
-    Mouse.moveMouseTo(curr_x+ Mouse.randCoord(25),curr_y+ Mouse.randCoord(25),0.1)
-
-def changeToMelee(window_coord):
-    curr_x, curr_y = pyautogui.position()
-    # equipPrayerMenu(window_coord, "melee")
-    equipItemMenu(window_coord,"melee")
-    Mouse.moveMouseTo(curr_x+ Mouse.randCoord(25),curr_y+ Mouse.randCoord(25),0.1)
-
-def changeToSpec(window_coord):
-    curr_x, curr_y = pyautogui.position()
-    # equipPrayerMenu(window_coord, "spec")
-    equipItemMenu(window_coord,"spec")
+    equipPrayerMenu("spec")
+    equipItemMenu("spec")
     time.sleep(0.5)
-    equipSpecMenu(window_coord)
+    equipSpecMenu()
     Mouse.moveMouseTo(curr_x+ Mouse.randCoord(25),curr_y+ Mouse.randCoord(25),0.1)
 
 HUMAN_KEYPRESS_TIME = 0.3
 
 
+def set_runescape_coord():
+    global WINDOWS_COORD
+    global GAME_MIDDLE_COORD
+    WINDOWS_COORD = getRunescapeWindow()
+    game_pos = RS.getGamePosition(WINDOWS_COORD)
+    # GAME_MIDDLE_COORD = [game_pos[0]+513/2,game_pos[0]+337/2]
+    GAME_MIDDLE_COORD = [game_pos[0]+513/2+20,game_pos[1]+337/2-50]
+
+
+
 if __name__ == "__main__":
-
-    window_coord = getRunescapeWindow()
-
-    print window_coord
-
+    set_runescape_coord()
 
     while True:
-        if press_key(GameConstants.KEY_Q):
+        # if press_key(GameConstants.KEY_Q):
+        if press_key(GameConstants.KEY_F8):
             print("Q key was pressed.")
-            changeToRange(window_coord)
+            changeToRange()
             time.sleep(HUMAN_KEYPRESS_TIME)
-        elif press_key(GameConstants.KEY_W):
+        # elif press_key(GameConstants.KEY_W):
+        elif press_key(GameConstants.KEY_F9):
             print("W key was pressed.")
-            changeToMagic(window_coord)
+            changeToMagic()
             time.sleep(HUMAN_KEYPRESS_TIME)
-        elif press_key(GameConstants.KEY_E):
-            print("E key was pressed.")
-            changeToMelee(window_coord)
-            time.sleep(HUMAN_KEYPRESS_TIME)
-        elif press_key(GameConstants.KEY_R):
-            print("R key was pressed.")
-            changeToSpec(window_coord)
-            time.sleep(HUMAN_KEYPRESS_TIME)
+        # elif press_key(GameConstants.KEY_Q):
+        #     print("E key was pressed.")
+        #     changeToMelee()
+        #     time.sleep(HUMAN_KEYPRESS_TIME)
+        # elif press_key(GameConstants.KEY_W):
+        #     print("R key was pressed.")
+        #     changeToSpec()
+        #     time.sleep(HUMAN_KEYPRESS_TIME)
+
 
 
 

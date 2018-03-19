@@ -9,8 +9,8 @@ from core import Match
 
 
 def setMainWindow():
-    img = pyautogui.screenshot('ababa.png')
-    img_rgb = cv2.imread(r'C:\Users\PPC\git\RS_BOT_2.0\ababa.png')
+    # img = pyautogui.screenshot('ababa.png')
+    img_rgb = cv2.imread(r'C:\Users\PPC\git\RS_BOT_2.0\asdfff.jpg')
 
     return RS.getFullPosition(img_rgb)
 
