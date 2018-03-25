@@ -45,7 +45,7 @@ def images_old(img_pat, img_temp,x,y, func):
 
 
 
-def this(img_rgb,img_file,x,y):
+def old_this(img_rgb,img_file,x,y):
     """pass img_rgb as a cv2 image format, img_file as a file
     Passed Function to do w/e after finding img_file"""
     img_gray = cv2.cvtColor(img_rgb, cv2.COLOR_BGR2GRAY)
@@ -66,3 +66,26 @@ def this(img_rgb,img_file,x,y):
         # print w,h
 
     return None
+
+
+
+def this(img_rgb, template):
+    img_gray = cv2.cvtColor(img_rgb, cv2.COLOR_BGR2GRAY)
+    w, h = template.shape[::-1]
+
+    res = cv2.matchTemplate(img_gray, template, cv2.TM_CCOEFF_NORMED)
+    threshold = 0.8
+    loc = np.where(res >= threshold)
+    for pt in zip(*loc[::-1]):
+        point_found = pt
+        # cv2.rectangle(img_rgb, pt, (pt[0] + w, pt[1] + h), (0, 0, 255), 2)
+
+    return_coord = [pt[0],pt[1],pt[0]+w,pt[1]+h]
+    # print point_found
+    # print type(point_found)
+    print return_coord
+    return return_coord
+
+    # cv2.imwrite('res.png', img_rgb)
+    #
+    # p1 = Match.this(full_ss, item_file, 5, 5)

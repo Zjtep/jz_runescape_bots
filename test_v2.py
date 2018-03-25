@@ -30,13 +30,15 @@ if __name__ == '__main__':
     # full_ss = cv2.imread(r'C:\Users\PPC\git\RS_BOT_2.0\lib\reference\dimension_test\18 Mar 2018 10-26-10.png')
     full_ss = cv2.imread(r'C:\Users\PPC\git\RS_BOT_2.0\lib\reference\dimension_test\inventory_sample.png')
 
-
+    robes = cv2.imread(r'C:\Users\PPC\git\RS_BOT_2.0\lib\reference\dimension_test\items\23_item_slot.png', 0)
 
     my_inventory = RSv2.Inventory(full_ss)
 
-    print my_inventory.getInventory([5,8,2,2])
-    print my_inventory.getInventoryCoord()
+    print my_inventory.findItem(robes)
+    print my_inventory.getAllItems()
 
+
+    # my_inventory.screenShotInventory(full_ss)
 
     # for item in item_position:
     for item in my_inventory.getInventory([24,27]):
@@ -47,6 +49,7 @@ if __name__ == '__main__':
     cv2.imwrite("jzjz.png", full_ss)
     cv2.waitKey(0)
     cv2.destroyAllWindows()
+
 
 
     # Screenshot.showRectangle(full_ss, item_position)

@@ -1,18 +1,20 @@
 import cv2
 import numpy as np
+from PIL import Image
 import subprocess
 import pyautogui
 import os
 import random
 import time
 import Screenshot
+import Match
 
 class Inventory():
     def __init__(self,img_rgb):
         self.item_size = [41, 35]
         bag_anchor = self.getBagAnchor(img_rgb)
-        self.inventory_list = self.setupInventory(bag_anchor)
-        self.inventory_coord = self.setupInventoryCoord(bag_anchor)
+        self.all_items = self._setupAllItems(bag_anchor)
+        self.inventory_coord = self._setupInventoryCoord(bag_anchor)
 
     def getBagAnchor(self,img_rgb):
         """
@@ -39,7 +41,7 @@ class Inventory():
                     anchor_coord[3] + off_set[1]]
         return None
 
-    def setupInventoryCoord(self,anchor_coord):
+    def _setupInventoryCoord(self,anchor_coord):
         x1 = anchor_coord[0]
         y1 = anchor_coord[1]
         x2 = anchor_coord[0] + self.item_size[0]
@@ -50,8 +52,7 @@ class Inventory():
 
         return [x1, y1, return_x, return_y]
 
-
-    def setupInventory(self,anchor_coord):
+    def _setupAllItems(self,anchor_coord):
         """
         sets up the inventory
         :arg1 image_file
@@ -97,16 +98,43 @@ class Inventory():
     def getInventory(self,index_list):
         return_list = []
         for index in index_list:
-            return_list.append(self.inventory_list[index])
+            return_list.append(self.all_items[index])
         return return_list
 
+    def findItem(self,item_file):
+        full_ss = cv2.imread(r'C:\Users\PPC\git\RS_BOT_2.0\lib\reference\dimension_test\inventory_sample.png')
 
-    def getFullInventory(self):
+
+        crop_img = Match.this(full_ss,item_file)
+        # print "crop_img",crop_img
+        # crop_img.append(170)
+        # crop_img.append(250)
+        # print "crop_img", crop_img
+        #
+        # Screenshot.showRectangle(full_ss, crop_img)
+
+        cv2.imshow('Detected', full_ss)
+        cv2.imwrite("123.png", Screenshot.crop(full_ss,crop_img))
+        cv2.waitKey(0)
+        cv2.destroyAllWindows()
+
+
+        # return p1
+
+    def screenShotInventory(self,img_rgb):
+        for item in self.all_items:
+            for key, value in item.iteritems():
+                # Screenshot.showRectangle(img_rgb, value)
+                crop_img = Screenshot.crop(img_rgb,value)
+                # crop_img = img_rgb[value[1]:value[3], value[0]:value[2]]
+                cv2.imwrite('%s_item_slot.png'%(key), crop_img)
+
+    def getAllItems(self):
         """
         :return list
              list of inventory dicts
         """
-        return self.inventory_list
+        return self.all_items
 
     def getInventoryCoord(self):
         return self.inventory_coord

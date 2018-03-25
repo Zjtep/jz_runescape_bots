@@ -33,6 +33,12 @@ def shoot(x1,y1,x2,y2, *args, **kwargs):
     cv_gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     return cv_gray
 
+
+def crop(img_rgb,coord):
+    return img_rgb[coord[1]:coord[3], coord[0]:coord[2]]
+    # return img_rgb[x2:y2, x1:y1]
+
+
 def this(x1,y1,x2,y2, *args, **kwargs):
     return shoot(x1,y1,x2,y2, *args, **kwargs)
 
