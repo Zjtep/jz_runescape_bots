@@ -1,7 +1,9 @@
 #Match.py
 import cv2
+
 import numpy as np
 import os
+import logging
 
 def this_old(img_pat, img_temp):
     """pass img_pat as a cv2 image format, img_temp as a file
@@ -69,7 +71,7 @@ def old_this(img_rgb,img_file,x,y):
 
 
 
-def this(img_rgb, template):
+def _this(img_rgb, template):
     img_gray = cv2.cvtColor(img_rgb, cv2.COLOR_BGR2GRAY)
     w, h = template.shape[::-1]
 
@@ -80,12 +82,40 @@ def this(img_rgb, template):
         point_found = pt
         # cv2.rectangle(img_rgb, pt, (pt[0] + w, pt[1] + h), (0, 0, 255), 2)
 
-    return_coord = [pt[0],pt[1],pt[0]+w,pt[1]+h]
-    # print point_found
-    # print type(point_found)
-    print return_coord
-    return return_coord
+    # return_coord = [pt[0],pt[1],pt[0]+w,pt[1]+h]
+    return list(point_found)
 
+    # return return_coord
+
+    # cv2.imwrite('res.png', img_rgb)
+    #
+    # p1 = Match.this(full_ss, item_file, 5, 5)
+
+#MATCHES 3 CHANNELS
+def this(img_rgb, template):
+    # img_rgb = cv2.imread(r'C:\Users\PPC\git\RS_BOT_2.0\lib\reference\dimension_test\17 Mar 2018 11-59-10.png')
+    # template = cv2.imread(r'C:\Users\PPC\git\RS_BOT_2.0\lib\reference\dimension_test\items\10_item_slot.png')
+
+    width,height , channels = template.shape
+
+    img_B, img_G, img_R = cv2.split(img_rgb)
+    template_B, template_G, template_R = cv2.split(template)
+    resB = cv2.matchTemplate(img_B, template_B, cv2.TM_CCOEFF_NORMED)
+    resG = cv2.matchTemplate(img_G, template_G, cv2.TM_CCOEFF_NORMED)
+    resR = cv2.matchTemplate(img_R, template_R, cv2.TM_CCOEFF_NORMED)
+
+    res = resB + resG + resR
+    threshold = 0.99
+    loc = np.where(res >= 3 * threshold)
+    for pt in zip(*loc[::-1]):
+        point_found = pt
+        # cv2.rectangle(img_rgb, pt, (pt[0] + w, pt[1] + h), (0, 0, 255), 2)
+
+    return_coord = [pt[0],pt[1],pt[0]+height,pt[1]+width]
+    # return list(point_found)
+
+    return return_coord
+    #
     # cv2.imwrite('res.png', img_rgb)
     #
     # p1 = Match.this(full_ss, item_file, 5, 5)
