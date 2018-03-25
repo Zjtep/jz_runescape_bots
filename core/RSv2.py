@@ -104,20 +104,19 @@ class Inventory():
     def findItem(self,full_ss,item_file):
         # full_ss = cv2.imread(r'C:\Users\PPC\git\RS_BOT_2.0\lib\reference\dimension_test\inventory_sample.png')
 
-
         found_coord = Match.this(full_ss,item_file)
+        # print "crop_img",found_coord
+        for item in self.all_items:
+            for key, value in item.iteritems():
+                if found_coord ==value:
+                    return key
+        return False
 
-        print "crop_img",found_coord
-        # found_coord.append(found_coord[0]+41)
-        # found_coord.append(found_coord[1]+35)
-        # print "crop_img", found_coord
-        #
-        Screenshot.showRectangle(full_ss, found_coord)
-
-        cv2.imshow('Detected', full_ss)
-        cv2.imwrite("123.png", Screenshot.crop(full_ss,found_coord))
-        cv2.waitKey(0)
-        cv2.destroyAllWindows()
+        # Screenshot.showRectangle(full_ss, found_coord)
+        # cv2.imshow('Detected', full_ss)
+        # cv2.imwrite("123.png", Screenshot.crop(full_ss,found_coord))
+        # cv2.waitKey(0)
+        # cv2.destroyAllWindows()
 
 
         return found_coord

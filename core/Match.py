@@ -105,7 +105,7 @@ def this(img_rgb, template):
     resR = cv2.matchTemplate(img_R, template_R, cv2.TM_CCOEFF_NORMED)
 
     res = resB + resG + resR
-    threshold = 0.99
+    threshold = 0.90
     loc = np.where(res >= 3 * threshold)
     for pt in zip(*loc[::-1]):
         point_found = pt

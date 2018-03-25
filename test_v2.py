@@ -28,27 +28,32 @@ if __name__ == '__main__':
 
     # full_ss = cv2.imread(r'C:\Users\PPC\git\RS_BOT_2.0\lib\reference\dimension_test\inventory_sample_2.jpg')
     # full_ss = cv2.imread(r'C:\Users\PPC\git\RS_BOT_2.0\lib\reference\dimension_test\18 Mar 2018 10-26-10.png')
-    full_ss = cv2.imread(r'C:\Users\PPC\git\RS_BOT_2.0\lib\reference\dimension_test\18 Mar 2018 10-15-35.png')
+    full_ss = cv2.imread(r'C:\Users\PPC\git\RS_BOT_2.0\lib\reference\dimension_test\inventory_sample.png')
+    # img = pyautogui.screenshot('ababa.png')
+    # full_ss = cv2.imread(r'C:\Users\PPC\git\RS_BOT_2.0\ababa.png')
 
-    robes = cv2.imread(r'C:\Users\PPC\git\RS_BOT_2.0\lib\reference\dimension_test\items\13_item_slot.png')
+    robes = cv2.imread(r'C:\Users\PPC\git\RS_BOT_2.0\lib\reference\dimension_test\items\3_item_slot (3).png')
 
     my_inventory = RSv2.Inventory(full_ss)
 
     print my_inventory.findItem(full_ss,robes)
     print my_inventory.getAllItems()
+    # my_inventory.screenShotInventory(full_ss)
 
 
     # my_inventory.screenShotInventory(full_ss)
 
     # for item in item_position:
-    for item in my_inventory.getInventory([23,27]):
-        for key,value in item.iteritems():
-            Screenshot.showRectangle(full_ss, value)
-    # Screenshot.showRectangle(full_ss, my_inventory.getInventoryCoord())
-    cv2.imshow('Detected', full_ss)
-    cv2.imwrite("jzjz.png", full_ss)
-    cv2.waitKey(0)
-    cv2.destroyAllWindows()
+
+
+    # for item in my_inventory.getInventory([23,27]):
+    #     for key,value in item.iteritems():
+    #         Screenshot.showRectangle(full_ss, value)
+    # # Screenshot.showRectangle(full_ss, my_inventory.getInventoryCoord())
+    # cv2.imshow('Detected', full_ss)
+    # cv2.imwrite("jzjz.png", full_ss)
+    # cv2.waitKey(0)
+    # cv2.destroyAllWindows()
 
 
 
