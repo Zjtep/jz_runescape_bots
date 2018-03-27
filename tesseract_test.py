@@ -59,16 +59,18 @@ import numpy
 #
 #https://github.com/tesseract-ocr/tesseract/wiki/Training-Tesseract
 
-gray = numpy.array(cv2.imread(r"C:\Users\PPC\git\RS_BOT_2.0\lib\reference\dimension_test\price_test\14.PNG"))
+gray = numpy.array(cv2.imread(r"C:\Users\PPC\git\RS_BOT_2.0\lib\reference\dimension_test\price_test\16.PNG"))
 # gray = cv2.cvtColor(gray, cv2.COLOR_BGR2RGB)
 gray = cv2.cvtColor(gray, cv2.COLOR_BGR2GRAY)
-gray = cv2.resize(gray, (0,0), fx=10, fy=10)
+gray = cv2.resize(gray, (0,0), fx=5, fy=5)
 # ret,gray = cv2.threshold(gray, 108, 255,cv2.THRESH_BINARY)
-ret,gray = cv2.threshold(gray, 85, 255,cv2.THRESH_BINARY)
+# ret,gray = cv2.threshold(gray, 85, 255,cv2.THRESH_BINARY)
+# ret,gray = cv2.threshold(gray, 90, 255,cv2.THRESH_BINARY)
+gray = cv2.threshold(gray, 90, 255,cv2.THRESH_BINARY | cv2.THRESH_OTSU)[1]
 
 # gray = Image.fromarray(gray,'RGB')
 text = pytesseract.image_to_string(gray)
-
+# text = pytesseract.image_to_string(gray,config='outputbase digits')
 # text = text.replace(",","")
 
 text_list = list(text)
@@ -80,7 +82,9 @@ for i in range(len(text)):
     elif text_list[i] =='k':
         text_list[i] ="4"
 print("".join(text_list))
-# text = pytesseract.image_to_string(gray,config='outputbase digits')
+
 # print("\n"+text)
+# cv2.imwrite("16r.png", gray)
 cv2.imshow("Output", gray)
+
 cv2.waitKey(0)

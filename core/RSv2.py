@@ -9,7 +9,11 @@ import time
 import Screenshot
 import Match
 
+import win32gui
+
+
 class Inventory():
+    """ runescape inventory class"""
     def __init__(self,img_rgb):
         self.item_size = [41, 35]
         bag_anchor = self.getBagAnchor(img_rgb)
@@ -139,3 +143,29 @@ class Inventory():
         return self.inventory_coord
 
 
+class RunescapeWindow():
+    """ Finds Runeloader Game Window"""
+    def __init__(self):
+        self.game_coord = 0
+        self.setCoordinates()
+
+    def setCoordinates(self):
+        win32gui.EnumWindows(self._enumHandler, None)
+
+    def _enumHandler(self,hwnd, lParam):
+        if win32gui.IsWindowVisible(hwnd):
+            if 'RuneLoader' in win32gui.GetWindowText(hwnd):
+                # win32gui.MoveWindow(hwnd, 0, 0, 760, 500, True)
+                rect = win32gui.GetWindowRect(hwnd)
+                x = rect[0]
+                y = rect[1]
+                w = rect[2]
+                h = rect[3]
+                # w = rect[2] - x
+                # h = rect[3] - y
+                # print "\tLocation: (%d, %d)" % (x, y)
+                # print "\t    Size: (%d, %d)" % (w, h)
+                self.game_coord = [x, y, w, h]
+
+    def getCoordinates(self):
+        return self.game_coord
