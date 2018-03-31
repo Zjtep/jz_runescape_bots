@@ -1,0 +1,21 @@
+http://trainyourtesseract.com
+Train pyTesseract for new font files
+
+
+
+http://www.glyphrstudio.com
+Edit FontFiles 
+
+
+https://stackoverflow.com/questions/9413216/simple-digit-recognition-ocr-in-opencv-python
+machine learning digit recognition
+
+
+
+https://www.pyimagesearch.com/2017/07/17/credit-card-ocr-with-opencv-and-python/
+template matching digit recogition
+
+
+https://stackoverflow.com/questions/40527769/removing-black-background-and-make-transparent-from-grabcut-output-in-python-ope
+removing alpha/single color/
+colore replacmeent
