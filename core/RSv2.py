@@ -20,8 +20,10 @@ my_inventory = RSv2.Inventory(full_ss)
 class Inventory():
     """ runescape inventory class"""
     def __init__(self,img_rgb):
+
+        self.source_image = img_rgb
         self.item_size = [41, 35]
-        bag_anchor = self.setBagAnchor(img_rgb)
+        bag_anchor = self.setBagAnchor(self.source_image)
         self.all_items = self._setupAllItems(bag_anchor)
         self.inventory_coord = self._setupInventoryCoord(bag_anchor)
 
@@ -151,10 +153,12 @@ class Inventory():
 class GrandExchange():
     """ runescape GrandExchange class"""
     def __init__(self,img_rgb):
-        pass
+
         # self.item_size = [115, 111]
-        self.item_size = [116, 118]
-        history_anchor = self.setHistoryAnchor(img_rgb)
+
+        self.source_image = img_rgb
+        self.item_size = [116, 119]
+        history_anchor = self.setHistoryAnchor(self.source_image)
         self.all_windows = self._setupAllWindows(history_anchor)
         self.full_coord = self._setFullCoord(history_anchor)
 
@@ -233,7 +237,9 @@ class GrandExchange():
         num = 0
         return_list = []
         for item in items:
-            exchange_offer = ExchangeOffers(item)
+            crop_img = Screenshot.crop(self.source_image, item)
+            # cv2.imwrite('%s_exchange.png' % (item), crop_img)
+            exchange_offer = ExchangeOffers(crop_img,item)
             temp_dict = {num:exchange_offer}
             num += 1
             return_list.append(temp_dict)
@@ -249,9 +255,32 @@ class GrandExchange():
 
 
 class ExchangeOffers():
-    def __init__(self,coord):
+    def __init__(self,crop_img,coord):
+
+        self.source_image = crop_img
         self.full_coord = coord
         # pass
+        self.status = self.setStatus()
+
+    def setStatus(self):
+
+        template = cv2.imread(r'C:\Users\PPC\git\RS_BOT_2.0\lib\merchant_bot\anchor\status_buy_icon.png', 0)
+
+        if Match.this(self.source_image,template):
+            return "buy"
+        template = cv2.imread(r'C:\Users\PPC\git\RS_BOT_2.0\lib\merchant_bot\anchor\statuse_sell_icon.png', 0)
+        if Match.this(self.source_image,template):
+            return "sell"
+        template = cv2.imread(r'C:\Users\PPC\git\RS_BOT_2.0\lib\merchant_bot\anchor\status_empty_icon.png', 0)
+        if Match.this(self.source_image, template):
+            return "empty"
+
+        # print  self.status
+        # return "not found"
+
+    def getStatus(self):
+        return self.status
+
     def getCoord(self):
         return self.full_coord
 

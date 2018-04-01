@@ -71,28 +71,28 @@ def old_this(img_rgb,img_file,x,y):
 
 
 
-def _this(img_rgb, template):
+def this(img_rgb, template,threshold=None):
+
+    if threshold ==None:
+        threshold = 0.9
+
     img_gray = cv2.cvtColor(img_rgb, cv2.COLOR_BGR2GRAY)
-    w, h = template.shape[::-1]
+    # template = cv2.imread(r'C:\Users\PPC\git\RS_BOT_2.0\lib\merchant_bot\anchor\exchange_history_icon.png', 0)
 
     res = cv2.matchTemplate(img_gray, template, cv2.TM_CCOEFF_NORMED)
-    threshold = 0.8
+    # threshold = 0.9
     loc = np.where(res >= threshold)
+
     for pt in zip(*loc[::-1]):
-        point_found = pt
-        # cv2.rectangle(img_rgb, pt, (pt[0] + w, pt[1] + h), (0, 0, 255), 2)
+        pt += (pt[0], pt[1])
+        anchor_coord = list(pt)
+        return [anchor_coord[0], anchor_coord[1], anchor_coord[2],
+                anchor_coord[3]]
+    return None
 
-    # return_coord = [pt[0],pt[1],pt[0]+w,pt[1]+h]
-    return list(point_found)
-
-    # return return_coord
-
-    # cv2.imwrite('res.png', img_rgb)
-    #
-    # p1 = Match.this(full_ss, item_file, 5, 5)
 
 #MATCHES 3 CHANNELS
-def this(img_rgb, template):
+def __this(img_rgb, template):
     # img_rgb = cv2.imread(r'C:\Users\PPC\git\RS_BOT_2.0\lib\reference\dimension_test\17 Mar 2018 11-59-10.png')
     # template = cv2.imread(r'C:\Users\PPC\git\RS_BOT_2.0\lib\reference\dimension_test\items\10_item_slot.png')
 

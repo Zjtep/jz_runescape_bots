@@ -27,7 +27,7 @@ if __name__ == '__main__':
 
 
     # full_ss = cv2.imread(r'C:\Users\PPC\git\RS_BOT_2.0\lib\reference\dimension_test\31 Mar 2018 21-02-10.png')
-    full_ss = cv2.imread(r'C:\Users\PPC\git\RS_BOT_2.0\lib\reference\dimension_test\31 Mar 2018 23-56-03.png')
+    full_ss = cv2.imread(r'C:\Users\PPC\git\RS_BOT_2.0\lib\reference\dimension_test\1 Apr 2018 02-59-46.png')
 
 
     my_exchange = RSv2.GrandExchange(full_ss)
@@ -41,6 +41,7 @@ if __name__ == '__main__':
     for item in blah:
         for key,value in item.iteritems():
             Screenshot.showRectangle(full_ss, value.getCoord())
+            print value.getStatus()
     # Screenshot.showRectangle(full_ss, my_inventory.getInventoryCoord())
     cv2.imshow('Detected', full_ss)
     cv2.imwrite("jzjz.png", full_ss)
