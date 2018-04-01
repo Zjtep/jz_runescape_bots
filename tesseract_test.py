@@ -58,15 +58,13 @@ import numpy
 # cv2.waitKey(0)
 #
 #https://github.com/tesseract-ocr/tesseract/wiki/Training-Tesseract
-import itertools
 
-lst = [74, 83, 62]
-print set(itertools.permutations(lst))
-
-source = numpy.array(cv2.imread(r"C:\Users\PPC\git\RS_BOT_2.0\lib\reference\dimension_test\price_test2\05r.PNG"))
+source = numpy.array(cv2.imread(r"C:\Users\PPC\git\RS_BOT_2.0\lib\reference\dimension_test\price_test2\08r.PNG"))
 
 
 # source[numpy.where((source == [0,0,0]).all(axis = 2))] = [83,74,62]
+
+#NOTE The fucking thing is BLUE,GREEN, RED
 source[numpy.where((source == [0,0,0]).all(axis = 2))] = [62,74,83]
 
 # final = cv2.resize(source, (0,0), fx=5, fy=5)
