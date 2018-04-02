@@ -13,7 +13,7 @@ def click():
     # RandTime.randTime(0, 0, 0, 0, 0, 1)  # time between click
     pyautogui.mouseUp(button='left')
 
-def moveMouseTo(x,y,speed):
+def moveTo(x,y,speed):
     # if duration:
 
         # duration_of_move=duration
@@ -28,7 +28,7 @@ def moveMouseTo(x,y,speed):
     pyautogui.moveTo(x, y, duration_of_move, pyautogui.easeInOutQuad)
     # pyautogui.moveTo(x, y, duration_of_move, pyautogui.easeOutElastic)
 
-def quickMoveMouseTo(x,y,speed):
+def quickMoveTo(x,y,speed):
     # if duration:
 
         # duration_of_move=duration
@@ -52,6 +52,9 @@ def win32Click(x,y):
     RandTime.randTime(0, 0, 0, 0, 0,28)  # time between click
     win32api.mouse_event(win32con.MOUSEEVENTF_LEFTUP,x,y,0,0)
 
+def win32MoveTo(x,y):
+    print x, y
+    win32api.SetCursorPos((x, y))
 
 def randCoord(x):
     # item = 36

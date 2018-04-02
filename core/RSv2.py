@@ -8,7 +8,7 @@ import random
 import time
 import Screenshot
 import Match
-
+import Mouse
 import win32gui
 
 """
@@ -278,6 +278,19 @@ class ExchangeOffers():
         # print  self.status
         # return "not found"
 
+    def buyItem(self):
+        pass
+
+    def clickBuy(self):
+        template = cv2.imread(r'C:\Users\PPC\git\RS_BOT_2.0\lib\merchant_bot\anchor\status_buy_bag.png', 0)
+
+        found =  Match.this(self.source_image, template)
+        if found:
+            print found
+            Mouse.moveMouseTo(found[0],found[1],0.3)
+            # return "we buying"
+        # return "can't find"
+
     def getStatus(self):
         return self.status
 
@@ -294,6 +307,13 @@ class RunescapeWindow():
 
     def setCoordinates(self):
         win32gui.EnumWindows(self._enumHandler, None)
+
+        #offset the runeloader task bar
+        off_set=[4,50,-4,-4]
+        self.game_coord[0] += off_set[0]
+        self.game_coord[1] += off_set[1]
+        self.game_coord[2] += off_set[2]
+        self.game_coord[3] += off_set[3]
 
     def _enumHandler(self,hwnd, lParam):
         if win32gui.IsWindowVisible(hwnd):

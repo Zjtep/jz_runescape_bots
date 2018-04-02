@@ -10,44 +10,49 @@ from core import Match
 
 
 
+def get_runescape_coord():
+    game_window = RSv2.RunescapeWindow()
+
+    game_coord= game_window.getCoordinates()
+    # print game_coord
+    # print game_coord[0]
+    # print game_coord[1]
+    # game_coord[2] +=game_coord[0]
+    # game_coord[3] +=game_coord[1]
+    inventory_ss = Screenshot.this(game_coord[0], game_coord[1], game_coord[2], game_coord[3],"rgb")
+    cv2.imwrite("game_coord.png",inventory_ss)
+    print "done"
+
+    return game_coord
 
 if __name__ == '__main__':
 
-
-    # window_coord = [0,0,33,37]
-    #
-    # window_coord[0] +=123
-    # window_coord[1] += 15
-    # window_coord[2] += 122
-    # window_coord[3] += 14
-
-    # inventory_ss = Screenshot.shoot(window_coord[0], window_coord[1], window_coord[2], window_coord[3],"rgb")
-    # cv2.imwrite("asdfsdfsdffsd.png",inventory_ss)
-
-
-
+    window_coord = get_runescape_coord()
+    # window_coord = [2559, -1, 3332, 556]
+    Mouse.win32Click(window_coord[0],window_coord[1])
     # full_ss = cv2.imread(r'C:\Users\PPC\git\RS_BOT_2.0\lib\reference\dimension_test\31 Mar 2018 21-02-10.png')
-    full_ss = cv2.imread(r'C:\Users\PPC\git\RS_BOT_2.0\lib\reference\dimension_test\1 Apr 2018 02-59-46.png')
+    # full_ss = cv2.imread(r'C:\Users\PPC\git\RS_BOT_2.0\lib\reference\dimension_test\1 Apr 2018 02-59-46.png')
+    full_ss = cv2.imread(r'C:\Users\PPC\git\RS_BOT_2.0\lib\reference\dimension_test\^8CFE0E4D71CFF4F482815B8070080A76F51667BC75C70EDE0E^pimgpsh_fullsize_distr.png')
 
 
-    my_exchange = RSv2.GrandExchange(full_ss)
-
-    # blah =  my_exchange.getFullCoord()
-    blah = my_exchange.getAllWindows()
-    print blah
-
-
-
-    for item in blah:
-        for key,value in item.iteritems():
-            Screenshot.showRectangle(full_ss, value.getCoord())
-            # print value.getStatus()
-            print value.clickBuy()
-    # Screenshot.showRectangle(full_ss, my_inventory.getInventoryCoord())
-    cv2.imshow('Detected', full_ss)
-    cv2.imwrite("jzjz.png", full_ss)
-    cv2.waitKey(0)
-    cv2.destroyAllWindows()
+    # my_exchange = RSv2.GrandExchange(full_ss)
+    #
+    # # blah =  my_exchange.getFullCoord()
+    # blah = my_exchange.getAllWindows()
+    # print blah
+    #
+    #
+    #
+    # for item in blah:
+    #     for key,value in item.iteritems():
+    #         Screenshot.showRectangle(full_ss, value.getCoord())
+    #         # print value.getStatus()
+    #         print value.clickBuy()
+    # # Screenshot.showRectangle(full_ss, my_inventory.getInventoryCoord())
+    # cv2.imshow('Detected', full_ss)
+    # cv2.imwrite("jzjz.png", full_ss)
+    # cv2.waitKey(0)
+    # cv2.destroyAllWindows()
 
     # img = pyautogui.screenshot('ababa.png')
     # full_ss = cv2.imread(r'C:\Users\PPC\git\RS_BOT_2.0\ababa.png')
