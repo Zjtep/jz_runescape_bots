@@ -19,15 +19,17 @@ def get_runescape_coord():
     # print game_coord[1]
     # game_coord[2] +=game_coord[0]
     # game_coord[3] +=game_coord[1]
-    inventory_ss = Screenshot.this(game_coord[0], game_coord[1], game_coord[2], game_coord[3], "rgb")
-    cv2.imwrite("game_coord.png",inventory_ss)
-    print "done"
+    # inventory_ss = Screenshot.this(game_coord[0], game_coord[1], game_coord[2], game_coord[3], "rgb")
+    # cv2.imwrite("game_coord.png",inventory_ss)
+    # print "done"
 
     return game_coord
 
 if __name__ == '__main__':
 
-    window_coord = get_runescape_coord()
+    global_rs_coord = get_runescape_coord()
+    # Screenshot.save(global_rs_coord,"file.png")
+
     # window_coord = [2559, -1, 3332, 556]
     # full_ss = cv2.imread(r'C:\Users\PPC\git\RS_BOT_2.0\lib\reference\dimension_test\31 Mar 2018 21-02-10.png')
     # full_ss = cv2.imread(r'C:\Users\PPC\git\RS_BOT_2.0\lib\reference\dimension_test\1 Apr 2018 02-59-46.png')
@@ -36,16 +38,16 @@ if __name__ == '__main__':
         r'C:\Users\PPC\git\RS_BOT_2.0\lib\reference\dimension_test\1 Apr 2018 02-59-46.png')
 
 
-    grand_exchange = RSv2.GrandExchange(full_ss,window_coord)
+    grand_exchange = RSv2.GrandExchange(full_ss,global_rs_coord)
 
     offer_list = grand_exchange.getAllWindows()
 
-    for key,value in offer_list[2].iteritems():
+    # for key,value in offer_list[2].iteritems():
         # print value.clickBuy()
         # print value.getCoord()
         # print value.getGlobalCoord()
         # Mouse.win32Click(value.getGlobalCoord()[2],value.getGlobalCoord()[3])
-        Mouse.win32Click(value.getGlobalCoord()[0], value.getGlobalCoord()[1])
+        # Mouse.win32Click(value.getGlobalCoord()[0], value.getGlobalCoord()[1])
 
     #     print "key: %s , value: %s" % (key, offer_list[key])
 

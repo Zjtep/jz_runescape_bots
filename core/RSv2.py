@@ -149,6 +149,14 @@ class Inventory():
     def getInventoryCoord(self):
         return self.inventory_coord
 
+class RunescapeObject(object):
+    def __init__(self,global_rs_image,global_rs_coord):
+        self.global_rs_image = global_rs_image
+        self.global_rs_coord = global_rs_coord
+
+
+
+
 
 class GrandExchange():
     """ runescape GrandExchange class"""
@@ -158,6 +166,7 @@ class GrandExchange():
 
         # print window_coord
         self.source_image = img_rgb
+        # cv2.imwrite("asdfs.png",img_rgb)
         self.item_size = [116, 119]
         history_anchor = self.setHistoryAnchor(self.source_image)
         self.ge_window_coord = self._setFullCoord(history_anchor)
