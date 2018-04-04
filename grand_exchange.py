@@ -19,7 +19,7 @@ def get_runescape_coord():
     # print game_coord[1]
     # game_coord[2] +=game_coord[0]
     # game_coord[3] +=game_coord[1]
-    inventory_ss = Screenshot.this(game_coord[0], game_coord[1], game_coord[2], game_coord[3],"rgb")
+    inventory_ss = Screenshot.this(game_coord[0], game_coord[1], game_coord[2], game_coord[3], "rgb")
     cv2.imwrite("game_coord.png",inventory_ss)
     print "done"
 
@@ -29,13 +29,26 @@ if __name__ == '__main__':
 
     window_coord = get_runescape_coord()
     # window_coord = [2559, -1, 3332, 556]
-    Mouse.win32Click(window_coord[0],window_coord[1])
     # full_ss = cv2.imread(r'C:\Users\PPC\git\RS_BOT_2.0\lib\reference\dimension_test\31 Mar 2018 21-02-10.png')
     # full_ss = cv2.imread(r'C:\Users\PPC\git\RS_BOT_2.0\lib\reference\dimension_test\1 Apr 2018 02-59-46.png')
-    full_ss = cv2.imread(r'C:\Users\PPC\git\RS_BOT_2.0\lib\reference\dimension_test\^8CFE0E4D71CFF4F482815B8070080A76F51667BC75C70EDE0E^pimgpsh_fullsize_distr.png')
+    # full_ss = cv2.imread(r'C:\Users\PPC\git\RS_BOT_2.0\lib\reference\dimension_test\^8CFE0E4D71CFF4F482815B8070080A76F51667BC75C70EDE0E^pimgpsh_fullsize_distr.png')
+    full_ss = cv2.imread(
+        r'C:\Users\PPC\git\RS_BOT_2.0\lib\reference\dimension_test\1 Apr 2018 02-59-46.png')
 
 
-    # my_exchange = RSv2.GrandExchange(full_ss)
+    grand_exchange = RSv2.GrandExchange(full_ss,window_coord)
+
+    offer_list = grand_exchange.getAllWindows()
+
+    for key,value in offer_list[2].iteritems():
+        # print value.clickBuy()
+        # print value.getCoord()
+        # print value.getGlobalCoord()
+        # Mouse.win32Click(value.getGlobalCoord()[2],value.getGlobalCoord()[3])
+        Mouse.win32Click(value.getGlobalCoord()[0], value.getGlobalCoord()[1])
+
+    #     print "key: %s , value: %s" % (key, offer_list[key])
+
     #
     # # blah =  my_exchange.getFullCoord()
     # blah = my_exchange.getAllWindows()

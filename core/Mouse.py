@@ -44,6 +44,10 @@ def quickMoveTo(x,y,speed):
     # pyautogui.moveTo(x, y, duration_of_move, pyautogui.easeOutElastic)
 
 
+def moveToClick(coord,speed):
+    pass
+
+
 def win32Click(x,y):
     print x, y
     win32api.SetCursorPos((x,y))

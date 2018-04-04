@@ -152,15 +152,30 @@ class Inventory():
 
 class GrandExchange():
     """ runescape GrandExchange class"""
-    def __init__(self,img_rgb):
+    def __init__(self,img_rgb,rs_window_coord):
 
         # self.item_size = [115, 111]
 
+        # print window_coord
         self.source_image = img_rgb
         self.item_size = [116, 119]
         history_anchor = self.setHistoryAnchor(self.source_image)
+        self.ge_window_coord = self._setFullCoord(history_anchor)
+
+        self.rs_window_coord = rs_window_coord
+        self.global_coord = self._setGlobalCoord(rs_window_coord,self.ge_window_coord )
+        # Mouse.win32Click(self.global_coord[2],self.global_coord[3])
         self.all_windows = self._setupAllWindows(history_anchor)
-        self.full_coord = self._setFullCoord(history_anchor)
+
+    def _setGlobalCoord(self,rs_window_coord,full_coord):
+
+        x1 = rs_window_coord[0]+ full_coord[0]
+        y1= rs_window_coord[1] + full_coord[1]
+        x2= rs_window_coord[0] + full_coord[2]
+        y2 =rs_window_coord[1] + full_coord[3]
+        return [x1,y1,x2,y2]
+
+
 
     def setHistoryAnchor(self,img_rgb):
         """
@@ -239,7 +254,7 @@ class GrandExchange():
         for item in items:
             crop_img = Screenshot.crop(self.source_image, item)
             # cv2.imwrite('%s_exchange.png' % (item), crop_img)
-            exchange_offer = ExchangeOffers(crop_img,item)
+            exchange_offer = ExchangeOffers(crop_img,item,self.rs_window_coord )
             temp_dict = {num:exchange_offer}
             num += 1
             return_list.append(temp_dict)
@@ -247,7 +262,7 @@ class GrandExchange():
         return return_list
 
     def getFullCoord(self):
-        return self.full_coord
+        return self.ge_window_coord
 
     def getAllWindows(self):
         return self.all_windows
@@ -255,12 +270,23 @@ class GrandExchange():
 
 
 class ExchangeOffers():
-    def __init__(self,crop_img,coord):
+    def __init__(self,crop_img,coord,rs_window_coord):
 
+        self.rs_window_coord = rs_window_coord
         self.source_image = crop_img
         self.full_coord = coord
-        # pass
+        self.global_coord = self._setGlobalCoord(rs_window_coord,coord)
         self.status = self.setStatus()
+
+        # print self.global_coord
+
+    def _setGlobalCoord(self,rs_window_coord,full_coord):
+
+        x1 = rs_window_coord[0]+ full_coord[0]
+        y1= rs_window_coord[1] + full_coord[1]
+        x2= rs_window_coord[0] + full_coord[2]
+        y2 = rs_window_coord[1] + full_coord[3]
+        return [x1,y1,x2,y2]
 
     def setStatus(self):
 
@@ -286,16 +312,21 @@ class ExchangeOffers():
 
         found =  Match.this(self.source_image, template)
         if found:
-            print found
-            Mouse.moveMouseTo(found[0],found[1],0.3)
+            Mouse.win32MoveTo(found[0]+self.global_coord[0],found[1]+self.global_coord[1])
             # return "we buying"
         # return "can't find"
+
+
+
 
     def getStatus(self):
         return self.status
 
     def getCoord(self):
         return self.full_coord
+
+    def getGlobalCoord(self):
+        return self.global_coord
 
 
 
