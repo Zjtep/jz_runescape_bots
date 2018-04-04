@@ -10,6 +10,7 @@ import Screenshot
 import Match
 import Mouse
 import win32gui
+import GameConstants as GC
 
 """
 full_ss = cv2.imread(r'C:\Users\PPC\git\RS_BOT_2.0\lib\reference\dimension_test\inventory_sample.png')
@@ -149,44 +150,43 @@ class Inventory():
     def getInventoryCoord(self):
         return self.inventory_coord
 
+
 class RunescapeObject(object):
     def __init__(self,global_rs_image,global_rs_coord):
         self.global_rs_image = global_rs_image
         self.global_rs_coord = global_rs_coord
+        self.global_self_coord = 0
 
+    def _calculateGlobalCoord(self,global_rs_coord,window_coord):
 
-
-
-
-class GrandExchange():
-    """ runescape GrandExchange class"""
-    def __init__(self,img_rgb,rs_window_coord):
-
-        # self.item_size = [115, 111]
-
-        # print window_coord
-        self.source_image = img_rgb
-        # cv2.imwrite("asdfs.png",img_rgb)
-        self.item_size = [116, 119]
-        history_anchor = self.setHistoryAnchor(self.source_image)
-        self.ge_window_coord = self._setFullCoord(history_anchor)
-
-        self.rs_window_coord = rs_window_coord
-        self.global_coord = self._setGlobalCoord(rs_window_coord,self.ge_window_coord )
-        # Mouse.win32Click(self.global_coord[2],self.global_coord[3])
-        self.all_windows = self._setupAllWindows(history_anchor)
-
-    def _setGlobalCoord(self,rs_window_coord,full_coord):
-
-        x1 = rs_window_coord[0]+ full_coord[0]
-        y1= rs_window_coord[1] + full_coord[1]
-        x2= rs_window_coord[0] + full_coord[2]
-        y2 =rs_window_coord[1] + full_coord[3]
+        x1 = global_rs_coord[0]+ window_coord[0]
+        y1= global_rs_coord[1] + window_coord[1]
+        x2= global_rs_coord[0] + window_coord[2]
+        y2 =global_rs_coord[1] + window_coord[3]
         return [x1,y1,x2,y2]
 
 
+class GrandExchange(RunescapeObject):
+    """ runescape GrandExchange class"""
+    def __init__(self,global_rs_image,global_rs_coord):
+        super(GrandExchange,self).__init__(global_rs_image,global_rs_coord)
 
-    def setHistoryAnchor(self,img_rgb):
+        self.HISTORY_ICON = GC.exchange_history_icon
+        self.WINDOWSIZE = GC.exchange_offer_page_dimensions
+
+        self_window_coord = self.setSelfWindowCoord(self.global_rs_image)
+        self.global_self_coord = self._calculateGlobalCoord(global_rs_coord,self_window_coord )
+
+        self.all_ge_offers = self._setupAllGEOffers(self_window_coord)
+
+
+        # print history_anchor
+        # Screenshot.save(history_anchor,"blah.png")
+        # asdfasdf = self._setGlobalCoord( self.global_rs_coord,history_anchor)
+        # Mouse.win32Click(asdfasdf[0],asdfasdf[1])
+
+
+    def setSelfWindowCoord(self,img_rgb):
         """
         Gets the first item start coordinates
         :arg1 image_file
@@ -197,32 +197,15 @@ class GrandExchange():
 
         off_set = [-7, -7]
 
-        img_gray = cv2.cvtColor(img_rgb, cv2.COLOR_BGR2GRAY)
-        template = cv2.imread(r'C:\Users\PPC\git\RS_BOT_2.0\lib\merchant_bot\anchor\exchange_history_icon.png', 0)
+        template = self.HISTORY_ICON
 
-        res = cv2.matchTemplate(img_gray, template, cv2.TM_CCOEFF_NORMED)
-        threshold = 0.9
-        loc = np.where(res >= threshold)
+        match = Match.this(img_rgb,template)
+        if match:
+            return [match[0]+off_set[0],match[1] + off_set[1], match[2] + off_set[0]+ self.WINDOWSIZE[0],match[3] + off_set[1]+ self.WINDOWSIZE[1]]
 
-        for pt in zip(*loc[::-1]):
-            pt += (pt[0], pt[1])
-            anchor_coord = list(pt)
-            return [anchor_coord[0] + off_set[0], anchor_coord[1] + off_set[1], anchor_coord[2] + off_set[0],
-                    anchor_coord[3] + off_set[1]]
         return None
 
-    def _setFullCoord(self,anchor_coord):
-        x1 = anchor_coord[0]
-        y1 = anchor_coord[1]
-        x2 = anchor_coord[0]
-        y2 = anchor_coord[1]
-
-        return_x = x2+483
-        return_y = y2+303
-
-        return [x1, y1, return_x, return_y]
-
-    def _setupAllWindows(self,anchor_coord):
+    def _setupAllGEOffers(self,anchor_coord):
         """
         sets up the inventory
         :arg1 image_file
@@ -234,6 +217,8 @@ class GrandExchange():
 
         # anchor_coord = self.getBagAnchor(img_rgb)
         # item_size = [41, 35]
+        self.item_size = [116, 119]
+
 
         off_set = [8, 59]
 
@@ -261,20 +246,18 @@ class GrandExchange():
         num = 0
         return_list = []
         for item in items:
-            crop_img = Screenshot.crop(self.source_image, item)
+            crop_img = Screenshot.crop(self.global_rs_image, item)
             # cv2.imwrite('%s_exchange.png' % (item), crop_img)
-            exchange_offer = ExchangeOffers(crop_img,item,self.rs_window_coord )
+            exchange_offer = ExchangeOffers(crop_img,item,self.global_rs_coord )
             temp_dict = {num:exchange_offer}
             num += 1
             return_list.append(temp_dict)
 
         return return_list
 
-    def getFullCoord(self):
-        return self.ge_window_coord
 
     def getAllWindows(self):
-        return self.all_windows
+        return self.all_ge_offers
 
 
 
