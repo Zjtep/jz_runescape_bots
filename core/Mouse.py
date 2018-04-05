@@ -60,6 +60,25 @@ def win32MoveTo(x,y):
     print x, y
     win32api.SetCursorPos((x, y))
 
+def win32MoveToRadius(coord):
+    x = random.randint(coord[0],coord[2])
+    y= random.randint(coord[1],coord[3])
+    # print coord
+    # print x,y
+    win32api.SetCursorPos((x, y))
+
+def win32ClickRadius(coord):
+    x = random.randint(coord[0],coord[2])
+    y= random.randint(coord[1],coord[3])
+    # print coord
+    # print x,y
+    win32api.SetCursorPos((x, y))
+    RandTime.randTime(0, 0, 0, 0, 0, 28)  # time between click
+    win32api.mouse_event(win32con.MOUSEEVENTF_LEFTDOWN,x,y,0,0)
+    RandTime.randTime(0, 0, 0, 0, 0,28)  # time between click
+    win32api.mouse_event(win32con.MOUSEEVENTF_LEFTUP,x,y,0,0)
+
+
 def randCoord(x):
     # item = 36
     return(random.randint(10, x))

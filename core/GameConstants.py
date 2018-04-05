@@ -21,4 +21,10 @@ exchange_offer_page_dimensions = [483,303]
 # http://mirametrics.com/help/mira_pro_script_7/source/getkeystate.htm
 #pvp_macos
 
+status_buy_icon = cv2.imread(r'C:\Users\PPC\git\RS_BOT_2.0\lib\merchant_bot\anchor\status_buy_icon.png', 0)
+status_sell_icon = cv2.imread(r'C:\Users\PPC\git\RS_BOT_2.0\lib\merchant_bot\anchor\status_sell_icon.png', 0)
+status_empty_icon = cv2.imread(r'C:\Users\PPC\git\RS_BOT_2.0\lib\merchant_bot\anchor\status_empty_icon.png', 0)
 
+status_buy_button = cv2.imread(r'C:\Users\PPC\git\RS_BOT_2.0\lib\merchant_bot\anchor\status_buy_button.png', 0)
+height, width = status_buy_button.shape
+status_buy_button_dimensions = [int(height),int(width)]

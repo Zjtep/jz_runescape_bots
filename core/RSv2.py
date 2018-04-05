@@ -165,13 +165,15 @@ class RunescapeObject(object):
         y2 =global_rs_coord[1] + window_coord[3]
         return [x1,y1,x2,y2]
 
+    def getGlobalRsCoord(self):
+        return self.global_rs_coord
+
 
 class GrandExchange(RunescapeObject):
     """ runescape GrandExchange class"""
     def __init__(self,global_rs_image,global_rs_coord):
         super(GrandExchange,self).__init__(global_rs_image,global_rs_coord)
 
-        self.HISTORY_ICON = GC.exchange_history_icon
         self.WINDOWSIZE = GC.exchange_offer_page_dimensions
 
         self_window_coord = self.setSelfWindowCoord(self.global_rs_image)
@@ -181,7 +183,7 @@ class GrandExchange(RunescapeObject):
 
 
         # print history_anchor
-        # Screenshot.save(history_anchor,"blah.png")
+        Screenshot.save("blah",self_window_coord)
         # asdfasdf = self._setGlobalCoord( self.global_rs_coord,history_anchor)
         # Mouse.win32Click(asdfasdf[0],asdfasdf[1])
 
@@ -197,12 +199,11 @@ class GrandExchange(RunescapeObject):
 
         off_set = [-7, -7]
 
-        template = self.HISTORY_ICON
+        template = GC.exchange_history_icon
 
         match = Match.this(img_rgb,template)
         if match:
             return [match[0]+off_set[0],match[1] + off_set[1], match[2] + off_set[0]+ self.WINDOWSIZE[0],match[3] + off_set[1]+ self.WINDOWSIZE[1]]
-
         return None
 
     def _setupAllGEOffers(self,anchor_coord):
@@ -227,10 +228,10 @@ class GrandExchange(RunescapeObject):
         x2 = anchor_coord[0] + self.item_size[0]+off_set[0]
         y2 = anchor_coord[1] + self.item_size[1]+off_set[1]
 
-        items = []
+        offers = []
         for m in range(2):
             for n in range(4):
-                items.append([x1, y1, x2, y2])
+                offers.append([x1, y1, x2, y2])
 
                 x1 += self.item_size[0]
                 x2 += self.item_size[0]
@@ -245,10 +246,10 @@ class GrandExchange(RunescapeObject):
 
         num = 0
         return_list = []
-        for item in items:
-            crop_img = Screenshot.crop(self.global_rs_image, item)
+        for offer in offers:
+            crop_img = Screenshot.crop(self.global_rs_image, offer)
             # cv2.imwrite('%s_exchange.png' % (item), crop_img)
-            exchange_offer = ExchangeOffers(crop_img,item,self.global_rs_coord )
+            exchange_offer = ExchangeOffers(crop_img,offer,self.global_rs_coord )
             temp_dict = {num:exchange_offer}
             num += 1
             return_list.append(temp_dict)
@@ -256,55 +257,66 @@ class GrandExchange(RunescapeObject):
         return return_list
 
 
-    def getAllWindows(self):
+    def getGEOffers(self):
         return self.all_ge_offers
 
 
+class ExchangeOffers(RunescapeObject):
+    # def __init__(self, crop_img, coord, rs_window_coord):
+    def __init__(self,global_rs_image,window_coord,global_rs_coord):
+        super(ExchangeOffers, self).__init__(global_rs_image, global_rs_coord)
 
-class ExchangeOffers():
-    def __init__(self,crop_img,coord,rs_window_coord):
+        # self.rs_window_coord = rs_window_coord
+        # self.source_image = crop_img
+        self_window_coord = window_coord
 
-        self.rs_window_coord = rs_window_coord
-        self.source_image = crop_img
-        self.full_coord = coord
-        self.global_coord = self._setGlobalCoord(rs_window_coord,coord)
+        self.global_self_coord = self._calculateGlobalCoord(global_rs_coord,self_window_coord)
         self.status = self.setStatus()
 
         # print self.global_coord
 
-    def _setGlobalCoord(self,rs_window_coord,full_coord):
+        # self_window_coord = self.setSelfWindowCoord(self.global_rs_image)
+        # self.global_self_coord = self._calculateGlobalCoord(global_rs_coord,self_window_coord )
+        # self.all_ge_offers = self._setupAllGEOffers(self_window_coord)
 
-        x1 = rs_window_coord[0]+ full_coord[0]
-        y1= rs_window_coord[1] + full_coord[1]
-        x2= rs_window_coord[0] + full_coord[2]
-        y2 = rs_window_coord[1] + full_coord[3]
-        return [x1,y1,x2,y2]
+
+    # def _setGlobalCoord(self,rs_window_coord,full_coord):
+    #
+    #     x1 = rs_window_coord[0]+ full_coord[0]
+    #     y1= rs_window_coord[1] + full_coord[1]
+    #     x2= rs_window_coord[0] + full_coord[2]
+    #     y2 = rs_window_coord[1] + full_coord[3]
+    #     return [x1,y1,x2,y2]
 
     def setStatus(self):
 
-        template = cv2.imread(r'C:\Users\PPC\git\RS_BOT_2.0\lib\merchant_bot\anchor\status_buy_icon.png', 0)
-
-        if Match.this(self.source_image,template):
+        template = GC.status_buy_icon
+        if Match.this(self.global_rs_image,template):
             return "buy"
-        template = cv2.imread(r'C:\Users\PPC\git\RS_BOT_2.0\lib\merchant_bot\anchor\statuse_sell_icon.png', 0)
-        if Match.this(self.source_image,template):
+
+        template = GC.status_sell_icon
+        if Match.this(self.global_rs_image,template):
             return "sell"
-        template = cv2.imread(r'C:\Users\PPC\git\RS_BOT_2.0\lib\merchant_bot\anchor\status_empty_icon.png', 0)
-        if Match.this(self.source_image, template):
+
+        template = GC.status_empty_icon
+        if Match.this(self.global_rs_image, template):
             return "empty"
 
-        # print  self.status
-        # return "not found"
+
 
     def buyItem(self):
         pass
 
     def clickBuy(self):
-        template = cv2.imread(r'C:\Users\PPC\git\RS_BOT_2.0\lib\merchant_bot\anchor\status_buy_bag.png', 0)
+        template = GC.status_buy_button
 
-        found =  Match.this(self.source_image, template)
+        found = Match.this(self.global_rs_image, template)
         if found:
-            Mouse.win32MoveTo(found[0]+self.global_coord[0],found[1]+self.global_coord[1])
+            found_coord = [found[0],found[1],found[0]+GC.status_buy_button_dimensions[0],found[1]+GC.status_buy_button_dimensions[1]]
+            # print found_coord
+            # Mouse.win32MoveToRadius(self._calculateGlobalCoord(self.global_self_coord,found_coord))
+            Mouse.win32ClickRadius(self._calculateGlobalCoord(self.global_self_coord, found_coord))
+            # Mouse.win32MoveTo(found_coord[2],found_coord[3])
             # return "we buying"
         # return "can't find"
 
@@ -316,9 +328,6 @@ class ExchangeOffers():
 
     def getCoord(self):
         return self.full_coord
-
-    def getGlobalCoord(self):
-        return self.global_coord
 
 
 

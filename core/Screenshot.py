@@ -54,11 +54,10 @@ def this(coord):
     # Converts to an array used for OpenCV
     img = np.array(img)
 
-    try:
-        rgb_img = cv2.cvtColor(img, cv2.COLOR_RGB2BGR)
-        return rgb_img
-    except:
-        pass
+
+    rgb_img = cv2.cvtColor(img, cv2.COLOR_RGB2BGR)
+    return rgb_img
+
 
 def save(file_name,coord):
     image = this(coord)
