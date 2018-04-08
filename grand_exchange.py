@@ -4,6 +4,7 @@ import time
 from core import RSv2
 import pyautogui
 import cv2
+from core import Environment
 from core import Screenshot
 from core import Mouse
 from core import Match
@@ -11,7 +12,7 @@ from core import Match
 
 
 def get_runescape_coord():
-    game_window = RSv2.RunescapeWindow()
+    game_window = Environment.RunescapeWindow()
 
     game_coord= game_window.getCoordinates()
     # print game_coord
@@ -35,21 +36,42 @@ if __name__ == '__main__':
     # full_ss = cv2.imread(r'C:\Users\PPC\git\RS_BOT_2.0\lib\reference\dimension_test\1 Apr 2018 02-59-46.png')
     # full_ss = cv2.imread(r'C:\Users\PPC\git\RS_BOT_2.0\lib\reference\dimension_test\^8CFE0E4D71CFF4F482815B8070080A76F51667BC75C70EDE0E^pimgpsh_fullsize_distr.png')
     # full_ss = cv2.imread(r'C:\Users\PPC\git\RS_BOT_2.0\dry_run.png')
-    full_ss = cv2.imread(r'C:\Users\PPC\git\RS_BOT_2.0\lib\reference\dimension_test\1 Apr 2018 02-59-46.png')
+    full_ss = cv2.imread(r'C:\Users\PPC\git\RS_BOT_2.0\lib\reference\dimension_test\18 Mar 2018 10-15-35.png')
+    # full_ss = cv2.imread(r'C:\Users\PPC\git\RS_BOT_2.0\lib\reference\dimension_test\^D54A76B6687EA1725469C2DF27280CBA5A98E15113CA23E5A6^pimgpsh_fullsize_distr.png')
+    # full_ss = cv2.imread(r'C:\Users\PPC\git\RS_BOT_2.0\lib\reference\dimension_test\6 Apr 2018 22-41-10.png')
 
 
-    grand_exchange = RSv2.GrandExchange(full_ss,global_rs_coord)
 
-    offer_list = grand_exchange.getGEOffers()
-    # print offer_list
 
-    for key,value in offer_list[0].iteritems():
-        value.clickBuy()
-        # print value.getCoord()
-        # print value.getGlobalCoord()
-        # Mouse.win32MoveTo(value.getGlobalCoord()[2],value.getGlobalCoord()[3])
-        # Mouse.win32Click(value.getGlobalCoord()[0], value.getGlobalCoord()[1])
-        # print value.getStatus()
+
+    death_rune = cv2.imread(r'C:\Users\PPC\git\RS_BOT_2.0\lib\reference\dimension_test\items\0_item_slot.png', 0)
+    # death_rune = cv2.imread(r'C:\Users\PPC\git\RS_BOT_2.0\lib\reference\dimension_test\items\8340.png', 0)
+
+    my_inventory = RSv2.Inventory(full_ss,global_rs_coord)
+    # print my_inventory.findItem(full_ss,my_inventory)
+    # print my_inventory.getInventory([4])
+    # my_inventory.screenShotInventory(full_ss)
+
+    # print my_inventory.getAllItems()
+    # print
+    # crop = Screenshot.crop(full_ss,my_inventory.getInventory([0])[0].get(0).getSelfCoord())
+    # cv2.imwrite(r'C:\Users\PPC\git\RS_BOT_2.0\lib\reference\temp\%s_item_slot.png' % ("asdf"), crop)
+    print my_inventory.findItem(full_ss,death_rune)
+
+    # for item in items:
+    #     for key,value in item.iteritems():
+    #         value.clickItem()
+
+            # Mouse.win32MoveToRadius(value)
+
+    # grand_exchange = RSv2.GrandExchange(full_ss,global_rs_coord)
+    #
+    # offer_list = grand_exchange.getGEOffers()
+    # for key,value in offer_list[2].iteritems():
+    #     value.clickBuy()
+
+    # chat_window = RSv2.ChatWindow(full_ss,global_rs_coord)
+
 
     #     print "key: %s , value: %s" % (key, offer_list[key])
 
@@ -76,7 +98,7 @@ if __name__ == '__main__':
     # full_ss = cv2.imread(r'C:\Users\PPC\git\RS_BOT_2.0\lib\reference\dimension_test\inventory_sample.png')
     # robes = cv2.imread(r'C:\Users\PPC\git\RS_BOT_2.0\lib\reference\dimension_test\items\3_item_slot (3).png')
     # my_inventory = RSv2.Inventory(full_ss)
-
+    # my_inventory.screenShotInventory(full_ss)
     # print my_inventory.findItem(full_ss,robes)
     # print my_inventory.getAllItems()
 

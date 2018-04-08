@@ -9,8 +9,25 @@ import time
 import Screenshot
 import Match
 import Mouse
-import win32gui
+
 import GameConstants as GC
+
+class RunescapeObject(object):
+    def __init__(self,global_rs_image,global_rs_coord):
+        self.global_rs_image = global_rs_image
+        self.global_rs_coord = global_rs_coord
+        self.global_self_coord = 0
+
+    def _calculateGlobalCoord(self,global_rs_coord,window_coord):
+
+        x1 = global_rs_coord[0]+ window_coord[0]
+        y1= global_rs_coord[1] + window_coord[1]
+        x2= global_rs_coord[0] + window_coord[2]
+        y2 =global_rs_coord[1] + window_coord[3]
+        return [x1,y1,x2,y2]
+
+    def getGlobalRsCoord(self):
+        return self.global_rs_coord
 
 """
 full_ss = cv2.imread(r'C:\Users\PPC\git\RS_BOT_2.0\lib\reference\dimension_test\inventory_sample.png')
@@ -18,51 +35,34 @@ robes = cv2.imread(r'C:\Users\PPC\git\RS_BOT_2.0\lib\reference\dimension_test\it
 my_inventory = RSv2.Inventory(full_ss)
 """
 
-class Inventory():
+class Inventory(RunescapeObject):
     """ runescape inventory class"""
-    def __init__(self,img_rgb):
+    def __init__(self,global_rs_image,global_rs_coord):
+        super(Inventory,self).__init__(global_rs_image,global_rs_coord)
 
-        self.source_image = img_rgb
+        self.WINDOWSIZE = [98,293]
         self.item_size = [41, 35]
-        bag_anchor = self.setBagAnchor(self.source_image)
-        self.all_items = self._setupAllItems(bag_anchor)
-        self.inventory_coord = self._setupInventoryCoord(bag_anchor)
 
-    def setBagAnchor(self,img_rgb):
-        """
-        Gets the first item start coordinates
-        :arg1 image_file
-            screenschot of runescape
-        :return list
-            top corner's coordinate of inventory
-        """
+        self_window_coord = self.setSelfWindowCoord(self.global_rs_image)
+        # Mouse.win32MoveToRadius(self_window_coord)
+        self.all_items = self._setupAllItems(self_window_coord)
+        # print self.all_items
 
+
+
+    def setSelfWindowCoord(self,img_rgb):
+
+        # off_set = [-7, -7]
         off_set = [-69, 42]
 
-        img_gray = cv2.cvtColor(img_rgb, cv2.COLOR_BGR2GRAY)
-        template = cv2.imread(r'C:\Users\PPC\git\RS_BOT_2.0\lib\merchant_bot\anchor\bag_icon.png', 0)
+        template = GC.bag_icon
 
-        res = cv2.matchTemplate(img_gray, template, cv2.TM_CCOEFF_NORMED)
-        threshold = 0.9
-        loc = np.where(res >= threshold)
-
-        for pt in zip(*loc[::-1]):
-            pt += (pt[0], pt[1])
-            anchor_coord = list(pt)
-            return [anchor_coord[0] + off_set[0], anchor_coord[1] + off_set[1], anchor_coord[2] + off_set[0],
-                    anchor_coord[3] + off_set[1]]
+        match = Match.this(img_rgb,template)
+        if match:
+            # print match,"match"
+            return [match[0]+off_set[0],match[1] + off_set[1], match[2] + self.WINDOWSIZE[0],match[3] + self.WINDOWSIZE[1]]
         return None
 
-    def _setupInventoryCoord(self,anchor_coord):
-        x1 = anchor_coord[0]
-        y1 = anchor_coord[1]
-        x2 = anchor_coord[0] + self.item_size[0]
-        y2 = anchor_coord[1] + self.item_size[1]
-
-        return_x = 3+x2+self.item_size[0]*3
-        return_y = 6+y2+self.item_size[1]*6
-
-        return [x1, y1, return_x, return_y]
 
     def _setupAllItems(self,anchor_coord):
         """
@@ -101,11 +101,16 @@ class Inventory():
         num = 0
         return_list = []
         for item in items:
-            temp_dict = {num: item}
+            crop_img = Screenshot.crop(self.global_rs_image, item)
+            # cv2.imwrite('%s_exchange.png' % (item), crop_img)
+            inventory_item = InventoryItem(crop_img,item,self.global_rs_coord )
+
+            temp_dict = {num: inventory_item}
             num += 1
             return_list.append(temp_dict)
 
         return return_list
+
 
     def getInventory(self,index_list):
         return_list = []
@@ -116,11 +121,13 @@ class Inventory():
     def findItem(self,full_ss,item_file):
         # full_ss = cv2.imread(r'C:\Users\PPC\git\RS_BOT_2.0\lib\reference\dimension_test\inventory_sample.png')
 
-        found_coord = Match.this(full_ss,item_file)
+        match = Match.this(full_ss,item_file)
+        match_coord = [match[0],match[1],match[2]+self.item_size[0],match[3]++self.item_size[1]]
         # print "crop_img",found_coord
         for item in self.all_items:
             for key, value in item.iteritems():
-                if found_coord ==value:
+                print value.getSelfWindowCoord()
+                if match_coord ==value.getSelfWindowCoord():
                     return key
         return False
 
@@ -137,8 +144,8 @@ class Inventory():
         for item in self.all_items:
             for key, value in item.iteritems():
                 # Screenshot.showRectangle(img_rgb, value)
-                crop_img = Screenshot.crop(img_rgb,value)
-                cv2.imwrite('%s_item_slot.png'%(key), crop_img)
+                crop_img = Screenshot.crop(img_rgb,value.getSelfWindowCoord())
+                cv2.imwrite(r'C:\Users\PPC\git\RS_BOT_2.0\lib\reference\temp\%s_item_slot.png'%(key), crop_img)
 
     def getAllItems(self):
         """
@@ -148,25 +155,29 @@ class Inventory():
         return self.all_items
 
     def getInventoryCoord(self):
-        return self.inventory_coord
+        pass
 
 
-class RunescapeObject(object):
-    def __init__(self,global_rs_image,global_rs_coord):
-        self.global_rs_image = global_rs_image
-        self.global_rs_coord = global_rs_coord
-        self.global_self_coord = 0
+class InventoryItem(RunescapeObject):
+    """ runescape GrandExchange class"""
+    def __init__(self,global_rs_image,window_coord,global_rs_coord):
+        super(InventoryItem, self).__init__(global_rs_image, global_rs_coord)
 
-    def _calculateGlobalCoord(self,global_rs_coord,window_coord):
+        # self.rs_window_coord = rs_window_coord
+        # self.source_image = crop_img
+        self.self_window_coord = window_coord
+        self.global_self_coord = self._calculateGlobalCoord(global_rs_coord,self.self_window_coord)
+        # print self.global_self_coord
 
-        x1 = global_rs_coord[0]+ window_coord[0]
-        y1= global_rs_coord[1] + window_coord[1]
-        x2= global_rs_coord[0] + window_coord[2]
-        y2 =global_rs_coord[1] + window_coord[3]
-        return [x1,y1,x2,y2]
+    def clickItem(self):
+        print self.global_self_coord
+        Mouse.win32MoveToRadius(self.global_self_coord)
 
-    def getGlobalRsCoord(self):
-        return self.global_rs_coord
+    def getSelfGlobalCoord(self):
+        return self.global_self_coord
+
+    def getSelfWindowCoord(self):
+        return self.self_window_coord
 
 
 class GrandExchange(RunescapeObject):
@@ -183,7 +194,7 @@ class GrandExchange(RunescapeObject):
 
 
         # print history_anchor
-        Screenshot.save("blah",self_window_coord)
+        # Screenshot.save("blah",self_window_coord)
         # asdfasdf = self._setGlobalCoord( self.global_rs_coord,history_anchor)
         # Mouse.win32Click(asdfasdf[0],asdfasdf[1])
 
@@ -302,8 +313,6 @@ class ExchangeOffers(RunescapeObject):
         if Match.this(self.global_rs_image, template):
             return "empty"
 
-
-
     def buyItem(self):
         pass
 
@@ -321,46 +330,14 @@ class ExchangeOffers(RunescapeObject):
         # return "can't find"
 
 
-
-
     def getStatus(self):
         return self.status
 
-    def getCoord(self):
-        return self.full_coord
+
+class ChatWindow(RunescapeObject):
+    # def __init__(self, crop_img, coord, rs_window_coord):
+    def __init__(self,global_rs_image,global_rs_coord):
+        super(ChatWindow, self).__init__(global_rs_image, global_rs_coord)
+        pass
 
 
-
-class RunescapeWindow():
-    """ Finds Runeloader Game Window"""
-    def __init__(self):
-        self.game_coord = 0
-        self.setCoordinates()
-
-    def setCoordinates(self):
-        win32gui.EnumWindows(self._enumHandler, None)
-
-        #offset the runeloader task bar
-        off_set=[4,50,-4,-4]
-        self.game_coord[0] += off_set[0]
-        self.game_coord[1] += off_set[1]
-        self.game_coord[2] += off_set[2]
-        self.game_coord[3] += off_set[3]
-
-    def _enumHandler(self,hwnd, lParam):
-        if win32gui.IsWindowVisible(hwnd):
-            if 'RuneLoader' in win32gui.GetWindowText(hwnd):
-                # win32gui.MoveWindow(hwnd, 0, 0, 760, 500, True)
-                rect = win32gui.GetWindowRect(hwnd)
-                x = rect[0]
-                y = rect[1]
-                w = rect[2]
-                h = rect[3]
-                # w = rect[2] - x
-                # h = rect[3] - y
-                # print "\tLocation: (%d, %d)" % (x, y)
-                # print "\t    Size: (%d, %d)" % (w, h)
-                self.game_coord = [x, y, w, h]
-
-    def getCoordinates(self):
-        return self.game_coord

@@ -7,11 +7,65 @@ import cv2
 from core import Screenshot
 from core import Mouse
 from core import Match
+import numpy
+from PIL import Image
+import os
+
+def transparent_test():
+
+
+
+    # source = numpy.array(cv2.imread(r"C:\Users\PPC\git\RS_BOT_2.0\lib\reference\dimension_test\items\1_item_slot.png"))
+    source = numpy.array(cv2.imread(r"C:\Users\PPC\git\RS_BOT_2.0\lib\reference\dimension_test\items\23_item_slot.png"))
+
+
+    # NOTE The fucking thing is BLUE,GREEN, RED
+    source[numpy.where((source == [41, 53, 62]).all(axis=2))] = [255, 255, 255]
+    source[numpy.where((source == [44, 54, 64]).all(axis=2))] = [255, 255, 255]
+    source[numpy.where((source == [38, 50, 59]).all(axis=2))] = [255, 255, 255]
+    source[numpy.where((source == [45, 56, 64]).all(axis=2))] = [255, 255, 255]
+
+    pid = "%s.png" % os.getpid()
+    cv2.imwrite(pid, source)
+
+    img = Image.open(pid)#image path and name
+
+    img = img.convert("RGBA")
+    datas = img.getdata()
+    newData = []
+    for item in datas:
+        if item[0] == 255 and item[1] == 255 and item[2] == 255:
+            newData.append((255, 255, 255, 0))
+        else:
+            newData.append(item)
+    img.putdata(newData)
+    img.save(r"C:\Users\PPC\git\RS_BOT_2.0\lib\reference\dimension_test\items\%s"%pid, "PNG")#converted Image name
+    os.remove(pid)
+    print('Done')
+
+import cv2
+import numpy as np
+
+def tran_match():
+
+    template_path = r'C:\Users\PPC\git\RS_BOT_2.0\lib\reference\dimension_test\items\NMk3j.png'
+    # template_path = r'C:\Users\PPC\git\RS_BOT_2.0\lib\reference\dimension_test\items\27_item_slot.png'
+    template = cv2.imread(template_path, cv2.IMREAD_UNCHANGED)
+    channels = cv2.split(template)
+
+    zero_channel = np.zeros_like(channels[0])
+    mask = np.array(channels[3])
+
+    # image_path = r'C:\Users\PPC\git\RS_BOT_2.0\lib\reference\dimension_test\items\g6eit.png'
+    image_path = r'C:\Users\PPC\git\RS_BOT_2.0\lib\reference\dimension_test\17 Mar 2018 00-43-51.png'
+    image = cv2.imread(image_path, cv2.IMREAD_UNCHANGED)
 
 
 
 
 if __name__ == '__main__':
+    # transparent_test()
+    print tran_match()
 
 
     # window_coord = [0,0,33,37]
@@ -26,28 +80,31 @@ if __name__ == '__main__':
 
 
 
+
+
+
     # full_ss = cv2.imread(r'C:\Users\PPC\git\RS_BOT_2.0\lib\reference\dimension_test\31 Mar 2018 21-02-10.png')
-    full_ss = cv2.imread(r'C:\Users\PPC\git\RS_BOT_2.0\lib\reference\dimension_test\1 Apr 2018 02-59-46.png')
-
-
-    my_exchange = RSv2.GrandExchange(full_ss)
-
-    # blah =  my_exchange.getFullCoord()
-    blah = my_exchange.getAllWindows()
-    print blah
-
-
-
-    for item in blah:
-        for key,value in item.iteritems():
-            Screenshot.showRectangle(full_ss, value.getCoord())
-            # print value.getStatus()
-            print value.clickBuy()
-    # Screenshot.showRectangle(full_ss, my_inventory.getInventoryCoord())
-    cv2.imshow('Detected', full_ss)
-    cv2.imwrite("jzjz.png", full_ss)
-    cv2.waitKey(0)
-    cv2.destroyAllWindows()
+    # full_ss = cv2.imread(r'C:\Users\PPC\git\RS_BOT_2.0\lib\reference\dimension_test\1 Apr 2018 02-59-46.png')
+    #
+    #
+    # my_exchange = RSv2.GrandExchange(full_ss)
+    #
+    # # blah =  my_exchange.getFullCoord()
+    # blah = my_exchange.getAllWindows()
+    # print blah
+    #
+    #
+    #
+    # for item in blah:
+    #     for key,value in item.iteritems():
+    #         Screenshot.showRectangle(full_ss, value.getCoord())
+    #         # print value.getStatus()
+    #         print value.clickBuy()
+    # # Screenshot.showRectangle(full_ss, my_inventory.getInventoryCoord())
+    # cv2.imshow('Detected', full_ss)
+    # cv2.imwrite("jzjz.png", full_ss)
+    # cv2.waitKey(0)
+    # cv2.destroyAllWindows()
 
     # img = pyautogui.screenshot('ababa.png')
     # full_ss = cv2.imread(r'C:\Users\PPC\git\RS_BOT_2.0\ababa.png')
