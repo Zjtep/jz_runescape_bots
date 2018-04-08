@@ -9,6 +9,8 @@ import time
 import Screenshot
 import Match
 import Mouse
+import RandTime
+import Keyboard
 
 import GameConstants as GC
 
@@ -184,12 +186,16 @@ class GrandExchange(RunescapeObject):
     """ runescape GrandExchange class"""
     def __init__(self,global_rs_image,global_rs_coord):
         super(GrandExchange,self).__init__(global_rs_image,global_rs_coord)
-
+        print global_rs_coord
         self.WINDOWSIZE = GC.exchange_offer_page_dimensions
 
         self_window_coord = self.setSelfWindowCoord(self.global_rs_image)
-        self.global_self_coord = self._calculateGlobalCoord(global_rs_coord,self_window_coord )
+        # crop = Screenshot.crop(self.global_rs_image,self_window_coord)
+        # cv2.imwrite('C:\Users\PPC\git\RS_BOT_2.0\crop.png', crop)
 
+        # self.global_self_coord = self._calculateGlobalCoord(global_rs_coord,self_window_coord )
+        # crop = Screenshot.crop(self.global_rs_image, self.global_self_coord)
+        # cv2.imwrite(r'C:\Users\PPC\git\RS_BOT_2.0\aaaaacrop.png', crop)
         self.all_ge_offers = self._setupAllGEOffers(self_window_coord)
 
 
@@ -267,6 +273,69 @@ class GrandExchange(RunescapeObject):
 
         return return_list
 
+    def setPrice(self,price):
+
+        found = [374,200,374,200]
+        found_coord = [found[0], found[1], found[0] + GC.offer_button_dimensions[0],
+                       found[1] + GC.offer_button_dimensions[1]]
+
+        Mouse.clickRadius(self._calculateGlobalCoord(self.global_rs_coord, found_coord))
+        # Mouse.win32ClickRadius(self._calculateGlobalCoord(self.global_rs_coord, found_coord))
+        # Mouse.win32ClickRadius(self._calculateGlobalCoord(self.global_rs_coord, found_coord))
+        RandTime.randTime(0, 0, 0, 2, 0, 0)
+        Keyboard.type_this(price)
+        Keyboard.press("enter")
+        # Mouse.win32MoveToRadius(self._calculateGlobalCoord(self.global_rs_coord, found_coord))
+
+
+
+    def setQuantity(self,quantity):
+
+        found = [217,200,217,200]
+        found_coord = [found[0], found[1], found[0] + GC.offer_button_dimensions[0],
+                       found[1] + GC.offer_button_dimensions[1]]
+
+        Mouse.clickRadius(self._calculateGlobalCoord(self.global_rs_coord, found_coord))
+        # Mouse.win32ClickRadius(self._calculateGlobalCoord(self.global_rs_coord, found_coord))
+        # Mouse.win32MoveToRadius(self._calculateGlobalCoord(self.global_rs_coord, found_coord))
+
+        RandTime.randTime(0, 0, 0, 2, 0, 0)
+        Keyboard.type_this(quantity)
+        Keyboard.press("enter")
+
+    def increasePrice(self,num_clicks):
+
+        template = GC.offer_increase
+
+        found = Match.this(self.global_rs_image, template)
+        # print found,"found"
+        if found:
+            found_coord = [found[0], found[1], found[0] + GC.offer_button_dimensions[0],
+                           found[1] + GC.offer_button_dimensions[1]]
+
+            for x in range(num_clicks):
+                # Mouse.moveToRadius(self._calculateGlobalCoord(self.global_rs_coord, found_coord))
+                Mouse.clickRadius(self._calculateGlobalCoord(self.global_rs_coord, found_coord))
+                # Mouse.win32ClickRadius(self._calculateGlobalCoord(self.global_rs_coord, found_coord))
+                # Mouse.win32MoveToRadius(self._calculateGlobalCoord(self.global_rs_coord, found_coord))
+                RandTime.randTime(0, 0, 0, 0, 0, 5)
+
+    def decreasePrice(self, num_clicks):
+
+        template = GC.offer_decrease
+
+        found = Match.this(self.global_rs_image, template)
+        # print found, "found"
+        if found:
+            found_coord = [found[0], found[1], found[0] + GC.offer_button_dimensions[0],
+                           found[1] + GC.offer_button_dimensions[1]]
+
+            for x in range(num_clicks):
+                Mouse.clickRadius(self._calculateGlobalCoord(self.global_rs_coord, found_coord))
+                # Mouse.win32ClickRadius(self._calculateGlobalCoord(self.global_rs_coord, found_coord))
+                # Mouse.win32MoveToRadius(self._calculateGlobalCoord(self.global_rs_coord, found_coord))
+                RandTime.randTime(0, 0, 0, 0, 0, 5)
+
 
     def getGEOffers(self):
         return self.all_ge_offers
@@ -332,6 +401,8 @@ class ExchangeOffers(RunescapeObject):
 
     def getStatus(self):
         return self.status
+
+
 
 
 class ChatWindow(RunescapeObject):

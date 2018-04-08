@@ -29,22 +29,22 @@ def get_runescape_coord():
 if __name__ == '__main__':
 
     global_rs_coord = get_runescape_coord()
-    # Screenshot.save("dry_run",global_rs_coord)
+    Screenshot.save("dry_run",global_rs_coord)
 
     # window_coord = [2559, -1, 3332, 556]
     # full_ss = cv2.imread(r'C:\Users\PPC\git\RS_BOT_2.0\lib\reference\dimension_test\31 Mar 2018 21-02-10.png')
     # full_ss = cv2.imread(r'C:\Users\PPC\git\RS_BOT_2.0\lib\reference\dimension_test\1 Apr 2018 02-59-46.png')
     # full_ss = cv2.imread(r'C:\Users\PPC\git\RS_BOT_2.0\lib\reference\dimension_test\^8CFE0E4D71CFF4F482815B8070080A76F51667BC75C70EDE0E^pimgpsh_fullsize_distr.png')
-    # full_ss = cv2.imread(r'C:\Users\PPC\git\RS_BOT_2.0\dry_run.png')
-    full_ss = cv2.imread(r'C:\Users\PPC\git\RS_BOT_2.0\lib\reference\dimension_test\18 Mar 2018 10-15-35.png')
+    full_ss = cv2.imread(r'C:\Users\PPC\git\RS_BOT_2.0\dry_run.png')
+    # full_ss = cv2.imread(r'C:\Users\PPC\git\RS_BOT_2.0\lib\reference\dimension_test\18 Mar 2018 10-15-35.png')
     # full_ss = cv2.imread(r'C:\Users\PPC\git\RS_BOT_2.0\lib\reference\dimension_test\^D54A76B6687EA1725469C2DF27280CBA5A98E15113CA23E5A6^pimgpsh_fullsize_distr.png')
-    # full_ss = cv2.imread(r'C:\Users\PPC\git\RS_BOT_2.0\lib\reference\dimension_test\6 Apr 2018 22-41-10.png')
+    # full_ss = cv2.imread(r'C:\Users\PPC\git\RS_BOT_2.0\lib\reference\dimension_test\6 Apr 2018 22-05-14.png')
 
 
 
 
 
-    death_rune = cv2.imread(r'C:\Users\PPC\git\RS_BOT_2.0\lib\reference\dimension_test\items\0_item_slot.png', 0)
+    # death_rune = cv2.imread(r'C:\Users\PPC\git\RS_BOT_2.0\lib\reference\dimension_test\items\0_item_slot.png', 0)
     # death_rune = cv2.imread(r'C:\Users\PPC\git\RS_BOT_2.0\lib\reference\dimension_test\items\8340.png', 0)
 
     my_inventory = RSv2.Inventory(full_ss,global_rs_coord)
@@ -56,7 +56,7 @@ if __name__ == '__main__':
     # print
     # crop = Screenshot.crop(full_ss,my_inventory.getInventory([0])[0].get(0).getSelfCoord())
     # cv2.imwrite(r'C:\Users\PPC\git\RS_BOT_2.0\lib\reference\temp\%s_item_slot.png' % ("asdf"), crop)
-    print my_inventory.findItem(full_ss,death_rune)
+    # print my_inventory.findItem(full_ss,death_rune)
 
     # for item in items:
     #     for key,value in item.iteritems():
@@ -64,7 +64,11 @@ if __name__ == '__main__':
 
             # Mouse.win32MoveToRadius(value)
 
-    # grand_exchange = RSv2.GrandExchange(full_ss,global_rs_coord)
+    grand_exchange = RSv2.GrandExchange(full_ss,global_rs_coord)
+    grand_exchange.increasePrice(4)
+    grand_exchange.decreasePrice(3)
+    grand_exchange.setPrice("5000")
+    grand_exchange.setQuantity("65456")
     #
     # offer_list = grand_exchange.getGEOffers()
     # for key,value in offer_list[2].iteritems():
