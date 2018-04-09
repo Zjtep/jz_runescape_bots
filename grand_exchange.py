@@ -8,7 +8,8 @@ from core import Environment
 from core import Screenshot
 from core import Mouse
 from core import Match
-
+from core import RandTime
+from core import Keyboard
 
 
 def get_runescape_coord():
@@ -25,6 +26,11 @@ def get_runescape_coord():
     # print "done"
 
     return game_coord
+
+
+def buy_items_sequences():
+    pass
+
 
 if __name__ == '__main__':
 
@@ -47,7 +53,7 @@ if __name__ == '__main__':
     # death_rune = cv2.imread(r'C:\Users\PPC\git\RS_BOT_2.0\lib\reference\dimension_test\items\0_item_slot.png', 0)
     # death_rune = cv2.imread(r'C:\Users\PPC\git\RS_BOT_2.0\lib\reference\dimension_test\items\8340.png', 0)
 
-    my_inventory = RSv2.Inventory(full_ss,global_rs_coord)
+    # my_inventory = RSv2.Inventory(full_ss,global_rs_coord)
     # print my_inventory.findItem(full_ss,my_inventory)
     # print my_inventory.getInventory([4])
     # my_inventory.screenShotInventory(full_ss)
@@ -64,11 +70,32 @@ if __name__ == '__main__':
 
             # Mouse.win32MoveToRadius(value)
 
+
+
+
+
+
     grand_exchange = RSv2.GrandExchange(full_ss,global_rs_coord)
-    grand_exchange.increasePrice(4)
-    grand_exchange.decreasePrice(3)
-    grand_exchange.setPrice("5000")
-    grand_exchange.setQuantity("65456")
+
+    # for item in grand_exchange.getGEOffers():
+    #     for key, value in item.iteritems():
+    #         value.clickBuy()
+    #     # for key,value in item.iteritems():
+    #     #     Screenshot.showRectangle(full_ss, value.getCoord())
+    #     #     # print value.getStatus()
+    #     #     print value.clickBuy()
+    #
+    # Keyboard.type_this("death rune")
+    # RandTime.randTime(0, 0, 0, 5, 0, 0)
+    # Keyboard.press("enter")
+    # RandTime.randTime(0, 0, 0, 5, 0, 0)
+    #
+    # grand_exchange.updateGrandExchange(Screenshot.this(global_rs_coord))
+    # grand_exchange.increasePrice(1)
+    # grand_exchange.decreasePrice(5)
+    # grand_exchange.setPrice("5000")
+    grand_exchange.setQuantity("50")
+    # grand_exchange.confirmPrice()
     #
     # offer_list = grand_exchange.getGEOffers()
     # for key,value in offer_list[2].iteritems():
@@ -83,8 +110,6 @@ if __name__ == '__main__':
     # # blah =  my_exchange.getFullCoord()
     # blah = my_exchange.getAllWindows()
     # print blah
-    #
-    #
     #
     # for item in blah:
     #     for key,value in item.iteritems():

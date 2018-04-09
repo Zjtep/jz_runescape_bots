@@ -35,3 +35,5 @@ status_buy_button_dimensions = [int(height),int(width)]
 offer_increase = cv2.imread(r'C:\Users\PPC\git\RS_BOT_2.0\lib\merchant_bot\anchor\offer_increase.png', 0)
 offer_decrease = cv2.imread(r'C:\Users\PPC\git\RS_BOT_2.0\lib\merchant_bot\anchor\offer_decrease.png', 0)
 offer_button_dimensions = [35,25]
+
+offer_confirm = cv2.imread(r'C:\Users\PPC\git\RS_BOT_2.0\lib\merchant_bot\anchor\offer_confirm.png', 0)
