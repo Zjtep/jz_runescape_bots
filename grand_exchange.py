@@ -72,31 +72,28 @@ if __name__ == '__main__':
 
 
 
-
-
-
     grand_exchange = RSv2.GrandExchange(full_ss,global_rs_coord)
 
-    # for item in grand_exchange.getGEOffers():
-    #     for key, value in item.iteritems():
-    #         value.clickBuy()
-    #     # for key,value in item.iteritems():
-    #     #     Screenshot.showRectangle(full_ss, value.getCoord())
-    #     #     # print value.getStatus()
-    #     #     print value.clickBuy()
+    for item in grand_exchange.getGEOffers():
+        for key, value in item.iteritems():
+            value.clickBuy()
+
+
+            Keyboard.type_this("nature rune")
+            RandTime.randTime(0, 0, 0, 5, 0, 0)
+            Keyboard.press("enter")
+            RandTime.randTime(0, 0, 0, 5, 0, 0)
+
+            grand_exchange.updateGrandExchange(Screenshot.this(global_rs_coord))
+            RandTime.randTime(0, 0, 0, 0,0, 50)
+            # grand_exchange.increasePrice(1)
+            # grand_exchange.decreasePrice(5)
+            grand_exchange.setPrice("1")
+            grand_exchange.increasePrice(1)
+            grand_exchange.setQuantity("49")
+            grand_exchange.confirmPrice()
     #
-    # Keyboard.type_this("death rune")
-    # RandTime.randTime(0, 0, 0, 5, 0, 0)
-    # Keyboard.press("enter")
-    # RandTime.randTime(0, 0, 0, 5, 0, 0)
-    #
-    # grand_exchange.updateGrandExchange(Screenshot.this(global_rs_coord))
-    # grand_exchange.increasePrice(1)
-    # grand_exchange.decreasePrice(5)
-    # grand_exchange.setPrice("5000")
-    grand_exchange.setQuantity("50")
-    # grand_exchange.confirmPrice()
-    #
+
     # offer_list = grand_exchange.getGEOffers()
     # for key,value in offer_list[2].iteritems():
     #     value.clickBuy()

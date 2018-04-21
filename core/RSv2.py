@@ -312,14 +312,15 @@ class GrandExchange(RunescapeObject):
 
         found_coord = [self.self_window_coord[0]+found[0],self.self_window_coord[1]+found[1],self.self_window_coord[0]+ found[2],
                        self.self_window_coord[1] + found[3]]
-
+        crop = Screenshot.crop(self.global_rs_image, found_coord)
+        cv2.imwrite(r'C:\Users\PPC\git\RS_BOT_2.0\aaaaacrop.png', crop)
         Mouse.clickRadius(self._calculateGlobalCoord(self.global_rs_coord, found_coord))
         # Mouse.win32ClickRadius(self._calculateGlobalCoord(self.global_rs_coord, found_coord))
         # Mouse.win32MoveToRadius(self._calculateGlobalCoord(self.global_rs_coord, found_coord))
 
-        # RandTime.randTime(0, 0, 0, 2, 0, 0)
-        # Keyboard.type_this(quantity)
-        # Keyboard.press("enter")
+        RandTime.randTime(0, 0, 0, 2, 0, 0)
+        Keyboard.type_this(quantity)
+        Keyboard.press("enter")
 
     def increasePrice(self,num_clicks):
 
