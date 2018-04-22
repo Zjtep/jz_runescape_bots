@@ -439,6 +439,11 @@ class ExchangeOffers(RunescapeObject):
         return self.status
 
 
+class Bank(RunescapeObject):
+    # def __init__(self, crop_img, coord, rs_window_coord):
+    def __init__(self,global_rs_image,global_rs_coord):
+        super(Bank, self).__init__(global_rs_image, global_rs_coord)
+        pass
 
 
 class ChatWindow(RunescapeObject):
