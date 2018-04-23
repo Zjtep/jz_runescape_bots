@@ -16,6 +16,8 @@ KEY_F1 = 112
 KEY_F8 = 119
 KEY_F9 = 120
 
+MEMBEER_STATUS = False
+
 bag_icon = cv2.imread(r'C:\Users\PPC\git\RS_BOT_2.0\lib\merchant_bot\anchor\bag_icon.png', 0)
 
 exchange_history_icon = cv2.imread(r'C:\Users\PPC\git\RS_BOT_2.0\lib\merchant_bot\anchor\exchange_history_icon.png', 0)

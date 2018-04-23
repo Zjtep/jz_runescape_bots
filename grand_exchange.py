@@ -74,40 +74,51 @@ if __name__ == '__main__':
 
     grand_exchange = RSv2.GrandExchange(full_ss,global_rs_coord)
     chat_window = RSv2.ChatWindow(full_ss, global_rs_coord)
-    #
-    for item in grand_exchange.getGEOffers():
-        for key, value in item.iteritems():
-            value.clickBuy()
+
+
+    offer_status =  grand_exchange.getOfferStatus()
+
+    purchased_item = False
+
+    # for offer in grand_exchange.getOfferStatus():
+    #     if offer == "empty":
+    #         grand_exchange.item()
 
 
 
-            RandTime.randTime(0, 0, 0, 5, 0, 0)
-            if chat_window.checkStatus(Screenshot.this(global_rs_coord)):
-                Keyboard.type_this("nature rune")
-                RandTime.randTime(0, 0, 0, 1, 0, 0)
-                Keyboard.press("enter")
-                RandTime.randTime(0, 0, 0, 5, 0, 0)
-
-                grand_exchange.updateImage(Screenshot.this(global_rs_coord))
-                RandTime.randTime(0, 0, 0, 0,0, 50)
-                # grand_exchange.increasePrice(1)
-                grand_exchange.decreasePrice(5)
-                # grand_exchange.setPrice("1")
-                # grand_exchange.increasePrice(1)
-                # grand_exchange.setQuantity("49")
-                RandTime.randTime(0, 0, 0, 3, 0, 0)
-                grand_exchange.updateImage(Screenshot.this(global_rs_coord))
-                grand_exchange.confirmPrice()
-            else:
-                print "canm't find shit"
+    # while purchased_item == False:
+    # for offer in offer_status:
+    #     if offer == "empty":
+    #         print offer_status[]
 
 
 
+    for item in grand_exchange.getAllOffers():
+        if item.getStatus() == "empty":
+            while purchased_item == False:
+                item.clickBuy()
+                RandTime.randTime(0, 0, 0, 2, 0, 0)
+                if chat_window.checkStatus(Screenshot.this(global_rs_coord)):
+                    Keyboard.type_this("nature rune")
+                    RandTime.randTime(0, 0, 0, 5, 0, 0)
+                    Keyboard.press("enter")
+                    RandTime.randTime(0, 0, 0, 3, 0, 0)
+
+                    grand_exchange.updateImage(Screenshot.this(global_rs_coord))
+                    RandTime.randTime(0, 0, 0, 0,0, 50)
+                    # grand_exchange.increasePrice(1)
+                    grand_exchange.decreasePrice(5)
+                    # grand_exchange.setPrice("1")
+                    # grand_exchange.increasePrice(1)
+                    # grand_exchange.setQuantity("49")
+                    # RandTime.randTime(0, 0, 0, 3, 0, 0)
+                    grand_exchange.updateImage(Screenshot.this(global_rs_coord))
+                    grand_exchange.confirmPrice()
+                    purchased_item = True
+        else:
+            print "canm't find shit"
 
 
-    chat_window = RSv2.ChatWindow(full_ss,global_rs_coord)
-
-    print chat_window
 
 
 

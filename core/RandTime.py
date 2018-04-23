@@ -22,3 +22,7 @@ def randTime(x,y,z,f_digit, s_digit, t_digit):#sleeps in  miliseconds from fdigi
     #print("waiting {}".format(milisecs))
     #timer += milisecs
     time.sleep(milisecs)
+
+
+#TODO
+#a better RAND TIME functions

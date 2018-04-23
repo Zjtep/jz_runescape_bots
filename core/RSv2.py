@@ -268,15 +268,13 @@ class GrandExchange(RunescapeObject):
             y1 += 1
             y2 += 1
 
-        num = 0
+
         return_list = []
         for offer in offers:
             crop_img = Screenshot.crop(self.global_rs_image, offer)
             # cv2.imwrite('%s_exchange.png' % (item), crop_img)
             exchange_offer = ExchangeOffers(crop_img,offer,self.global_rs_coord )
-            temp_dict = {num:exchange_offer}
-            num += 1
-            return_list.append(temp_dict)
+            return_list.append(exchange_offer)
 
         return return_list
 
@@ -339,7 +337,7 @@ class GrandExchange(RunescapeObject):
                 Mouse.clickRadius(self._calculateGlobalCoord(self.global_rs_coord, found_coord))
                 # Mouse.win32ClickRadius(self._calculateGlobalCoord(self.global_rs_coord, found_coord))
                 # Mouse.win32MoveToRadius(self._calculateGlobalCoord(self.global_rs_coord, found_coord))
-                RandTime.randTime(0, 0, 0, 0, 0, 2)
+                RandTime.randTime(0, 0, 0, 0, 0, 1)
 
     def decreasePrice(self, num_clicks):
 
@@ -355,7 +353,7 @@ class GrandExchange(RunescapeObject):
                 Mouse.clickRadius(self._calculateGlobalCoord(self.global_rs_coord, found_coord))
                 # Mouse.win32ClickRadius(self._calculateGlobalCoord(self.global_rs_coord, found_coord))
                 # Mouse.win32MoveToRadius(self._calculateGlobalCoord(self.global_rs_coord, found_coord))
-                RandTime.randTime(0, 0, 0, 0, 0, 2)
+                RandTime.randTime(0, 0, 0, 0, 0, 1)
 
     def confirmPrice(self):
 
@@ -372,10 +370,33 @@ class GrandExchange(RunescapeObject):
             # Mouse.win32ClickRadius(self._calculateGlobalCoord(self.global_rs_coord, found_coord))
             # Mouse.win32MoveToRadius(self._calculateGlobalCoord(self.global_rs_coord, found_coord))
 
+    def getOfferStatus(self):
+        # print self.all_ge_offers
+        return_list = []
+        if GC.MEMBEER_STATUS == False:
+            for item in self.all_ge_offers[:3]:
+                return_list.append(item.getStatus())
+            return return_list
+        else:
+            for item in self.all_ge_offers:
+                return_list.append(item.getStatus())
+            return return_list
 
-    def getGEOffers(self):
+
+            # for key,value in dict.iteritems():
+            #     print value.getStatus()
+
+    def getOffers(self,num):
+        return self.all_ge_offers[num]
+
+    def getAllOffers(self):
+        if GC.MEMBEER_STATUS == False:
+            return self.all_ge_offers[:3]
         return self.all_ge_offers
 
+    def updateImage(self,global_rs_image):
+        self.global_rs_image = global_rs_image
+        self.all_ge_offers = self._setupAllGEOffers(self.self_window_coord)
 
 class ExchangeOffers(RunescapeObject):
     # def __init__(self, crop_img, coord, rs_window_coord):
