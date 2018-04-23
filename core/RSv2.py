@@ -486,14 +486,14 @@ class ChatWindow(RunescapeObject):
     def setSelfWindowCoord(self,img_rgb):
 
         # off_set = [-7, -7]
-        off_set = [0, 0]
+        off_set = [-30, -7]
 
         template = GC.chat_buy_anchor
 
         match = Match.this(img_rgb,template)
         if match:
             # print match,"match"
-            return [match[0]+off_set[0],match[1] + off_set[1], match[2] + self.WINDOWSIZE[0],match[3] + self.WINDOWSIZE[1]]
+            return [match[0]+off_set[0],match[1] + off_set[1], match[2] + self.WINDOWSIZE[0]+off_set[0],match[3] + self.WINDOWSIZE[1]+ off_set[1]]
         return None
 
     def checkStatus(self,img_rgb):
@@ -503,3 +503,26 @@ class ChatWindow(RunescapeObject):
         if match:
             return True
         return False
+
+    def clickFoundItem(self,img_rgb,template):
+        # print  self.self_window_coord
+        # Screenshot.display(img_rgb)
+        # Screenshot.display(template)
+        print self.self_window_coord
+        crop = Screenshot.crop(img_rgb,self.self_window_coord)
+
+        found = Match.transparent_match(crop,template)
+
+        # print "self.self_window_coord",self.self_window_coord
+
+        if found:
+            found_coord = [found[0]+self.self_window_coord[0],found[1]+self.self_window_coord[1],
+                           found[2]+self.self_window_coord[0],found[3]+self.self_window_coord[1]]
+
+            Mouse.clickRadius(self._calculateGlobalCoord(self.global_rs_coord, found_coord))
+            # Mouse.win32ClickRadius(self._calculateGlobalCoord(self.global_rs_coord, found_coord))
+            # Mouse.win32ClickRadius(self._calculateGlobalCoord(self.global_rs_coord, found_coord))
+
+        # Screenshot.save("hello",self._calculateGlobalCoord(self.global_rs_coord, found))
+
+

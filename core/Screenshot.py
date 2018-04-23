@@ -67,3 +67,7 @@ def save(file_name,coord):
 def showRectangle(img,coord_list):
     cv2.rectangle(img, (coord_list[0], coord_list[1]), (coord_list[2], coord_list[3]), (0, 255, 100), 1)
 
+
+def display(img):
+    cv2.imshow('Detected', img)
+    cv2.waitKey(0)

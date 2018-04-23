@@ -77,6 +77,7 @@ def this(img_rgb, template,**kwargs):
         threshold = kwargs['threshold']
 
     threshold = 0.9
+    template = cv2.cvtColor(template, cv2.COLOR_BGR2GRAY)
     img_gray = cv2.cvtColor(img_rgb, cv2.COLOR_BGR2GRAY)
     # template = cv2.imread(r'C:\Users\PPC\git\RS_BOT_2.0\lib\merchant_bot\anchor\exchange_history_icon.png', 0)
 
@@ -120,3 +121,48 @@ def __this(img_rgb, template):
     # cv2.imwrite('res.png', img_rgb)
     #
     # p1 = Match.this(full_ss, item_file, 5, 5)
+
+
+
+#TODO NEED TO REDO THIS TRASH
+def transparent_match(img_rgb, template):
+    # img = cv2.imread(r"C:\Users\PPC\git\RS_BOT_2.0\lib\reference\dimension_test\items\00_item_slot.png")
+    # template = cv2.imread(r"C:\Users\PPC\git\RS_BOT_2.0\lib\reference\dimension_test\items\3180.png")[:, :, 2]
+    # template = cv2.imread(r"C:\Users\PPC\git\RS_BOT_2.0\lib\reference\dimension_test\items\3180.png")[:, :, 2]
+
+    # cv2.imshow('Detected', template)
+    # cv2.waitKey(0)
+
+    template2 = template[:, :, 2]
+    img2 = img_rgb[:, :, 2]
+
+    # img2 = img2 - cv2.erode(img2, None)
+    _, alpha = cv2.threshold(img2, 0, 255, cv2.THRESH_BINARY)
+    #
+    # cv2.imshow('Detected', alpha)
+    # cv2.waitKey(0)
+    # # template = cv2.imread(sys.argv[2])[:, :, 2]
+    # #
+    # cv2.imshow('Detected', img2)
+    # cv2.waitKey(0)
+
+    # template = template - cv2.erode(template, None)
+
+    # ccnorm = cv2.matchTemplate(img2, template2, cv2.TM_CCORR_NORMED)
+    ccnorm = cv2.matchTemplate(alpha, template2, cv2.TM_CCORR_NORMED)
+    # print ccnorm.max()
+    loc = np.where(ccnorm == ccnorm.max())
+    threshold = 0.8
+    th, tw = template.shape[:2]
+
+    return_coord = []
+    for pt in zip(*loc[::-1]):
+        if ccnorm[pt[::-1]] < threshold:
+            continue
+        return_coord =[pt[0],pt[1],pt[0] + tw,pt[1] + th]
+        # cv2.rectangle(img_rgb, pt, (pt[0] + tw, pt[1] + th),
+        #               (0, 0, 255), 2)
+
+    return return_coord
+    # cv2.imshow('Detected', img_rgb)
+    # cv2.waitKey(0)
