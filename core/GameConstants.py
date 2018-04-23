@@ -37,3 +37,7 @@ offer_decrease = cv2.imread(r'C:\Users\PPC\git\RS_BOT_2.0\lib\merchant_bot\ancho
 offer_button_dimensions = [35,25]
 
 offer_confirm = cv2.imread(r'C:\Users\PPC\git\RS_BOT_2.0\lib\merchant_bot\anchor\offer_confirm.png', 0)
+
+
+chat_window_dimensions = [519,142]
+chat_buy_anchor = cv2.imread(r'C:\Users\PPC\git\RS_BOT_2.0\lib\merchant_bot\anchor\chat_buy_anchor02.png', 0)

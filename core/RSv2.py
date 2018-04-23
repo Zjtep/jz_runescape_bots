@@ -28,6 +28,9 @@ class RunescapeObject(object):
         y2 =global_rs_coord[1] + window_coord[3]
         return [x1,y1,x2,y2]
 
+    def updateImage(self,global_rs_image):
+        self.global_rs_image = global_rs_image
+
     def getGlobalRsCoord(self):
         return self.global_rs_coord
 
@@ -205,9 +208,7 @@ class GrandExchange(RunescapeObject):
         # asdfasdf = self._setGlobalCoord( self.global_rs_coord,history_anchor)
         # Mouse.win32Click(asdfasdf[0],asdfasdf[1])
 
-    def updateGrandExchange(self,global_rs_image):
 
-        self.global_rs_image = global_rs_image
 
 
 
@@ -338,7 +339,7 @@ class GrandExchange(RunescapeObject):
                 Mouse.clickRadius(self._calculateGlobalCoord(self.global_rs_coord, found_coord))
                 # Mouse.win32ClickRadius(self._calculateGlobalCoord(self.global_rs_coord, found_coord))
                 # Mouse.win32MoveToRadius(self._calculateGlobalCoord(self.global_rs_coord, found_coord))
-                RandTime.randTime(0, 0, 0, 0, 0, 5)
+                RandTime.randTime(0, 0, 0, 0, 0, 2)
 
     def decreasePrice(self, num_clicks):
 
@@ -354,7 +355,7 @@ class GrandExchange(RunescapeObject):
                 Mouse.clickRadius(self._calculateGlobalCoord(self.global_rs_coord, found_coord))
                 # Mouse.win32ClickRadius(self._calculateGlobalCoord(self.global_rs_coord, found_coord))
                 # Mouse.win32MoveToRadius(self._calculateGlobalCoord(self.global_rs_coord, found_coord))
-                RandTime.randTime(0, 0, 0, 0, 0, 5)
+                RandTime.randTime(0, 0, 0, 0, 0, 2)
 
     def confirmPrice(self):
 
@@ -450,6 +451,34 @@ class ChatWindow(RunescapeObject):
     # def __init__(self, crop_img, coord, rs_window_coord):
     def __init__(self,global_rs_image,global_rs_coord):
         super(ChatWindow, self).__init__(global_rs_image, global_rs_coord)
-        pass
 
+        self.WINDOWSIZE = GC.chat_window_dimensions
 
+        self.self_window_coord = self.setSelfWindowCoord(self.global_rs_image)
+        # crop = Screenshot.crop(self.global_rs_image,self.self_window_coord)
+        # cv2.imwrite('C:\Users\PPC\git\RS_BOT_2.0\crop.png', crop)
+
+        # print self.self_window_coord
+        # self.global_self_coord = self._calculateGlobalCoord(global_rs_coord,self_window_coord )
+        # crop = Screenshot.crop(self.global_rs_image, self.global_self_coord)
+        # cv2.imwrite(r'C:\Users\PPC\git\RS_BOT_2.0\aaaaacrop.png', crop)
+    def setSelfWindowCoord(self,img_rgb):
+
+        # off_set = [-7, -7]
+        off_set = [0, 0]
+
+        template = GC.chat_buy_anchor
+
+        match = Match.this(img_rgb,template)
+        if match:
+            # print match,"match"
+            return [match[0]+off_set[0],match[1] + off_set[1], match[2] + self.WINDOWSIZE[0],match[3] + self.WINDOWSIZE[1]]
+        return None
+
+    def checkStatus(self,img_rgb):
+        template = GC.chat_buy_anchor
+
+        match = Match.this(img_rgb,template)
+        if match:
+            return True
+        return False

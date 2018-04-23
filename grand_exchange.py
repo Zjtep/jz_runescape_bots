@@ -44,7 +44,7 @@ if __name__ == '__main__':
     full_ss = cv2.imread(r'C:\Users\PPC\git\RS_BOT_2.0\dry_run.png')
     # full_ss = cv2.imread(r'C:\Users\PPC\git\RS_BOT_2.0\lib\reference\dimension_test\18 Mar 2018 10-15-35.png')
     # full_ss = cv2.imread(r'C:\Users\PPC\git\RS_BOT_2.0\lib\reference\dimension_test\^D54A76B6687EA1725469C2DF27280CBA5A98E15113CA23E5A6^pimgpsh_fullsize_distr.png')
-    # full_ss = cv2.imread(r'C:\Users\PPC\git\RS_BOT_2.0\lib\reference\dimension_test\6 Apr 2018 22-05-14.png')
+    # full_ss = cv2.imread(r'C:\Users\PPC\git\RS_BOT_2.0\lib\reference\dimension_test\22 Apr 2018 20-00-09.png')
 
 
 
@@ -73,26 +73,53 @@ if __name__ == '__main__':
 
 
     grand_exchange = RSv2.GrandExchange(full_ss,global_rs_coord)
-
+    chat_window = RSv2.ChatWindow(full_ss, global_rs_coord)
+    #
     for item in grand_exchange.getGEOffers():
         for key, value in item.iteritems():
             value.clickBuy()
 
 
-            Keyboard.type_this("nature rune")
-            RandTime.randTime(0, 0, 0, 5, 0, 0)
-            Keyboard.press("enter")
-            RandTime.randTime(0, 0, 0, 5, 0, 0)
 
-            grand_exchange.updateGrandExchange(Screenshot.this(global_rs_coord))
-            RandTime.randTime(0, 0, 0, 0,0, 50)
-            # grand_exchange.increasePrice(1)
-            # grand_exchange.decreasePrice(5)
-            grand_exchange.setPrice("1")
-            grand_exchange.increasePrice(1)
-            grand_exchange.setQuantity("49")
-            grand_exchange.confirmPrice()
-    #
+            RandTime.randTime(0, 0, 0, 5, 0, 0)
+            if chat_window.checkStatus(Screenshot.this(global_rs_coord)):
+                Keyboard.type_this("nature rune")
+                RandTime.randTime(0, 0, 0, 1, 0, 0)
+                Keyboard.press("enter")
+                RandTime.randTime(0, 0, 0, 5, 0, 0)
+
+                grand_exchange.updateImage(Screenshot.this(global_rs_coord))
+                RandTime.randTime(0, 0, 0, 0,0, 50)
+                # grand_exchange.increasePrice(1)
+                grand_exchange.decreasePrice(5)
+                # grand_exchange.setPrice("1")
+                # grand_exchange.increasePrice(1)
+                # grand_exchange.setQuantity("49")
+                RandTime.randTime(0, 0, 0, 3, 0, 0)
+                grand_exchange.updateImage(Screenshot.this(global_rs_coord))
+                grand_exchange.confirmPrice()
+            else:
+                print "canm't find shit"
+
+
+
+
+
+    chat_window = RSv2.ChatWindow(full_ss,global_rs_coord)
+
+    print chat_window
+
+
+
+
+
+
+
+
+
+
+
+
 
     # offer_list = grand_exchange.getGEOffers()
     # for key,value in offer_list[2].iteritems():
