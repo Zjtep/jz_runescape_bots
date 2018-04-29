@@ -24,7 +24,7 @@ def get_runescape_coord():
     # inventory_ss = Screenshot.this(game_coord[0], game_coord[1], game_coord[2], game_coord[3], "rgb")
     # cv2.imwrite("game_coord.png",inventory_ss)
     # print "done"
-
+    Screenshot.save("runelite.png",game_coord)
     return game_coord
 
 

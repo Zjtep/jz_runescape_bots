@@ -498,7 +498,7 @@ class ChatWindow(RunescapeObject):
 
     def checkStatus(self,img_rgb):
         template = GC.chat_buy_anchor
-
+        cv2.imwrite("basdfadfs.png",img_rgb)
         match = Match.this(img_rgb,template)
         if match:
             return True
@@ -510,6 +510,7 @@ class ChatWindow(RunescapeObject):
         # Screenshot.display(template)
         print self.self_window_coord
         crop = Screenshot.crop(img_rgb,self.self_window_coord)
+
 
         found = Match.transparent_match(crop,template)
 
