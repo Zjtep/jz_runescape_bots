@@ -44,6 +44,16 @@ def margin_checker(full_ss):
 
     purchased_item = False
 
+    if chat_window.checkStatus(Screenshot.this(global_rs_coord)):
+        # Keyboard.type_this("steel bar")
+        # RandTime.randTime(0, 0, 0, 5, 0, 0)
+        # Keyboard.press("enter")
+        Screenshot.save("balh.png", global_rs_coord)
+        chat_window.clickFoundItem(Screenshot.this(global_rs_coord), template_item)
+    else:
+        print "can't find hsitsteel bar"
+
+
     # for offer in grand_exchange.getOfferStatus():
     #     if offer == "empty":
     #         grand_exchange.item()
@@ -57,31 +67,35 @@ def margin_checker(full_ss):
 
 
 
-    for item in grand_exchange.getAllOffers():
-        if item.getStatus() == "empty":
-            while purchased_item == False:
-                item.clickBuy()
-                RandTime.randTime(0, 0, 0, 2, 0, 0)
-                if chat_window.checkStatus(Screenshot.this(global_rs_coord)):
-                    Keyboard.type_this("steel bar")
-                    RandTime.randTime(0, 0, 0, 5, 0, 0)
-                    # Keyboard.press("enter")
-                    chat_window.clickFoundItem(Screenshot.this(global_rs_coord), template_item)
-                    RandTime.randTime(0, 0, 0, 3, 0, 0)
 
-                    grand_exchange.updateImage(Screenshot.this(global_rs_coord))
-                    RandTime.randTime(0, 0, 0, 0,0, 50)
-                    # grand_exchange.increasePrice(1)
-                    grand_exchange.decreasePrice(5)
-                    # grand_exchange.setPrice("1")
-                    # grand_exchange.increasePrice(1)
-                    # grand_exchange.setQuantity("49")
-                    # RandTime.randTime(0, 0, 0, 3, 0, 0)
-                    grand_exchange.updateImage(Screenshot.this(global_rs_coord))
-                    grand_exchange.confirmPrice()
-                    purchased_item = True
-        else:
-            print "canm't find shit"
+
+    # for item in grand_exchange.getAllOffers():
+    #     if item.getStatus() == "empty":
+    #         while purchased_item == False:
+    #             item.clickBuy()
+    #             RandTime.randTime(0, 0, 0, 2, 0, 0)
+    #             if chat_window.checkStatus(Screenshot.this(global_rs_coord)):
+    #                 Keyboard.type_this("steel bar")
+    #                 RandTime.randTime(0, 0, 0, 5, 0, 0)
+    #                 # Keyboard.press("enter")
+    #                 Screenshot.save("balh.png", global_rs_coord)
+    #                 chat_window.clickFoundItem(Screenshot.this(global_rs_coord), template_item)
+    #
+    #                 RandTime.randTime(0, 0, 0, 3, 0, 0)
+    #
+    #                 grand_exchange.updateImage(Screenshot.this(global_rs_coord))
+    #                 RandTime.randTime(0, 0, 0, 0,0, 50)
+    #                 # grand_exchange.increasePrice(1)
+    #                 grand_exchange.decreasePrice(5)
+    #                 # grand_exchange.setPrice("1")
+    #                 # grand_exchange.increasePrice(1)
+    #                 # grand_exchange.setQuantity("49")
+    #                 # RandTime.randTime(0, 0, 0, 3, 0, 0)
+    #                 grand_exchange.updateImage(Screenshot.this(global_rs_coord))
+    #                 grand_exchange.confirmPrice()
+    #                 purchased_item = True
+    #     else:
+    #         print "canm't find shit"
 
 
 if __name__ == '__main__':

@@ -476,6 +476,8 @@ class ChatWindow(RunescapeObject):
         self.WINDOWSIZE = GC.chat_window_dimensions
 
         self.self_window_coord = self.setSelfWindowCoord(self.global_rs_image)
+        # print "self.self_window_coord",self.self_window_coord
+        # Screenshot.save("asdfasdfasdf.png",self._calculateGlobalCoord(self.global_rs_coord,self.self_window_coord))
         # crop = Screenshot.crop(self.global_rs_image,self.self_window_coord)
         # cv2.imwrite('C:\Users\PPC\git\RS_BOT_2.0\crop.png', crop)
 
@@ -486,14 +488,24 @@ class ChatWindow(RunescapeObject):
     def setSelfWindowCoord(self,img_rgb):
 
         # off_set = [-7, -7]
-        off_set = [-30, -7]
+        off_set = [-5, -142]
 
-        template = GC.chat_buy_anchor
+        # template = GC.chat_buy_anchor
+        template = GC.chat_all_anchor
+
 
         match = Match.this(img_rgb,template)
+        print match
+
         if match:
-            # print match,"match"
-            return [match[0]+off_set[0],match[1] + off_set[1], match[2] + self.WINDOWSIZE[0]+off_set[0],match[3] + self.WINDOWSIZE[1]+ off_set[1]]
+
+
+            return_coord = [match[0] + off_set[0],
+                            match[1] + off_set[1],
+                            match[2] + off_set[0] + self.WINDOWSIZE[0],
+                            match[3] + off_set[1] + self.WINDOWSIZE[1]
+                            ]
+            return return_coord
         return None
 
     def checkStatus(self,img_rgb):
@@ -511,7 +523,7 @@ class ChatWindow(RunescapeObject):
         print self.self_window_coord
         crop = Screenshot.crop(img_rgb,self.self_window_coord)
 
-
+        # Screenshot.save("balh.png",self.self_window_coord)
         found = Match.transparent_match(crop,template)
 
         # print "self.self_window_coord",self.self_window_coord

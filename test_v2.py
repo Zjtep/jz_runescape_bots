@@ -48,6 +48,56 @@ import cv2
 import numpy as np
 import sys
 
+
+def clean_chat_page():
+
+
+
+    # # source = numpy.array(cv2.imread(r"C:\Users\PPC\git\RS_BOT_2.0\lib\reference\dimension_test\items\1_item_slot.png"))
+    # source = numpy.array(cv2.imread(r"C:\Users\PPC\git\RS_BOT_2.0\lib\reference\dimension_test\items\00_item_slot2.png"))
+    #
+    #
+    # # NOTE The fucking thing is BLUE,GREEN, RED
+    # source[numpy.where((source == [41, 53, 62]).all(axis=2))] = [255, 255, 255]
+    # source[numpy.where((source == [44, 54, 64]).all(axis=2))] = [255, 255, 255]
+    # source[numpy.where((source == [38, 50, 59]).all(axis=2))] = [255, 255, 255]
+    # source[numpy.where((source == [45, 56, 64]).all(axis=2))] = [255, 255, 255]
+    #
+    # pid = "%s.png" % os.getpid()
+    # cv2.imwrite(pid, source)
+    #
+    # img = Image.open(pid)#image path and name
+    #
+    # img = img.convert("RGBA")
+    # datas = img.getdata()
+    # newData = []
+    # for item in datas:
+    #     # NOTE The fucking thing is BLUE,GREEN, RED
+    #     if item[0] == 153 and item[1] == 136 and item[2] == 106:
+    #         newData.append((255, 255, 255, 0))
+    #     else:
+    #         newData.append(item)
+    # img.putdata(newData)
+    # img.save(r"C:\Users\PPC\git\RS_BOT_2.0\lib\reference\dimension_test\items\%s"%pid, "PNG")#converted Image name
+    # os.remove(pid)
+    # print('Done')
+
+
+    # blur = cv2.GaussianBlur(img, (5, 5), 0)
+
+    image = cv2.imread(r"C:\Users\PPC\git\RS_BOT_2.0\lib\reference\dimension_test\items\00_item_slot2.png")
+    r = 150.0 / image.shape[1]
+    dim = (150, int(image.shape[0] * r))
+    # resized = cv2.resize(image, dim, interpolation=cv2.INTER_AREA)
+    lower_white = np.array([220, 220, 220], dtype=np.uint8)
+    upper_white = np.array([255, 255, 255], dtype=np.uint8)
+    mask = cv2.inRange(image, lower_white, upper_white) # could also use threshold
+    res = cv2.bitwise_not(image, image, mask)
+    cv2.imshow('res', res) # gives black background
+    cv2.waitKey(0)
+
+
+
 def tran_match():
 
 
@@ -255,8 +305,8 @@ if __name__ == '__main__':
     # cv2.imshow('Detected', bag_icon)
     # cv2.waitKey(0)
 
-
-    trans_3()
+    clean_chat_page()
+    # trans_3()
 
 
 
