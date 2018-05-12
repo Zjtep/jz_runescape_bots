@@ -16,7 +16,7 @@ def transparent_test():
 
 
     # source = numpy.array(cv2.imread(r"C:\Users\PPC\git\RS_BOT_2.0\lib\reference\dimension_test\items\1_item_slot.png"))
-    source = numpy.array(cv2.imread(r"C:\Users\PPC\git\RS_BOT_2.0\lib\reference\dimension_test\items\25_item_slot.png"))
+    source = numpy.array(cv2.imread(r"C:\Users\PPC\git\RS_BOT_2.0\lib\reference\dimension_test\items\2_item_slot (4).png"))
 
 
     # NOTE The fucking thing is BLUE,GREEN, RED
@@ -40,7 +40,7 @@ def transparent_test():
             newData.append(item)
     img.putdata(newData)
     img.save(r"C:\Users\PPC\git\RS_BOT_2.0\lib\reference\dimension_test\items\%s"%pid, "PNG")#converted Image name
-    os.remove(pid)
+    # os.remove(pid)
     print('Done')
 
 
@@ -85,16 +85,58 @@ def clean_chat_page():
 
     # blur = cv2.GaussianBlur(img, (5, 5), 0)
 
-    image = cv2.imread(r"C:\Users\PPC\git\RS_BOT_2.0\lib\reference\dimension_test\items\00_item_slot2.png")
-    r = 150.0 / image.shape[1]
-    dim = (150, int(image.shape[0] * r))
-    # resized = cv2.resize(image, dim, interpolation=cv2.INTER_AREA)
-    lower_white = np.array([220, 220, 220], dtype=np.uint8)
-    upper_white = np.array([255, 255, 255], dtype=np.uint8)
-    mask = cv2.inRange(image, lower_white, upper_white) # could also use threshold
-    res = cv2.bitwise_not(image, image, mask)
-    cv2.imshow('res', res) # gives black background
+    # image = cv2.imread(r"C:\Users\PPC\git\RS_BOT_2.0\lib\reference\dimension_test\items\00_item_slot2.png")
+    # r = 150.0 / image.shape[1]
+    # dim = (150, int(image.shape[0] * r))
+    # # resized = cv2.resize(image, dim, interpolation=cv2.INTER_AREA)
+    # lower_white = np.array([168, 149, 118], dtype=np.uint8)
+    # upper_white = np.array([255, 255, 255], dtype=np.uint8)
+    # mask = cv2.inRange(image, lower_white, upper_white) # could also use threshold
+    # res = cv2.bitwise_not(image, image, mask)
+    # cv2.imshow('res', res) # gives black background
+    # cv2.waitKey(0)
+
+
+    im = cv2.imread(r"C:\Users\PPC\git\RS_BOT_2.0\lib\reference\dimension_test\items\00_item_slot2.png")
+    # BLUE, GREEN, RED
+    # im = cv2.imread('input.png')
+    # im[np.where((im == [120, 156,177 ]).all(axis=2))] = [0, 0, 0]
+    # blur = cv2.medianBlur(im, 5)
+
+
+
+    # cv2.imwrite('output.png', blur)
+
+    cv2.imshow('res', im) # gives black background
     cv2.waitKey(0)
+    # cv2.waitKey(0)
+
+
+    ## (1) Read
+
+
+    # img = cv2.imread("img04.png")
+    # gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    #
+    # ## (2) Threshold
+    # th, threshed = cv2.threshold(gray, 127, 255, cv2.THRESH_BINARY_INV | cv2.THRESH_OTSU)
+    #
+    # ## (3) Find the min-area contour
+    # _, cnts, _ = cv2.findContours(threshed, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+    # cnts = sorted(cnts, key=cv2.contourArea)
+    # for cnt in cnts:
+    #     if cv2.contourArea(cnt) > 100:
+    #         break
+    #
+    # ## (4) Create mask and do bitwise-op
+    # mask = np.zeros(img.shape[:2], np.uint8)
+    # cv2.drawContours(mask, [cnt], -1, 255, -1)
+    # dst = cv2.bitwise_and(img, img, mask=mask)
+    #
+    # ## Save it
+    # cv2.imshow("dst.png", dst);
+    # cv2.waitKey()
+    #
 
 
 
@@ -305,8 +347,9 @@ if __name__ == '__main__':
     # cv2.imshow('Detected', bag_icon)
     # cv2.waitKey(0)
 
-    clean_chat_page()
+    # clean_chat_page()
     # trans_3()
+
 
 
 
@@ -324,7 +367,7 @@ if __name__ == '__main__':
 
 
 
-    # transparent_test()
+    transparent_test()
     # print tran_match()
 
     # template_path = r"C:\Users\PPC\git\RS_BOT_2.0\lib\reference\dimension_test\items\NMk3j.png"

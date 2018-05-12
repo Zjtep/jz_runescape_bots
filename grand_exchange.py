@@ -115,7 +115,7 @@ if __name__ == '__main__':
 
 
 
-    margin_checker(full_ss)
+    # margin_checker(full_ss)
 
     # chat_window = RSv2.ChatWindow(full_ss, global_rs_coord)
 
@@ -127,10 +127,10 @@ if __name__ == '__main__':
     # death_rune = cv2.imread(r'C:\Users\PPC\git\RS_BOT_2.0\lib\reference\dimension_test\items\0_item_slot.png', 0)
     # death_rune = cv2.imread(r'C:\Users\PPC\git\RS_BOT_2.0\lib\reference\dimension_test\items\8340.png', 0)
 
-    # my_inventory = RSv2.Inventory(full_ss,global_rs_coord)
+    my_inventory = RSv2.Inventory(full_ss,global_rs_coord)
     # print my_inventory.findItem(full_ss,my_inventory)
     # print my_inventory.getInventory([4])
-    # my_inventory.screenShotInventory(full_ss)
+    my_inventory.screenShotInventory(full_ss)
 
     # print my_inventory.getAllItems()
     # print

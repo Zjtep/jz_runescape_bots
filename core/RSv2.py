@@ -527,12 +527,16 @@ class ChatWindow(RunescapeObject):
         found = Match.transparent_match(crop,template)
 
         # print "self.self_window_coord",self.self_window_coord
-
+        #TODO hard coded
+        resize_radius = [7,8,0,-4]
         if found:
-            found_coord = [found[0]+self.self_window_coord[0],found[1]+self.self_window_coord[1],
-                           found[2]+self.self_window_coord[0],found[3]+self.self_window_coord[1]]
+            found_coord = [found[0]+self.self_window_coord[0]+resize_radius[0],
+                           found[1]+self.self_window_coord[1]+resize_radius[1],
+                           found[2]+self.self_window_coord[0]+resize_radius[2],
+                           found[3]+self.self_window_coord[1]+resize_radius[3]]
+            # Screenshot.save("balh.png",self._calculateGlobalCoord(self.global_rs_coord, found_coord))
 
-            Mouse.clickRadius(self._calculateGlobalCoord(self.global_rs_coord, found_coord))
+            # Mouse.clickRadius(self._calculateGlobalCoord(self.global_rs_coord, found_coord))
             # Mouse.win32ClickRadius(self._calculateGlobalCoord(self.global_rs_coord, found_coord))
             # Mouse.win32ClickRadius(self._calculateGlobalCoord(self.global_rs_coord, found_coord))
 
