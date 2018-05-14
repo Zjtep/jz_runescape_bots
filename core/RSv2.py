@@ -48,9 +48,11 @@ class Inventory(RunescapeObject):
         self.WINDOWSIZE = [98,293]
         self.item_size = [41, 35]
 
-        self_window_coord = self.setSelfWindowCoord(self.global_rs_image)
+
+        self.self_window_coord = self.setSelfWindowCoord(self.global_rs_image)
+        # Screenshot.save("blah.png",self._calculateGlobalCoord(global_rs_coord,self_window_coord))
         # Mouse.win32MoveToRadius(self_window_coord)
-        self.all_items = self._setupAllItems(self_window_coord)
+        self.all_items = self._setupAllItems(self.self_window_coord)
         # print self.all_items
 
 
@@ -103,16 +105,13 @@ class Inventory(RunescapeObject):
             y1 += 1
             y2 += 1
 
-        num = 0
         return_list = []
         for item in items:
             crop_img = Screenshot.crop(self.global_rs_image, item)
             # cv2.imwrite('%s_exchange.png' % (item), crop_img)
             inventory_item = InventoryItem(crop_img,item,self.global_rs_coord )
 
-            temp_dict = {num: inventory_item}
-            num += 1
-            return_list.append(temp_dict)
+            return_list.append(inventory_item)
 
         return return_list
 
@@ -123,18 +122,29 @@ class Inventory(RunescapeObject):
             return_list.append(self.all_items[index])
         return return_list
 
-    def findItem(self,full_ss,item_file):
+    def findItem(self,img_rgb,item_file):
         # full_ss = cv2.imread(r'C:\Users\PPC\git\RS_BOT_2.0\lib\reference\dimension_test\inventory_sample.png')
+        # found = Match.this(, template)
+        cv2.imwrite("asdf.png",img_rgb)
 
-        match = Match.this(full_ss,item_file)
-        match_coord = [match[0],match[1],match[2]+self.item_size[0],match[3]++self.item_size[1]]
-        # print "crop_img",found_coord
-        for item in self.all_items:
-            for key, value in item.iteritems():
-                print value.getSelfWindowCoord()
-                if match_coord ==value.getSelfWindowCoord():
-                    return key
-        return False
+        print self.self_window_coord
+        crop = Screenshot.crop(img_rgb,self.self_window_coord)
+
+        # Screenshot.save("balh.png",self.self_window_coord)
+        found = Match.transparent_match(crop,template)
+
+
+
+        # match = Match.this(self.global_rs_image,item_file)
+        # print match
+        # match_coord = [match[0],match[1],match[2]+self.item_size[0],match[3]++self.item_size[1]]
+        # # print "crop_img",found_coord
+        # for item in self.all_items:
+        #     for key, value in item.iteritems():
+        #         print value.getSelfWindowCoord()
+        #         if match_coord ==value.getSelfWindowCoord():
+        #             return key
+        # return False
 
         # Screenshot.showRectangle(full_ss, found_coord)
         # cv2.imshow('Detected', full_ss)
@@ -171,15 +181,18 @@ class InventoryItem(RunescapeObject):
         # self.rs_window_coord = rs_window_coord
         # self.source_image = crop_img
         self.self_window_coord = window_coord
-        self.global_self_coord = self._calculateGlobalCoord(global_rs_coord,self.self_window_coord)
+
         # print self.global_self_coord
 
     def clickItem(self):
-        print self.global_self_coord
-        Mouse.win32MoveToRadius(self.global_self_coord)
+        # Mouse.win32MoveToRadius(self.global_self_coord)
+        # Mouse.clickRadius(self._calculateGlobalCoord(self.global_rs_coord,self.self_window_coord))
+        print self._calculateGlobalCoord(self.global_rs_coord, self.self_window_coord)
+        Mouse.clickRadius(self._calculateGlobalCoord(self.global_rs_coord, self.self_window_coord))
+
 
     def getSelfGlobalCoord(self):
-        return self.global_self_coord
+        return self._calculateGlobalCoord(self.global_rs_coord, self.self_window_coord)
 
     def getSelfWindowCoord(self):
         return self.self_window_coord
@@ -207,9 +220,6 @@ class GrandExchange(RunescapeObject):
         # Screenshot.save("blah",self_window_coord)
         # asdfasdf = self._setGlobalCoord( self.global_rs_coord,history_anchor)
         # Mouse.win32Click(asdfasdf[0],asdfasdf[1])
-
-
-
 
 
     def setSelfWindowCoord(self,img_rgb):
@@ -537,9 +547,15 @@ class ChatWindow(RunescapeObject):
             # Screenshot.save("balh.png",self._calculateGlobalCoord(self.global_rs_coord, found_coord))
 
             # Mouse.clickRadius(self._calculateGlobalCoord(self.global_rs_coord, found_coord))
-            # Mouse.win32ClickRadius(self._calculateGlobalCoord(self.global_rs_coord, found_coord))
-            # Mouse.win32ClickRadius(self._calculateGlobalCoord(self.global_rs_coord, found_coord))
 
-        # Screenshot.save("hello",self._calculateGlobalCoord(self.global_rs_coord, found))
-
-
+    #TODO REPLACE
+    def clickFoundItemHard(self, img_rgb):
+        crop = Screenshot.crop(img_rgb, self.self_window_coord)
+        found = [12,35,100,55]
+        resize_radius = [0, 0, 0, 0]
+        found_coord = [found[0]+self.self_window_coord[0]+resize_radius[0],
+                       found[1]+self.self_window_coord[1]+resize_radius[1],
+                       found[2]+self.self_window_coord[0]+resize_radius[2],
+                       found[3]+self.self_window_coord[1]+resize_radius[3]]
+        # Screenshot.save("balh.png", self._calculateGlobalCoord(self.global_rs_coord, found_coord))
+        Mouse.clickRadius(self._calculateGlobalCoord(self.global_rs_coord, found_coord))

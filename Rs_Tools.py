@@ -29,7 +29,7 @@ def get_runescape_coord():
 
 def screen_shot_inventory():
     global_rs_coord = get_runescape_coord()
-    Screenshot.save("dry_run",global_rs_coord)
+    Screenshot.save("dry_run.png",global_rs_coord)
 
 
     full_ss = cv2.imread(r'C:\Users\PPC\git\RS_BOT_2.0\dry_run.png')

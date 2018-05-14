@@ -65,8 +65,8 @@ def moveToRadius(coord):
     pyautogui.moveTo(x, y, duration_of_move, pyautogui.easeInOutQuad)
 
 def clickRadius(coord):
-    x = random.randint(coord[0],coord[2]-2)
-    y= random.randint(coord[1],coord[3]-2)
+    x = random.randint(coord[0]+6,coord[2]-6)
+    y= random.randint(coord[1]+6,coord[3]-6)
 
     speed = 0.5
         # duration_of_move=duration

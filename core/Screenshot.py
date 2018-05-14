@@ -61,7 +61,7 @@ def this(coord):
 
 def save(file_name,coord):
     image = this(coord)
-    cv2.imwrite("%s.png" %file_name,image)
+    cv2.imwrite(file_name,image)
 
 
 def showRectangle(img,coord_list):

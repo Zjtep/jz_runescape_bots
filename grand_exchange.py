@@ -36,40 +36,32 @@ def margin_checker(full_ss):
     template_item = cv2.imread(r'C:\Users\PPC\git\RS_BOT_2.0\lib\reference\dimension_test\items\2_item_slot (4).png')
 
 
-    grand_exchange = RSv2.GrandExchange(full_ss,global_rs_coord)
-    chat_window = RSv2.ChatWindow(full_ss, global_rs_coord)
-
-
-    offer_status =  grand_exchange.getOfferStatus()
+    # grand_exchange = RSv2.GrandExchange(full_ss,global_rs_coord)
+    # chat_window = RSv2.ChatWindow(full_ss, global_rs_coord)
+    # offer_status =  grand_exchange.getOfferStatus()
 
     purchased_item = False
 
-    if chat_window.checkStatus(Screenshot.this(global_rs_coord)):
-        # Keyboard.type_this("steel bar")
-        # RandTime.randTime(0, 0, 0, 5, 0, 0)
-        # Keyboard.press("enter")
-        Screenshot.save("balh.png", global_rs_coord)
-        chat_window.clickFoundItem(Screenshot.this(global_rs_coord), template_item)
-    else:
-        print "can't find hsitsteel bar"
+
+    my_inventory = RSv2.Inventory(full_ss, global_rs_coord)
+    print my_inventory.findItem(full_ss,template_item)
+    # print my_inventory.getInventory([4])
+
+    blah = my_inventory.getAllItems()
 
 
-    # for offer in grand_exchange.getOfferStatus():
-    #     if offer == "empty":
-    #         grand_exchange.item()
-
-
-
-    # while purchased_item == False:
-    # for offer in offer_status:
-    #     if offer == "empty":
-    #         print offer_status[]
+    # for b in blah:
+    #     b.clickItem()
+    # print my_inventory.getAllItems()[0].getSelfWindowCoord()
+    # my_inventory.screenShotInventory(full_ss)
 
 
 
 
 
     # for item in grand_exchange.getAllOffers():
+    #     print  item.getStatus()
+    #     # purchased_item = False
     #     if item.getStatus() == "empty":
     #         while purchased_item == False:
     #             item.clickBuy()
@@ -78,8 +70,7 @@ def margin_checker(full_ss):
     #                 Keyboard.type_this("steel bar")
     #                 RandTime.randTime(0, 0, 0, 5, 0, 0)
     #                 # Keyboard.press("enter")
-    #                 Screenshot.save("balh.png", global_rs_coord)
-    #                 chat_window.clickFoundItem(Screenshot.this(global_rs_coord), template_item)
+    #                 chat_window.clickFoundItemHard(Screenshot.this(global_rs_coord))
     #
     #                 RandTime.randTime(0, 0, 0, 3, 0, 0)
     #
@@ -94,14 +85,13 @@ def margin_checker(full_ss):
     #                 grand_exchange.updateImage(Screenshot.this(global_rs_coord))
     #                 grand_exchange.confirmPrice()
     #                 purchased_item = True
-    #     else:
-    #         print "canm't find shit"
+
 
 
 if __name__ == '__main__':
 
     global_rs_coord = get_runescape_coord()
-    Screenshot.save("dry_run",global_rs_coord)
+    Screenshot.save("dry_run.png",global_rs_coord)
 
     # window_coord = [2559, -1, 3332, 556]
     # full_ss = cv2.imread(r'C:\Users\PPC\git\RS_BOT_2.0\lib\reference\dimension_test\31 Mar 2018 21-02-10.png')
@@ -115,7 +105,7 @@ if __name__ == '__main__':
 
 
 
-    # margin_checker(full_ss)
+    margin_checker(full_ss)
 
     # chat_window = RSv2.ChatWindow(full_ss, global_rs_coord)
 
@@ -127,10 +117,10 @@ if __name__ == '__main__':
     # death_rune = cv2.imread(r'C:\Users\PPC\git\RS_BOT_2.0\lib\reference\dimension_test\items\0_item_slot.png', 0)
     # death_rune = cv2.imread(r'C:\Users\PPC\git\RS_BOT_2.0\lib\reference\dimension_test\items\8340.png', 0)
 
-    my_inventory = RSv2.Inventory(full_ss,global_rs_coord)
+    # my_inventory = RSv2.Inventory(full_ss,global_rs_coord)
     # print my_inventory.findItem(full_ss,my_inventory)
     # print my_inventory.getInventory([4])
-    my_inventory.screenShotInventory(full_ss)
+    # my_inventory.screenShotInventory(full_ss)
 
     # print my_inventory.getAllItems()
     # print
