@@ -26,3 +26,9 @@ def randTime(x,y,z,f_digit, s_digit, t_digit):#sleeps in  miliseconds from fdigi
 
 #TODO
 #a better RAND TIME functions
+
+#milsecionds
+def randomTime(start,end):
+    seconds = float(random.randint(start,end))/1000
+    print "Delay %s seconds" % seconds
+    time.sleep(seconds)

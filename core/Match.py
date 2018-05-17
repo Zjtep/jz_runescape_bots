@@ -71,12 +71,9 @@ def old_this(img_rgb,img_file,x,y):
 
 
 
-def this(img_rgb, template,**kwargs):
+def this(img_rgb, template,threshold = 0.9):
 
-    if ("threshold" in kwargs):
-        threshold = kwargs['threshold']
 
-    threshold = 0.9
     template = cv2.cvtColor(template, cv2.COLOR_BGR2GRAY)
     img_gray = cv2.cvtColor(img_rgb, cv2.COLOR_BGR2GRAY)
     # template = cv2.imread(r'C:\Users\PPC\git\RS_BOT_2.0\lib\merchant_bot\anchor\exchange_history_icon.png', 0)

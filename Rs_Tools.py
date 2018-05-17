@@ -37,8 +37,8 @@ def screen_shot_inventory():
     my_inventory = RSv2.Inventory(full_ss,global_rs_coord)
     my_inventory.screenShotInventory(full_ss)
 
-# if __name__ == '__main__':
-
+if __name__ == '__main__':
+    screen_shot_inventory()
 
 
 

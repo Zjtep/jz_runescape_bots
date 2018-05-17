@@ -123,44 +123,23 @@ class Inventory(RunescapeObject):
         return return_list
 
     def findItem(self,img_rgb,item_file):
-        # full_ss = cv2.imread(r'C:\Users\PPC\git\RS_BOT_2.0\lib\reference\dimension_test\inventory_sample.png')
-        # found = Match.this(, template)
-        cv2.imwrite("asdf.png",img_rgb)
+        for item in self.all_items:
+            crop = Screenshot.crop(img_rgb,item.getSelfWindowCoord())
+        #     cv2.imwrite("asdf.png", crop)
+            if Match.this(crop,item_file,0.70):
+                return item.getSelfGlobalCoord()
 
-        print self.self_window_coord
-        crop = Screenshot.crop(img_rgb,self.self_window_coord)
-
-        # Screenshot.save("balh.png",self.self_window_coord)
-        found = Match.transparent_match(crop,template)
-
-
-
-        # match = Match.this(self.global_rs_image,item_file)
-        # print match
-        # match_coord = [match[0],match[1],match[2]+self.item_size[0],match[3]++self.item_size[1]]
-        # # print "crop_img",found_coord
-        # for item in self.all_items:
-        #     for key, value in item.iteritems():
-        #         print value.getSelfWindowCoord()
-        #         if match_coord ==value.getSelfWindowCoord():
-        #             return key
-        # return False
-
-        # Screenshot.showRectangle(full_ss, found_coord)
-        # cv2.imshow('Detected', full_ss)
-        # cv2.imwrite("123.png", Screenshot.crop(full_ss,found_coord))
-        # cv2.waitKey(0)
-        # cv2.destroyAllWindows()
-
+        return False
 
         # return found_coord
 
     def screenShotInventory(self,img_rgb):
+        num = 0
         for item in self.all_items:
-            for key, value in item.iteritems():
-                # Screenshot.showRectangle(img_rgb, value)
-                crop_img = Screenshot.crop(img_rgb,value.getSelfWindowCoord())
-                cv2.imwrite(r'C:\Users\PPC\git\RS_BOT_2.0\lib\reference\temp\%s_item_slot.png'%(key), crop_img)
+            # Screenshot.showRectangle(img_rgb, value)
+            crop_img = Screenshot.crop(img_rgb,item.getSelfWindowCoord())
+            cv2.imwrite(r'C:\Users\PPC\git\RS_BOT_2.0\lib\reference\temp\%s_item_slot.png'%(num), crop_img)
+            num +=1
 
     def getAllItems(self):
         """

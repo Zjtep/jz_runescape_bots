@@ -33,21 +33,15 @@ def buy_items_sequences():
 
 
 def margin_checker(full_ss):
-    template_item = cv2.imread(r'C:\Users\PPC\git\RS_BOT_2.0\lib\reference\dimension_test\items\2_item_slot (4).png')
-
-
-    # grand_exchange = RSv2.GrandExchange(full_ss,global_rs_coord)
-    # chat_window = RSv2.ChatWindow(full_ss, global_rs_coord)
-    # offer_status =  grand_exchange.getOfferStatus()
+    template_item = cv2.imread(r'C:\Users\PPC\git\RS_BOT_2.0\lib\reference\dimension_test\items\4_item_slot (2).png')
 
     purchased_item = False
 
 
-    my_inventory = RSv2.Inventory(full_ss, global_rs_coord)
-    print my_inventory.findItem(full_ss,template_item)
-    # print my_inventory.getInventory([4])
-
-    blah = my_inventory.getAllItems()
+    # my_inventory = RSv2.Inventory(full_ss, global_rs_coord)
+    # print Mouse.clickRadius( my_inventory.findItem(full_ss,template_item))
+    # # print my_inventory.getInventory([4])
+    # blah = my_inventory.getAllItems()
 
 
     # for b in blah:
@@ -58,33 +52,38 @@ def margin_checker(full_ss):
 
 
 
+    grand_exchange = RSv2.GrandExchange(full_ss,global_rs_coord)
+    chat_window = RSv2.ChatWindow(full_ss, global_rs_coord)
+    offer_status =  grand_exchange.getOfferStatus()
+    for item in grand_exchange.getAllOffers():
+        print  item.getStatus()
+        # purchased_item = False
+        if item.getStatus() == "empty":
+            while purchased_item == False:
+                item.clickBuy()
+                # RandTime.randTime(0, 0, 0, 2, 0, 0)
+                RandTime.randomTime(2000,3000)
+                if chat_window.checkStatus(Screenshot.this(global_rs_coord)):
+                    Keyboard.type_this("air rune")
+                    # RandTime.randTime(0, 0, 0, 5, 0, 0)
+                    RandTime.randomTime(5000, 6000)
+                    # Keyboard.press("enter")
+                    chat_window.clickFoundItemHard(Screenshot.this(global_rs_coord))
+                    RandTime.randomTime(1000, 2000)
+                    # RandTime.randTime(0, 0, 0, 3, 0, 0)
 
-    # for item in grand_exchange.getAllOffers():
-    #     print  item.getStatus()
-    #     # purchased_item = False
-    #     if item.getStatus() == "empty":
-    #         while purchased_item == False:
-    #             item.clickBuy()
-    #             RandTime.randTime(0, 0, 0, 2, 0, 0)
-    #             if chat_window.checkStatus(Screenshot.this(global_rs_coord)):
-    #                 Keyboard.type_this("steel bar")
-    #                 RandTime.randTime(0, 0, 0, 5, 0, 0)
-    #                 # Keyboard.press("enter")
-    #                 chat_window.clickFoundItemHard(Screenshot.this(global_rs_coord))
-    #
-    #                 RandTime.randTime(0, 0, 0, 3, 0, 0)
-    #
-    #                 grand_exchange.updateImage(Screenshot.this(global_rs_coord))
-    #                 RandTime.randTime(0, 0, 0, 0,0, 50)
-    #                 # grand_exchange.increasePrice(1)
-    #                 grand_exchange.decreasePrice(5)
-    #                 # grand_exchange.setPrice("1")
-    #                 # grand_exchange.increasePrice(1)
-    #                 # grand_exchange.setQuantity("49")
-    #                 # RandTime.randTime(0, 0, 0, 3, 0, 0)
-    #                 grand_exchange.updateImage(Screenshot.this(global_rs_coord))
-    #                 grand_exchange.confirmPrice()
-    #                 purchased_item = True
+                    grand_exchange.updateImage(Screenshot.this(global_rs_coord))
+                    # RandTime.randTime(0, 0, 0, 0,0, 50)
+                    RandTime.randomTime(500, 1000)
+                    # grand_exchange.increasePrice(1)
+                    grand_exchange.decreasePrice(5)
+                    # grand_exchange.setPrice("1")
+                    # grand_exchange.increasePrice(1)
+                    # grand_exchange.setQuantity("49")
+                    # RandTime.randTime(0, 0, 0, 3, 0, 0)
+                    grand_exchange.updateImage(Screenshot.this(global_rs_coord))
+                    grand_exchange.confirmPrice()
+                    purchased_item = True
 
 
 
