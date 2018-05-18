@@ -76,7 +76,7 @@ def margin_checker(full_ss):
                     # RandTime.randTime(0, 0, 0, 0,0, 50)
                     RandTime.randomTime(500, 1000)
                     # grand_exchange.increasePrice(1)
-                    grand_exchange.decreasePrice(5)
+                    grand_exchange.increasePrice(5)
                     # grand_exchange.setPrice("1")
                     # grand_exchange.increasePrice(1)
                     # grand_exchange.setQuantity("49")
@@ -104,8 +104,13 @@ if __name__ == '__main__':
 
 
 
-    margin_checker(full_ss)
+    # margin_checker(full_ss)
 
+    grand_exchange = RSv2.GrandExchange(full_ss, global_rs_coord)
+    print grand_exchange.getOfferStatus()
+
+    grand_exchange.updateImage(Screenshot.this(global_rs_coord))
+    grand_exchange.checkOfferCompletion()
     # chat_window = RSv2.ChatWindow(full_ss, global_rs_coord)
 
     # chat_window.clickFoundItem(full_ss,template_item)
@@ -113,13 +118,7 @@ if __name__ == '__main__':
 
 
 
-    # death_rune = cv2.imread(r'C:\Users\PPC\git\RS_BOT_2.0\lib\reference\dimension_test\items\0_item_slot.png', 0)
-    # death_rune = cv2.imread(r'C:\Users\PPC\git\RS_BOT_2.0\lib\reference\dimension_test\items\8340.png', 0)
 
-    # my_inventory = RSv2.Inventory(full_ss,global_rs_coord)
-    # print my_inventory.findItem(full_ss,my_inventory)
-    # print my_inventory.getInventory([4])
-    # my_inventory.screenShotInventory(full_ss)
 
     # print my_inventory.getAllItems()
     # print

@@ -11,6 +11,8 @@ import Match
 import Mouse
 import RandTime
 import Keyboard
+import RSTools
+import re
 
 import GameConstants as GC
 
@@ -374,6 +376,29 @@ class GrandExchange(RunescapeObject):
 
             # for key,value in dict.iteritems():
             #     print value.getStatus()
+    def checkOfferCompletion(self):
+
+        ge_window = Screenshot.crop(self.global_rs_image,self.self_window_coord)
+
+        rg_bought = re.compile("^.*of (.+)( | so far)")
+        rg_price = re.compile("^.*of (.+) coins.+$")
+        # rg_price = re.compile("^.*of (\d+(|\,)\d+) coins.+$")
+
+        actual_total_bought= RSTools.read_text(Screenshot.crop(ge_window, [122,242,330,257]))#.replace(" ", "")
+        actual_total_price = RSTools.read_text( Screenshot.crop(ge_window, [122, 257, 330, 272]))#.replace(" ", "")
+
+        print actual_total_bought
+        print actual_total_price
+
+        print re.search(rg_bought,actual_total_bought).group(1).replace("o","0")
+        print re.search(rg_price, actual_total_price).group(1).replace("o","0")
+
+
+        # cv2.imwrite("blahbasdflah.png", actual_total_price)
+
+
+
+
 
     def getOffers(self,num):
         return self.all_ge_offers[num]
