@@ -50,7 +50,7 @@ def read_text(img_rgb):
 
     ret, final = cv2.threshold(final, 80, 255, cv2.THRESH_BINARY)
     # ret, final = cv2.threshold(final, 70, 255, cv2.THRESH_BINARY)
-    final = cv2.resize(final, (0, 0), fx=2, fy=2)
+    final = cv2.resize(final, (0, 0), fx=5, fy=5)
     cv2.imwrite("blahblah.png", final)
     text = pytesseract.image_to_string(final, lang="Runescape", boxes=False,
                                        config="--psm 4 --eom 3 -c tessedit_char_whitelist=-01234567890coinseachfar=,")

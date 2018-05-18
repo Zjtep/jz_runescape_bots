@@ -380,18 +380,27 @@ class GrandExchange(RunescapeObject):
 
         ge_window = Screenshot.crop(self.global_rs_image,self.self_window_coord)
 
-        rg_bought = re.compile("^.*of (.+)( | so far)")
-        rg_price = re.compile("^.*of (.+) coins.+$")
+        rg_bought = re.compile("^.*of(\d+)")
+        rg_price = re.compile("^.*of(\d+)coins")
         # rg_price = re.compile("^.*of (\d+(|\,)\d+) coins.+$")
 
-        actual_total_bought= RSTools.read_text(Screenshot.crop(ge_window, [122,242,330,257]))#.replace(" ", "")
+        actual_total_bought= RSTools.read_text(Screenshot.crop(ge_window, [122,242,330,257]))
+        actual_total_bought = actual_total_bought.replace(" ", "")
+        actual_total_bought = actual_total_bought.replace(",", "")
         actual_total_price = RSTools.read_text( Screenshot.crop(ge_window, [122, 257, 330, 272]))#.replace(" ", "")
+        actual_total_price = actual_total_price.replace(" ", "")
+        actual_total_price = actual_total_price.replace(",", "")
 
         print actual_total_bought
         print actual_total_price
 
-        print re.search(rg_bought,actual_total_bought).group(1).replace("o","0")
-        print re.search(rg_price, actual_total_price).group(1).replace("o","0")
+        return_total_bought= int(re.search(rg_bought,actual_total_bought).group(1))#.replace("o","0")
+        return_total_price = int(re.search(rg_price, actual_total_price).group(1))#.replace("o","0")
+
+        print return_total_bought
+        print return_total_price
+        print return_total_price*1.0/return_total_bought
+
 
 
         # cv2.imwrite("blahbasdflah.png", actual_total_price)

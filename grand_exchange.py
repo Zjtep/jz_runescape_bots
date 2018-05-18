@@ -107,7 +107,7 @@ if __name__ == '__main__':
     # margin_checker(full_ss)
 
     grand_exchange = RSv2.GrandExchange(full_ss, global_rs_coord)
-    print grand_exchange.getOfferStatus()
+    # print grand_exchange.getOfferStatus()
 
     grand_exchange.updateImage(Screenshot.this(global_rs_coord))
     grand_exchange.checkOfferCompletion()
