@@ -302,8 +302,8 @@ class GrandExchange(RunescapeObject):
 
         found_coord = [self.self_window_coord[0]+found[0],self.self_window_coord[1]+found[1],self.self_window_coord[0]+ found[2],
                        self.self_window_coord[1] + found[3]]
-        crop = Screenshot.crop(self.global_rs_image, found_coord)
-        cv2.imwrite(r'C:\Users\PPC\git\RS_BOT_2.0\aaaaacrop.png', crop)
+        # crop = Screenshot.crop(self.global_rs_image, found_coord)
+        # cv2.imwrite(r'C:\Users\PPC\git\RS_BOT_2.0\aaaaacrop.png', crop)
         Mouse.clickRadius(self._calculateGlobalCoord(self.global_rs_coord, found_coord))
         # Mouse.win32ClickRadius(self._calculateGlobalCoord(self.global_rs_coord, found_coord))
         # Mouse.win32MoveToRadius(self._calculateGlobalCoord(self.global_rs_coord, found_coord))
@@ -376,35 +376,64 @@ class GrandExchange(RunescapeObject):
 
             # for key,value in dict.iteritems():
             #     print value.getStatus()
-    def checkOfferCompletion(self):
 
+    def checkSingleOffer(self):
+        self.populateOfferDict()
+
+    def populateOfferDict(self):
         ge_window = Screenshot.crop(self.global_rs_image,self.self_window_coord)
+        cv2.imwrite('C:\Users\PPC\git\RS_BOT_2.0\cge_window.png', ge_window)
+
+        item_name = RSTools.readAllText(Screenshot.crop(ge_window, [173,43,330,64]))
+        item_name = item_name.replace(" ", "")
+
+        quantity = RSTools.readNumbers(Screenshot.crop(ge_window, [50,158,210,177]))
+        if quantity == "":
+            quantity = RSTools.readSingleNumbers(Screenshot.crop(ge_window, [50, 158, 210, 177]))
+        quantity = int(quantity.replace(",",""))
+
+        rg_price_per_item = re.compile("^(\d+) coins")
+        price_per_item = RSTools.readNumbers(Screenshot.crop(ge_window, [276, 160, 429, 177]))
+        price_per_item = int(re.search(rg_price_per_item, price_per_item).group(1).replace(",",""))
+
+        # cv2.imwrite('C:\Users\PPC\git\RS_BOT_2.0\citem_name.png', Screenshot.crop(ge_window, [55,160,210,177]))
 
         rg_bought = re.compile("^.*of(\d+)")
-        rg_price = re.compile("^.*of(\d+)coins")
-        # rg_price = re.compile("^.*of (\d+(|\,)\d+) coins.+$")
+        current_total_bought= RSTools.readNumbers(Screenshot.crop(ge_window, [122,242,330,257]))
+        current_total_bought = current_total_bought.replace(" ", "")
+        current_total_bought = current_total_bought.replace(",", "")
+        return_total_bought= int(re.search(rg_bought,current_total_bought).group(1))
 
-        actual_total_bought= RSTools.read_text(Screenshot.crop(ge_window, [122,242,330,257]))
-        actual_total_bought = actual_total_bought.replace(" ", "")
-        actual_total_bought = actual_total_bought.replace(",", "")
-        actual_total_price = RSTools.read_text( Screenshot.crop(ge_window, [122, 257, 330, 272]))#.replace(" ", "")
+        rg_price = re.compile("^.*of(\d+)coins")
+        actual_total_price = RSTools.readNumbers( Screenshot.crop(ge_window, [122, 257, 330, 272]))#.replace(" ", "")
         actual_total_price = actual_total_price.replace(" ", "")
         actual_total_price = actual_total_price.replace(",", "")
-
-        print actual_total_bought
-        print actual_total_price
-
-        return_total_bought= int(re.search(rg_bought,actual_total_bought).group(1))#.replace("o","0")
         return_total_price = int(re.search(rg_price, actual_total_price).group(1))#.replace("o","0")
 
-        print return_total_bought
-        print return_total_price
-        print return_total_price*1.0/return_total_bought
+        return {'item_name': item_name,
+               'total_quantity':quantity,
+               'offer_price':price_per_item,
+               'bought_quantity': return_total_bought,
+               'bought_price': return_total_price
+               }
 
+    def clickBack(self):
+        # found = [217,200,217,200]
+        found = [19, 258,44, 277]
+
+        found_coord = [self.self_window_coord[0] + found[0],
+                       self.self_window_coord[1] + found[1],
+                       self.self_window_coord[0] + found[2],
+                       self.self_window_coord[1] + found[3]]
+        Mouse.clickRadius(self._calculateGlobalCoord(self.global_rs_coord, found_coord))
+
+
+        # RandTime.randTime(0, 0, 0, 2, 0, 0)
+        # Keyboard.type_this(quantity)
+        # Keyboard.press("enter")
 
 
         # cv2.imwrite("blahbasdflah.png", actual_total_price)
-
 
 
 
@@ -475,9 +504,19 @@ class ExchangeOffers(RunescapeObject):
             # Mouse.win32MoveToRadius(self._calculateGlobalCoord(self.global_self_coord,found_coord))
             # Mouse.win32ClickRadius(self._calculateGlobalCoord(self.global_self_coord, found_coord))
             Mouse.clickRadius(self._calculateGlobalCoord(self.global_self_coord, found_coord))
-            # Mouse.win32MoveTo(found_coord[2],found_coord[3])
             # return "we buying"
         # return "can't find"
+
+    def clickOffer(self):
+
+        crop_down = [self.global_self_coord[0]+3,
+                     self.global_self_coord[1] +10,
+                     self.global_self_coord[2]-7,
+                     self.global_self_coord[3] - 20,
+        ]
+
+        Mouse.clickRadius(crop_down)
+
 
 
     def getStatus(self):

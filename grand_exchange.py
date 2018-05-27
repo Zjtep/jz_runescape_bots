@@ -86,6 +86,21 @@ def margin_checker(full_ss):
                     purchased_item = True
 
 
+def checkAllOffers(full_ss):
+
+    grand_exchange = RSv2.GrandExchange(full_ss, global_rs_coord)
+    # print grand_exchange.getOfferStatus()
+
+    grand_exchange.updateImage(Screenshot.this(global_rs_coord))
+
+    for item in grand_exchange.getAllOffers():
+        print  item.getStatus()
+        if item.getStatus() != "empty":
+            item.clickOffer()
+            grand_exchange.updateImage(Screenshot.this(global_rs_coord))
+            print grand_exchange.populateOfferDict()
+            grand_exchange.clickBack()
+            grand_exchange.updateImage(Screenshot.this(global_rs_coord))
 
 if __name__ == '__main__':
 
@@ -103,14 +118,13 @@ if __name__ == '__main__':
 
 
 
+    air_rune = ['air rune', r'C:\Users\PPC\git\RS_BOT_2.0\lib\reference\dimension_test\items\4_item_slot (2).png']
 
     # margin_checker(full_ss)
+    checkAllOffers(full_ss)
 
-    grand_exchange = RSv2.GrandExchange(full_ss, global_rs_coord)
-    # print grand_exchange.getOfferStatus()
 
-    grand_exchange.updateImage(Screenshot.this(global_rs_coord))
-    grand_exchange.checkOfferCompletion()
+
     # chat_window = RSv2.ChatWindow(full_ss, global_rs_coord)
 
     # chat_window.clickFoundItem(full_ss,template_item)
