@@ -109,6 +109,25 @@ def readAllText(img_rgb):
 
     return text
 
+def waitFor(image,img_rgb):
+    time_entered = time.time()
+    # could add a failsafe in here incase we misclick or something, this
+    # should be something to come back to
+    failsafe_count = 0
+    while (True):
+        found = Match.this(img_rgb,image)
+
+        if found != None:
+            break
+        elif failsafe_count > 10:
+            print("We can't seem to fix the problem so the script is now aborting")
+            quit()
+        elif time.time() - time_entered > 5:
+            failsafe_count += 1
+            print('We appear to be stuck so attempting to move the mouse and see if this fixes it')
+            time_entered = time.time()
+
+
 # if __name__ == '__main__':
 #     screen_shot_inventory()
 #     print readAllText(cv2.imread(r"C:\Users\PPC\git\RS_BOT_2.0\lib\reference\dimension_test\price_test3\adfafdsafdsafdsafdsfadsfdsa.PNG"))

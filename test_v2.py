@@ -10,6 +10,7 @@ from core import Match
 import numpy
 from PIL import Image
 import os
+import pyautogui
 
 def transparent_test():
 
@@ -325,49 +326,22 @@ def trans_3():
     cv2.waitKey(0)
     # cv2.imwrite(r"C:\Users\PPC\git\RS_BOT_2.0\lib\reference\dimension_test\items\blah.png", img)
 
+def test_pyautogui():
+
+    blah = pyautogui.locateOnScreen(r'C:\Users\PPC\git\RS_BOT_2.0\lib\merchant_bot\anchor\status_buy_button.png')
+    blah2 = list(pyautogui.locateAllOnScreen(
+        r'C:\Users\PPC\git\RS_BOT_2.0\lib\merchant_bot\anchor\status_buy_button.png'))
+
+
+    print  blah
+    print  blah2
 
 if __name__ == '__main__':
-    # full_ss = cv2.imread(r'C:\Users\PPC\git\RS_BOT_2.0\dry_run.png')
-    # full_ss = cv2.imread(r'C:\Users\PPC\git\RS_BOT_2.0\lib\reference\dimension_test\items\19 Apr 2018 22-56-52.png')
-    # bag_icon = cv2.imread(r'C:\Users\PPC\git\RS_BOT_2.0\lib\merchant_bot\anchor\bag_icon.png', 0)
-    #
-    #
-    #
-    # full_ss = cv2.imread(r'C:\Users\PPC\git\RS_BOT_2.0\lib\reference\dimension_test\items\00_item_slot.png')
-    # bag_icon = cv2.imread(r'C:\Users\PPC\git\RS_BOT_2.0\lib\reference\dimension_test\items\10_item_slot.png', 0)
-    #
-    # found =  this(full_ss,bag_icon)
-    # print found
-    # w, h = bag_icon.shape
-    # # height, width = status_buy_button.shape
-    #
-    # # cv2.imshow("images", np.hstack([bag_icon]))
-    # # cv2.waitKey(0)
-    #
-    # cv2.imshow('Detected', bag_icon)
-    # cv2.waitKey(0)
-
-    # clean_chat_page()
-    # trans_3()
 
 
+    print test_pyautogui()
 
-
-
-    # cv2.rectangle(full_ss, (found[0],found[1]), (found[0]+w,found[1]+h), (0, 0, 255), 2)
-    # cv2.imshow("images", np.hstack([full_ss]))
-    # cv2.waitKey(0)
-
-
-
-
-
-
-
-
-
-
-    transparent_test()
+    # transparent_test()
     # print tran_match()
 
     # template_path = r"C:\Users\PPC\git\RS_BOT_2.0\lib\reference\dimension_test\items\NMk3j.png"

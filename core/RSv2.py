@@ -468,15 +468,6 @@ class ExchangeOffers(RunescapeObject):
         # self.global_self_coord = self._calculateGlobalCoord(global_rs_coord,self_window_coord )
         # self.all_ge_offers = self._setupAllGEOffers(self_window_coord)
 
-
-    # def _setGlobalCoord(self,rs_window_coord,full_coord):
-    #
-    #     x1 = rs_window_coord[0]+ full_coord[0]
-    #     y1= rs_window_coord[1] + full_coord[1]
-    #     x2= rs_window_coord[0] + full_coord[2]
-    #     y2 = rs_window_coord[1] + full_coord[3]
-    #     return [x1,y1,x2,y2]
-
     def setStatus(self):
 
         template = GC.status_buy_icon
@@ -491,8 +482,6 @@ class ExchangeOffers(RunescapeObject):
         if Match.this(self.global_rs_image, template):
             return "empty"
 
-    def buyItem(self):
-        pass
 
     def clickBuy(self):
         template = GC.status_buy_button
@@ -510,17 +499,39 @@ class ExchangeOffers(RunescapeObject):
     def clickOffer(self):
 
         crop_down = [self.global_self_coord[0]+3,
-                     self.global_self_coord[1] +10,
+                     self.global_self_coord[1]+10,
                      self.global_self_coord[2]-7,
-                     self.global_self_coord[3] - 20,
+                     self.global_self_coord[3]-20,
         ]
 
         Mouse.clickRadius(crop_down)
 
 
-
     def getStatus(self):
         return self.status
+
+
+class item():
+    def __init__(self, name, limit):
+        self.item_name = name
+        self.limit = limit
+        self.number_available_to_buy = limit
+        # self.image_in_ge_search = check_if_image_exists(name)
+        self.price_instant_bought_at = None
+        self.price_instant_sold_at = None
+        self.current_state = None # this will track if the item is currently being bought, sold or neither (None)
+
+    def set_price_instant_bought_at(self, price):
+        self.price_instant_bought_at = price
+
+    def set_price_instant_sold_at(self, price):
+        self.price_instant_sold_at = price
+
+    def set_quantity_to_buy(self, number):
+        self.quantity_to_buy = number
+
+    def set_current_state(self, state):
+        self.current_state = state
 
 
 class Bank(RunescapeObject):
@@ -538,15 +549,6 @@ class ChatWindow(RunescapeObject):
         self.WINDOWSIZE = GC.chat_window_dimensions
 
         self.self_window_coord = self.setSelfWindowCoord(self.global_rs_image)
-        # print "self.self_window_coord",self.self_window_coord
-        # Screenshot.save("asdfasdfasdf.png",self._calculateGlobalCoord(self.global_rs_coord,self.self_window_coord))
-        # crop = Screenshot.crop(self.global_rs_image,self.self_window_coord)
-        # cv2.imwrite('C:\Users\PPC\git\RS_BOT_2.0\crop.png', crop)
-
-        # print self.self_window_coord
-        # self.global_self_coord = self._calculateGlobalCoord(global_rs_coord,self_window_coord )
-        # crop = Screenshot.crop(self.global_rs_image, self.global_self_coord)
-        # cv2.imwrite(r'C:\Users\PPC\git\RS_BOT_2.0\aaaaacrop.png', crop)
     def setSelfWindowCoord(self,img_rgb):
 
         # off_set = [-7, -7]
@@ -560,8 +562,6 @@ class ChatWindow(RunescapeObject):
         print match
 
         if match:
-
-
             return_coord = [match[0] + off_set[0],
                             match[1] + off_set[1],
                             match[2] + off_set[0] + self.WINDOWSIZE[0],
