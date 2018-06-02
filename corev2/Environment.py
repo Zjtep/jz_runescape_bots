@@ -6,6 +6,8 @@ import time
 import cv2
 import numpy
 import os
+import items_to_merch_module
+import GameConstants as GC
 
 
 def detect_runescape_windows():  # this function will detect how many runescape windows are present and where they are
@@ -42,8 +44,8 @@ def count_ge_slots(top_left_corner, bottom_right_corner):
     # Screenshot.save("bpang.png",[top_left_corner[0],top_left_corner[1],bottom_right_corner[0],bottom_right_corner[1]])
     width = bottom_right_corner[0] - top_left_corner[0]
     height = bottom_right_corner[1] - top_left_corner[1]
-    list_of_ge_slots = list(pyautogui.locateAllOnScreen(
-        r'C:\Users\PPC\git\RS_BOT_2.0\lib\merchant_bot\anchor/status_buy_button.png', region=(top_left_corner[0], top_left_corner[1], width, height)))
+    list_of_ge_slots = list(pyautogui.locateAllOnScreen(os.path.join(GC.anchor_path,"member_slot2.png"), region=(top_left_corner[0], top_left_corner[1], width, height)))
+    print list_of_ge_slots
     return(list_of_ge_slots)
 
 def check_if_image_exists(item_name):
@@ -52,6 +54,31 @@ def check_if_image_exists(item_name):
         return(file_name)
     else:
         print "missing %s image" %item_name
+
+def items_to_merch(member_status):
+    if member_status:
+        items_to_merch = []
+        # below is a list of members items to merch
+        list_of_items = items_to_merch_module.p2p_items()
+        # list_of_item_limits = gelimitfinder.find_ge_limit(list_of_items)
+        list_of_item_limits = items_to_merch_module.p2p_items_limit()
+        for i in range(len(list_of_item_limits)):
+            list_of_item_limits[i] -= 1
+        for i in range(len(list_of_items)):
+            items_to_merch.append(item(list_of_items[i], list_of_item_limits[i]))
+        # we are a member so initialise a members item list
+    else:
+        items_to_merch = []
+        # below is a list of f2p items to merch
+        list_of_items = items_to_merch_module.f2p_items()
+        # list_of_item_limits = gelimitfinder.find_ge_limit(list_of_items)
+        list_of_item_limits =  items_to_merch_module.f2p_items_limit()
+        for i in range(len(list_of_item_limits)):
+            list_of_item_limits[i] -= 1
+        for i in range(len(list_of_items)):
+            items_to_merch.append(item(list_of_items[i], list_of_item_limits[i]))
+        # we are f2p so initialise a f2p item list
+    return(items_to_merch)
 
 
 class runescape_instance():
@@ -70,8 +97,8 @@ class runescape_instance():
         self.last_action_time = time.time()
         # examines money to make the above line accurate
         # examine_money(position)
-        # self.items_to_merch = items_to_merch(self.member_status)
-        # self.list_of_items_on_cooldown = []
+        self.items_to_merch = items_to_merch(self.member_status)
+        self.list_of_items_on_cooldown = []
         self.number_of_empty_ge_slots = empty_ge_slot_check(self.list_of_ge_slots)
         # print('Initialised a window with {}Kgp and {} ge slots'.format(int(self.money/1000), self.number_of_empty_ge_slots))
         if self.member_status:
@@ -80,6 +107,7 @@ class runescape_instance():
         elif not self.member_status:
             if self.number_of_empty_ge_slots != 3:
                 input("Missing 3 Slots for none members.")
+                # print ("Missing 3 Slots for none members.")
 
     def update_profit(self, number):
         self.profit = self.profit+number
@@ -92,6 +120,9 @@ class runescape_instance():
 
     def set_time_of_last_action(self):
         self.last_action_time = time.time()
+
+    def add_single_item_to_cooldown(self, item):
+        self.list_of_items_on_cooldown.append((item.item_name, time.time(), 1, item))
 
     # def add_to_items_on_cooldown(self, item):
     #     self.list_of_items_on_cooldown.append((item.item_name, time.time(), item.quantity_to_buy, item))
@@ -130,7 +161,7 @@ class item():
     def __init__(self, name, limit):
         self.item_name = name
         self.limit = limit
-        self.number_available_to_buy = limit
+        self.number_available_to_buy = 50
         self.image_in_ge_search = check_if_image_exists(name)
         self.price_instant_bought_at = None
         self.price_instant_sold_at = None

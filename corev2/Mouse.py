@@ -1,7 +1,7 @@
 import pyautogui
 import RandTime
 import random
-
+import time
 
 def click():
     #autopy.mouse.click()
@@ -12,8 +12,10 @@ def click():
     pyautogui.mouseUp(button='left')
 
 def move_to_radius(coord):
-    x = random.randint(coord[0],coord[2])
-    y= random.randint(coord[1],coord[3])
+    coord = list(coord)
+
+    x = random.randint(coord[0]+6,coord[2]+coord[0]-6)
+    y = random.randint(coord[1]+6,coord[3]+coord[1]-6)
 
     speed = 0.5
         # duration_of_move=duration
@@ -28,8 +30,10 @@ def move_to_radius(coord):
     pyautogui.moveTo(x, y, duration_of_move, pyautogui.easeInOutQuad)
 
 def click_radius(coord):
-    x = random.randint(coord[0]+6,coord[2]-6)
-    y= random.randint(coord[1]+6,coord[3]-6)
+    coord = list(coord)
+
+    x = random.randint(coord[0]+6,coord[2]+coord[0]-6)
+    y = random.randint(coord[1]+6,coord[3]+coord[1]-6)
 
     speed = 0.5
         # duration_of_move=duration
@@ -43,3 +47,49 @@ def click_radius(coord):
     # calculated
     pyautogui.moveTo(x, y, duration_of_move, pyautogui.easeInOutQuad)
     click()
+
+
+def move_mouse_to_click(x, y):
+    # takes current mouse location and stores it
+    while(True):
+        try:
+            curr_x, curr_y = pyautogui.position()
+            # calculates the distance from current position to target position
+            distance = int(((x - curr_x)**2 + (y - curr_y)**2)**0.5)
+            # calculates a random time to make the move take based on the distance
+            duration_of_move = (distance * random.random() / 2000) + 0.5
+            # move the mouse to our position and takes the time of our duration just
+            # calculated
+            pyautogui.moveTo(x, y, duration_of_move, pyautogui.easeInOutQuad)
+            click()
+            #pyautogui.moveTo(x, y, duration_of_move, pyautogui.easeOutElastic)
+            break
+        except:
+            print('paused for 10 seconds')
+            time.sleep(10)
+
+def move_mouse_to(x, y):
+    # takes current mouse location and stores it
+    while(True):
+        try:
+            curr_x, curr_y = pyautogui.position()
+            # calculates the distance from current position to target position
+            distance = int(((x - curr_x)**2 + (y - curr_y)**2)**0.5)
+            # calculates a random time to make the move take based on the distance
+            duration_of_move = (distance * random.random() / 2000) + 0.5
+            # move the mouse to our position and takes the time of our duration just
+            # calculated
+            pyautogui.moveTo(x, y, duration_of_move, pyautogui.easeInOutQuad)
+            #pyautogui.moveTo(x, y, duration_of_move, pyautogui.easeOutElastic)
+            break
+        except:
+            print('paused for 10 seconds')
+            time.sleep(10)
+
+
+
+def random_point(top_left, bottom_right):
+    x = random.randint(top_left[0], bottom_right[0])
+    y = random.randint(top_left[1], bottom_right[1])
+    point = (x,y)
+    return(point)

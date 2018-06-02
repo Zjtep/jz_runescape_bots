@@ -18,3 +18,26 @@ def type_this(strings):
         # delay after key UP--next key 
 
 
+def press(button):
+    if button == 'enter':
+        # autopy.key.toggle(autopy.key.K_RETURN, True)
+        pyautogui.keyDown('enter')
+        RandTime.randTime(0,0,1,0,0,1)
+        # autopy.key.toggle(autopy.key.K_RETURN, False)
+        pyautogui.keyUp('enter')
+    elif button == 'f5' or button == 'spec':
+        pyautogui.keyDown('f5')
+        RandTime.randTime(0,0,1,0,0,1)
+        pyautogui.keyUp('f5')
+    elif button == 'f1' or button == 'inventory':
+        pyautogui.keyDown('f1')
+        RandTime.randTime(0, 0, 1, 0, 0, 1)
+        pyautogui.keyUp('f1')
+    elif button == 'f3' or button == 'prayer':
+        pyautogui.keyDown('f3')
+        RandTime.randTime(0, 0, 1, 0, 0, 1)
+        pyautogui.keyUp('f3')
+    elif button == 'f4' or button == 'magic':
+        pyautogui.keyDown('f4')
+        RandTime.randTime(0, 0, 1, 0, 0, 1)
+        pyautogui.keyUp('f4')

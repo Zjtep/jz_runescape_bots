@@ -28,6 +28,7 @@ Runescape Macro/Automations with openCV
 - mongodDB
 - Posgress
 - Need to find a way to reset bot once it goes out of sync
+- Need to save status of bot if it crashes
 - Scoring system to find best items to buy/sell
 
 
