@@ -336,10 +336,13 @@ def test_pyautogui():
     print  blah
     print  blah2
 
+import random
 if __name__ == '__main__':
 
 
-    print test_pyautogui()
+    # print test_pyautogui()
+
+    print random.randint(5,10)
 
     # transparent_test()
     # print tran_match()

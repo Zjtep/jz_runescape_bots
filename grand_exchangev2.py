@@ -1,24 +1,27 @@
 import win32api
 import time
-# from core import RS
-# from core import RSv2
-from corev2 import Environment
+
 import pyautogui
 import cv2
+import random
+import os
+import numpy
+import re
+
 from corev2 import Screenshot
 from corev2 import Mouse
 # from corev2 import Match
 from corev2 import RandTime
 from corev2 import Keyboard
 from corev2 import GameConstants as GC
-import random
-import os
+from corev2 import RSTools
+from corev2 import Environment
 
 def buy_item(runescape_window, ge_slot):
     # click the correct buy bag
     move_mouse_to_image_within_region(r'C:\Users\PPC\git\RS_BOT_2.0\lib\merchant_bot\anchor\status_buy_button.png', ge_slot)
     # pyautogui.click()
-    wait_for(r'C:\Users\PPC\git\RS_BOT_2.0\lib\merchant_bot\anchor\set_up_offer_title.png', runescape_window)
+    RSTools.wait_for(r'C:\Users\PPC\git\RS_BOT_2.0\lib\merchant_bot\anchor\set_up_offer_title.png', runescape_window)
     # # click search box
     # move_mouse_to_image_within_region('Tools/screenshots/search_box.png', runescape_window)
     # pyautogui.click()
@@ -26,7 +29,7 @@ def buy_item(runescape_window, ge_slot):
     # random_typer(str(ge_slot.item.item_name))
     Keyboard.type_this("death rune")
     # wait_for(ge_slot.item.image_in_ge_search, runescape_window)
-    wait_for(r"C:\Users\PPC\git\RS_BOT_2.0\lib\merchant_bot\items\regular\Death_rune.png", runescape_window)
+    RSTools.wait_for(r"C:\Users\PPC\git\RS_BOT_2.0\lib\merchant_bot\items\regular\Death_rune.png", runescape_window)
     # # click item
     # move_mouse_to_image_within_region(ge_slot.item.image_in_ge_search, runescape_window)
     move_mouse_to_image_within_region(r"C:\Users\PPC\git\RS_BOT_2.0\lib\merchant_bot\items\regular\Death_rune.png",
@@ -65,17 +68,17 @@ def buy_item(runescape_window, ge_slot):
     # time.sleep(2+random.random())
     # ge_slot.set_image_of_slot()
 
-def find_up_to_date_sell_price(runescape_window, ge_slot):
+def find_up_to_date_buy_price(runescape_window, ge_slot):
     # click correct buy bag
     # move_mouse_to_image_within_region('Tools/screenshots/buy_bag.png', ge_slot)
     move_mouse_to_image_within_region(os.path.join(GC.anchor_path, "status_buy_button.png"),ge_slot)
 
-    wait_for(os.path.join(GC.anchor_path, "set_up_offer_title.png"), runescape_window)
+    RSTools.wait_for(os.path.join(GC.anchor_path, "set_up_offer_title.png"), runescape_window)
     RandTime.randomTime(200, 270)
     Keyboard.type_this(ge_slot.item.item_name)
 
     # wait_for(r"C:\Users\PPC\git\RS_BOT_2.0\lib\merchant_bot\items\regular\Death_rune.png", runescape_window)
-    wait_for(ge_slot.item.image_in_ge_search, runescape_window)
+    RSTools.wait_for(ge_slot.item.image_in_ge_search, runescape_window)
 
     move_mouse_to_image_within_region(ge_slot.item.image_in_ge_search,runescape_window)
 
@@ -93,21 +96,25 @@ def find_up_to_date_sell_price(runescape_window, ge_slot):
     runescape_window.add_single_item_to_cooldown(ge_slot.item)
     ge_slot.item.update_number_available_to_buy(ge_slot.item.number_available_to_buy-1)
 
-    wait_for(os.path.join(GC.anchor_path, "main_ge_anchor.png"), runescape_window)
+    RSTools.wait_for(os.path.join(GC.anchor_path, "main_ge_anchor.png"), runescape_window)
     print" done"
 
     # # collect item
     collect_items_from_ge_slot(ge_slot, runescape_window)
+    move_mouse_to_image_within_region(os.path.join(GC.anchor_path, "sale_history_button.png"), runescape_window)
+
     # # click sale history
     # move_mouse_to_image_within_region('Tools/screenshots/sale_history_button.png', runescape_window)
     # pyautogui.click()
+    RSTools.wait_for(os.path.join(GC.anchor_path, "sale_history_check.png"), runescape_window)
     # wait_for('Tools/screenshots/sale_history_check.png', runescape_window)
     # # check price
-    # buy_price = check_price(runescape_window)
+    buy_price = check_price(runescape_window)
+    print buy_price
     # # update price
-    # ge_slot.item.set_price_instant_bought_at(buy_price)
+    ge_slot.item.set_price_instant_bought_at(buy_price)
     # # updating the amount of money in the window
-    # runescape_window.update_money(runescape_window.money-buy_price)
+    runescape_window.update_money(runescape_window.money-buy_price)
     # # click grand exchange window
     # move_mouse_to_box('Tools/screenshots/grand_exchange_button.png',
     # 					runescape_window.top_left_corner, runescape_window.bottom_right_corner)
@@ -118,6 +125,19 @@ def find_up_to_date_sell_price(runescape_window, ge_slot):
     # print('{} instantly bought for a price of {}'.format(ge_slot.item.item_name, ge_slot.item.price_instant_bought_at))
 
 
+def check_price(runescape_window):
+    off_set = [334,57,-305,-400]
+    loc_of_price = (runescape_window.top_left_corner[0] +off_set[0], runescape_window.top_left_corner[1]+off_set[1],
+        runescape_window.bottom_right_corner[0] +off_set[2], runescape_window.bottom_right_corner[1]+off_set[3])
+    im = Screenshot.this(list(loc_of_price))
+    # cv2.imwrite("basdf.png",im)
+    raw_string = RSTools.readNumbers(im)
+    raw_string = raw_string.replace(",","")
+    my_regex = re.compile("^(\d+)")
+    price = int(re.search(my_regex, raw_string).group(1))
+
+    return price
+
 def collect_items_from_ge_slot(ge_slot, runescape_window):
     point_to_click = Mouse.random_point(ge_slot.top_left_corner, ge_slot.bottom_right_corner)
     # point_to_click  = (ge_slot.top_left_corner[0], ge_slot.top_left_corner[0], 115, 110)
@@ -125,7 +145,7 @@ def collect_items_from_ge_slot(ge_slot, runescape_window):
     #
     Mouse.move_mouse_to_click(point_to_click[0], point_to_click[1])
 
-    wait_for(os.path.join(GC.anchor_path,"completed_offer_page.png"), runescape_window)
+    RSTools.wait_for(os.path.join(GC.anchor_path,"completed_offer_page.png"), runescape_window)
     # point_of_item_collection_box_1 = Mouse.random_point((runescape_window.bottom_right_corner[0] - 303, runescape_window.bottom_right_corner[
     #                                                            1] - 166), (runescape_window.bottom_right_corner[0] - 273, runescape_window.bottom_right_corner[1] - 138))
     # point_of_item_collection_box_2 = Mouse.random_point((runescape_window.bottom_right_corner[0] - 254, runescape_window.bottom_right_corner[
@@ -138,37 +158,12 @@ def collect_items_from_ge_slot(ge_slot, runescape_window):
 
     Mouse.click_radius(point_of_item_collection_box_1)
     Mouse.click_radius(point_of_item_collection_box_2)
-    wait_for(os.path.join(GC.anchor_path, "main_ge_anchor.png"), runescape_window)
+    RSTools.wait_for(os.path.join(GC.anchor_path, "main_ge_anchor.png"), runescape_window)
     # realmouse.move_mouse_to(point_of_item_collection_box_2[0], point_of_item_collection_box_2[1])
     # pyautogui.click()
     # realmouse.move_mouse_to(point_of_item_collection_box_1[0], point_of_item_collection_box_1[1])
     # pyautogui.click()
     # wait_for('Tools/screenshots/lent_item_box.png', runescape_window)
-
-def wait_for(image, runescape_window):
-    # adding a possible failsafe in here
-    time_entered = time.time()
-    # could add a failsafe in here incase we misclick or something, this
-    # should be something to come back to
-    failsafe_count = 0
-    while(True):
-        found = pyautogui.locateOnScreen(image, region=(runescape_window.top_left_corner[0], runescape_window.top_left_corner[1], runescape_window.bottom_right_corner[
-                                         0] - runescape_window.top_left_corner[0], runescape_window.bottom_right_corner[1] - runescape_window.top_left_corner[1]))
-        if found != None:
-            break
-        elif failsafe_count > 10:
-            print("We can't seem to fix the problem so the script is now aborting")
-            quit()
-        elif time.time()-time_entered > 5 :
-            failsafe_count += 1
-            print('We appear to be stuck so attempting to move the mouse and see if this fixes it')
-            #print('For debug:')
-            #print(runescape_window.bottom_right_corner[0], runescape_window.top_left_corner[0])
-            #print(runescape_window.bottom_right_corner[1], runescape_window.top_left_corner[1])
-            # realmouse.move_mouse_to(random.randint(runescape_window.top_left_corner[0], runescape_window.bottom_right_corner[0]), random.randint(runescape_window.top_left_corner[1], runescape_window.bottom_right_corner[1]))
-            #pyautogui.click()
-            time_entered = time.time()
-
 
 def move_mouse_to_image_within_region(image, region): # region takes in an object
     image_loc = pyautogui.locateOnScreen(image, region=(region.top_left_corner[0], region.top_left_corner[1], region.bottom_right_corner[0]-region.top_left_corner[0], region.bottom_right_corner[1]-region.top_left_corner[1]))
@@ -204,6 +199,6 @@ if __name__ == '__main__':
                     ge_slot.set_item_in_ge_slot(random.choice(list_of_items_available))
                     list_of_items_in_use.append(ge_slot.item.item_name)
                     print('We picked {} from our list of items randomly'.format(ge_slot.item.item_name))
-                wait_for(os.path.join(GC.anchor_path,"status_buy_button.png"), ge_slot)
-                find_up_to_date_sell_price(runescape_window, ge_slot)
+                    RSTools.wait_for(os.path.join(GC.anchor_path,"status_buy_button.png"), ge_slot)
+                find_up_to_date_buy_price(runescape_window, ge_slot)
 
