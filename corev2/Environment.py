@@ -6,9 +6,12 @@ import time
 import cv2
 import numpy
 import os
+import re
 import items_to_merch_module
 import GameConstants as GC
-
+import Mouse
+import RSTools
+import RandTime
 
 def detect_runescape_windows():  # this function will detect how many runescape windows are present and where they are
     list_of_runescape_windows = []
@@ -80,6 +83,40 @@ def items_to_merch(member_status):
         # we are f2p so initialise a f2p item list
     return(items_to_merch)
 
+def detect_money(top_left_corner, bottom_right_corner):
+    RSTools.wait_for_w_coord(os.path.join(GC.anchor_path, "main_ge_anchor.png"), top_left_corner,bottom_right_corner)
+    coords_of_item = (
+        top_left_corner[0] + 690, top_left_corner[1] + 433, 20, 15)
+
+    Mouse.move_to_radius(coords_of_item)
+    Mouse.right_click()
+
+    image = os.path.join(GC.anchor_path, "examine_coins.png")
+    image_loc = pyautogui.locateOnScreen(image, region=(top_left_corner[0], top_left_corner[1], bottom_right_corner[0]-top_left_corner[0], bottom_right_corner[1]-top_left_corner[1]))
+    while(image_loc == None):
+        image_loc = pyautogui.locateOnScreen(image, region=(top_left_corner[0], top_left_corner[1], bottom_right_corner[0]-top_left_corner[0], bottom_right_corner[1]-top_left_corner[1]))
+    print image_loc
+    Mouse.click_radius(image_loc)
+    RandTime.randomTime(1000, 1500)
+    money_val = check_total_coins(top_left_corner, bottom_right_corner)
+    print "Wallet", money_val
+    return(money_val)
+
+def check_total_coins(top_left_corner, bottom_right_corner):
+    off_set = [6,440,-200,-47]
+    loc_of_price = (top_left_corner[0] +off_set[0], top_left_corner[1]+off_set[1],
+        bottom_right_corner[0] +off_set[2], bottom_right_corner[1]+off_set[3])
+    im = Screenshot.this(list(loc_of_price))
+    cv2.imwrite("basdf.png",im)
+    raw_string = RSTools.read_total_coins(im)
+    print raw_string
+
+    raw_string = raw_string.replace(",","")
+    my_regex = re.compile("^(\d+)")
+    price = int(re.search(my_regex, raw_string).group(1))
+    # print price
+    return price
+
 
 class runescape_instance():
 
@@ -93,6 +130,7 @@ class runescape_instance():
         self.list_of_ge_slots = initialise_ge_slots(self.top_left_corner, self.bottom_right_corner)
 
         self.money = 0
+        self.money = detect_money(self.top_left_corner, self.bottom_right_corner)
         self.profit = 0
         self.last_action_time = time.time()
         # examines money to make the above line accurate

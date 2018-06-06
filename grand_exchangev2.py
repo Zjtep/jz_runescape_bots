@@ -20,56 +20,54 @@ from corev2 import Environment
 
 def find_up_to_date_buy_price(runescape_window, ge_slot):
     # # click correct sell bag
-    move_mouse_to_image_within_region(os.path.join(GC.anchor_path, "status_buy_button.png"), ge_slot)
+    move_mouse_to_image_within_region(os.path.join(GC.anchor_path, "status_sell_button.png"), ge_slot)
     RSTools.wait_for(os.path.join(GC.anchor_path, "set_up_offer_title.png"), runescape_window)
 
     # sell item for cheap
 
     # coords_of_item = pointfrombox.random_point(
-    #     (runescape_window.bottom_right_corner[0] - 180, runescape_window.bottom_right_corner[1] - 372),
-    #     (runescape_window.bottom_right_corner[0] - 166, runescape_window.bottom_right_corner[1] - 349))
-    # realmouse.move_mouse_to(coords_of_item[0], coords_of_item[1])
-    # pyautogui.click()
-    #
-    # '''move_mouse_to_image_within_region('Tools/screenshots/-5perc_button.png', runescape_window)
-    # for i in range(random.randint(25,35)):
-    #     pyautogui.click()
-    #     time.sleep(random.random()/7)'''
-    #
-    # coords_of_price_box = pointfrombox.random_point(
-    #     (runescape_window.bottom_right_corner[0] - 384, runescape_window.bottom_right_corner[1] - 272), (
-    #     runescape_window.bottom_right_corner[0] - 291,
-    #     runescape_window.bottom_right_corner[1] - 259))  ##########################
-    # realmouse.move_mouse_to(coords_of_price_box[0], coords_of_price_box[1])
-    # pyautogui.click()
-    # time.sleep(2 + random.random())
-    # random_typer('1')
-    # pyautogui.press(
-    #     'enter')  #########################################################################################################
-    #
-    # time.sleep(random.random() + 1)
-    # move_mouse_to_image_within_region('Tools/screenshots/confirm_offer_button.png', runescape_window)
-    # pyautogui.click()
-    # wait_for('Tools/screenshots/lent_item_box.png', runescape_window)
+    #     (runescape_window.top_left_corner[0] + 556, runescape_window.top_left_corner[1] + 213),
+    #     (runescape_window.top_left_corner[0] + 576, runescape_window.top_left_corner[1] +228))
+
+
+    coords_of_item = (
+        runescape_window.top_left_corner[0] + 556, runescape_window.top_left_corner[1] + 213, 20, 15)
+
+    Mouse.click_radius(coords_of_item)
+
+    decrease_price_box_coord = (runescape_window.top_left_corner[0] + 277, runescape_window.top_left_corner[1] + 200, 35, 25)
+    for i in range(random.randint(5,10)):
+        Mouse.click_radius(decrease_price_box_coord)
+        RandTime.randomTime(15,27)
+
+    move_mouse_to_image_within_region(os.path.join(GC.anchor_path, "offer_confirm.png"), runescape_window)
+
+    RSTools.wait_for(os.path.join(GC.anchor_path, "main_ge_anchor.png"), runescape_window)
+
     # # collect money
-    # collect_items_from_ge_slot(ge_slot, runescape_window)
+    collect_items_from_ge_slot(ge_slot, runescape_window)
     # # click sale history
-    # move_mouse_to_image_within_region('Tools/screenshots/sale_history_button.png', runescape_window)
-    # pyautogui.click()
-    # wait_for('Tools/screenshots/sale_history_check.png', runescape_window)
+
+    move_mouse_to_image_within_region(os.path.join(GC.anchor_path, "sale_history_button.png"), runescape_window)
+    RSTools.wait_for(os.path.join(GC.anchor_path, "sale_history_check.png"), runescape_window)
+
     # # check price
-    # sell_price = check_price(runescape_window)
+    sell_price = check_price(runescape_window)
     # # updating the amount of money in the window
-    # runescape_window.update_money(runescape_window.money + sell_price)
+    runescape_window.update_money(runescape_window.money + sell_price)
+    print "Wallet", runescape_window.money
     # # update price
-    # ge_slot.item.set_price_instant_sold_at(sell_price)
+    ge_slot.item.set_price_instant_sold_at(sell_price)
     # # click grand exchange window
-    # move_mouse_to_box('Tools/screenshots/grand_exchange_button.png',
-    #                   runescape_window.top_left_corner, runescape_window.bottom_right_corner)
-    # pyautogui.click()
-    # wait_for('Tools/screenshots/lent_item_box.png', runescape_window)
-    # runescape_window.set_time_of_last_action()
-    # print('{} instantly sold for a price of {}'.format(ge_slot.item.item_name, ge_slot.item.price_instant_sold_at))
+    # # blocking exchange button
+    Mouse.move_to_radius((runescape_window.top_left_corner[0] + 146, runescape_window.top_left_corner[1] + 25, 35, 25))
+
+    move_mouse_to_image_within_region(os.path.join(GC.anchor_path, "grand_exchange_button.png"), runescape_window)
+
+    RSTools.wait_for(os.path.join(GC.anchor_path, "main_ge_anchor.png"), runescape_window)
+
+    runescape_window.set_time_of_last_action()
+    print('{} instantly sold for a price of {}'.format(ge_slot.item.item_name, ge_slot.item.price_instant_sold_at))
 
 
 def find_up_to_date_sell_price(runescape_window, ge_slot):
@@ -118,8 +116,8 @@ def find_up_to_date_sell_price(runescape_window, ge_slot):
     ge_slot.item.set_price_instant_bought_at(buy_price)
     # # updating the amount of money in the window
     runescape_window.update_money(runescape_window.money-buy_price)
-    print runescape_window.money
-
+    print "Wallet",runescape_window.money
+    # blocking exchange button
     Mouse.move_to_radius((runescape_window.top_left_corner[0] + 146, runescape_window.top_left_corner[1] + 25, 35, 25))
 
     # # click grand exchange window

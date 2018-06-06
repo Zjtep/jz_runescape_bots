@@ -11,6 +11,14 @@ def click():
     # RandTime.randTime(0, 0, 0, 0, 0, 1)  # time between click
     pyautogui.mouseUp(button='left')
 
+def right_click():
+    #autopy.mouse.click()
+    # pyautogui.moveTo(100, 200)
+    pyautogui.mouseDown(button='right')
+    RandTime.randomTime(2, 7)
+    # RandTime.randTime(0, 0, 0, 0, 0, 1)  # time between click
+    pyautogui.mouseUp(button='right')
+
 def move_to_radius(coord):
     coord = list(coord)
 
