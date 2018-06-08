@@ -162,8 +162,8 @@ class runescape_instance():
     def add_single_item_to_cooldown(self, item):
         self.list_of_items_on_cooldown.append((item.item_name, time.time(), 1, item))
 
-    # def add_to_items_on_cooldown(self, item):
-    #     self.list_of_items_on_cooldown.append((item.item_name, time.time(), item.quantity_to_buy, item))
+    def add_to_items_on_cooldown(self, item):
+        self.list_of_items_on_cooldown.append((item.item_name, time.time(), item.quantity_to_buy, item))
 
     # def add_single_item_to_cooldown(self, item):
     #     self.list_of_items_on_cooldown.append((item.item_name, time.time(), 1, item))
@@ -204,6 +204,7 @@ class item():
         self.price_instant_bought_at = None
         self.price_instant_sold_at = None
         self.current_state = None # this will track if the item is currently being bought, sold or neither (None)
+        self.quantity_to_buy = None
 
     def set_score_valid(self):
         self.is_score_valid = True
