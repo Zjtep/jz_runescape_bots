@@ -47,8 +47,12 @@ def count_ge_slots(top_left_corner, bottom_right_corner):
     # Screenshot.save("bpang.png",[top_left_corner[0],top_left_corner[1],bottom_right_corner[0],bottom_right_corner[1]])
     width = bottom_right_corner[0] - top_left_corner[0]
     height = bottom_right_corner[1] - top_left_corner[1]
-    list_of_ge_slots = list(pyautogui.locateAllOnScreen(os.path.join(GC.anchor_path,"member_slot2.png"), region=(top_left_corner[0], top_left_corner[1], width, height)))
-    print list_of_ge_slots
+    # list_of_ge_slots = list(pyautogui.locateAllOnScreen(os.path.join(GC.anchor_path,"member_slot2.png"), region=(top_left_corner[0], top_left_corner[1], width, height)))
+
+    list_of_ge_slots = list(RSTools.custom_locate_all_on_screen(os.path.join(GC.anchor_path, "member_slot.png"),
+                                                        region=(top_left_corner[0], top_left_corner[1], width, height)))
+    print "list_of_ge_slots",list_of_ge_slots
+    # print "2",list_of_ge_slots2
     return(list_of_ge_slots)
 
 def check_if_image_exists(item_name):
@@ -141,11 +145,12 @@ class runescape_instance():
         # print('Initialised a window with {}Kgp and {} ge slots'.format(int(self.money/1000), self.number_of_empty_ge_slots))
         if self.member_status:
             if self.number_of_empty_ge_slots != 8:
-                input("Missing 8 Slots for members.")
+                # input("Missing 8 Slots for members, press enter to continue")
+                print ("Missing 8 Slots for none members.")
         elif not self.member_status:
             if self.number_of_empty_ge_slots != 3:
-                input("Missing 3 Slots for none members.")
-                # print ("Missing 3 Slots for none members.")
+                # input("Missing 3 Slots for none members, press enter to continue")
+                print ("Missing 3 Slots for none members.")
 
     def update_profit(self, number):
         self.profit = self.profit+number

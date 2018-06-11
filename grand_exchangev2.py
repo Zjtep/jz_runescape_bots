@@ -365,6 +365,7 @@ def prevent_logout(top_left_corner, bottom_right_corner, runescape_window):
 if __name__ == '__main__':
 
     try:
+        failfailfailfailfailfailfailfailfailfailfailfailfailfailfailfailfailfailfailfailfailfailfailfailfailfailfailfailfailfail
         with (open("list_of_runescape_windows.txt", "rb")) as openfile:
             list_of_runescape_windows = pickle.load(openfile)
         with (open("list_of_items_in_use.txt", "rb")) as openfile:
@@ -453,7 +454,7 @@ if __name__ == '__main__':
             # to handle, and we can continue filling ge slots, this gives completed offers
             # 100% priority, hopefully increasing performance
             for runescape_window in list_of_runescape_windows:
-                coords_of_completed_offer = pyautogui.locateOnScreen(os.path.join(GC.anchor_path, "main_ge_anchor.png"),
+                coords_of_completed_offer = pyautogui.locateOnScreen(os.path.join(GC.anchor_path, "complete_offer.png"),
                                                                      region=(runescape_window.top_left_corner[0],
                                                                              runescape_window.top_left_corner[
                                                                                  1],
@@ -466,87 +467,88 @@ if __name__ == '__main__':
                 else:
                     completed_offer_check = True
                     for ge_slot in runescape_window.list_of_ge_slots:
-                            if ge_slot.top_left_corner[0] < coords_of_completed_offer[0] and ge_slot.top_left_corner[1] < \
-                                    coords_of_completed_offer[1] and ge_slot.bottom_right_corner[0] > \
-                                    coords_of_completed_offer[0] and ge_slot.bottom_right_corner[1] > \
-                                    coords_of_completed_offer[1]:
-                                # collects the items from the offer
-                                collect_items_from_ge_slot(ge_slot, runescape_window)
-                                # do stuff based on buy or sell
-                                if not score_items:  # if the item has an offer complete during downtime of the script the score will be mark invalid and not be counted
-                                    ge_slot.item.set_score_invalid()
-                                if ge_slot.buy_or_sell == 'buy':
-                                    # if the item was bought then it would simply sell it at the correct price (assuming the order was filled in under
-                                    # a certain amount of time), if the item took too long to buy then we would buy another just to confirm that our
-                                    # price is right). We would also place the item in the cooldown list as a tuple. this tuple would contain
-                                    # the item name, the time it was bought, the quantity that were bought
-                                    # do buy stuff
-                                    # place the item on cooldown
-                                    runescape_window.add_to_items_on_cooldown(ge_slot.item)
-                                    # ge_slot.item.number_available_to_buy -= ge_slot.item.quantity_to_buy old line, new is below
-                                    ge_slot.item.update_number_available_to_buy(
-                                        ge_slot.item.number_available_to_buy - ge_slot.item.quantity_to_buy)
-                                    if time.time() - ge_slot.item.time_of_last_pc > 1800:
-                                        # grab a new price to sell items at since it
-                                        # has been a long time since we collected this
-                                        # info
-                                        if ge_slot.item.number_available_to_buy > 0:
-                                            find_up_to_date_sell_price(runescape_window, ge_slot)
-                                            if ge_slot.item.price_instant_bought_at - ge_slot.item.price_instant_sold_at > 5:
-                                                ge_slot.item.set_price_instant_bought_at(
-                                                    ge_slot.item.price_instant_bought_at - 1)
-                                    # sell our items at the price instant bought at
-                                    sell_items(runescape_window, ge_slot)
-                                    RSTools.wait_for(os.path.join(GC.anchor_path, "main_ge_anchor.png"), runescape_window)
+                        print "coords_of_completed_offer",coords_of_completed_offer
+                        if ge_slot.top_left_corner[0] < coords_of_completed_offer[0] and \
+                                        ge_slot.top_left_corner[1] < coords_of_completed_offer[1] and \
+                                        ge_slot.bottom_right_corner[0] >coords_of_completed_offer[0] and \
+                                        ge_slot.bottom_right_corner[1] >coords_of_completed_offer[1]:
+                            # collects the items from the offer
+                            collect_items_from_ge_slot(ge_slot, runescape_window)
+                            # do stuff based on buy or sell
+                            if not score_items:  # if the item has an offer complete during downtime of the script the score will be mark invalid and not be counted
+                                ge_slot.item.set_score_invalid()
+                            if ge_slot.buy_or_sell == 'buy':
+                                # if the item was bought then it would simply sell it at the correct price (assuming the order was filled in under
+                                # a certain amount of time), if the item took too long to buy then we would buy another just to confirm that our
+                                # price is right). We would also place the item in the cooldown list as a tuple. this tuple would contain
+                                # the item name, the time it was bought, the quantity that were bought
+                                # do buy stuff
+                                # place the item on cooldown
+                                runescape_window.add_to_items_on_cooldown(ge_slot.item)
+                                # ge_slot.item.number_available_to_buy -= ge_slot.item.quantity_to_buy old line, new is below
+                                ge_slot.item.update_number_available_to_buy(
+                                    ge_slot.item.number_available_to_buy - ge_slot.item.quantity_to_buy)
+                                if time.time() - ge_slot.item.time_of_last_pc > 1800:
+                                    # grab a new price to sell items at since it
+                                    # has been a long time since we collected this
+                                    # info
+                                    if ge_slot.item.number_available_to_buy > 0:
+                                        find_up_to_date_sell_price(runescape_window, ge_slot)
+                                        if ge_slot.item.price_instant_bought_at - ge_slot.item.price_instant_sold_at > 5:
+                                            ge_slot.item.set_price_instant_bought_at(
+                                                ge_slot.item.price_instant_bought_at - 1)
+                                # sell our items at the price instant bought at
+                                sell_items(runescape_window, ge_slot)
+                                RSTools.wait_for(os.path.join(GC.anchor_path, "main_ge_anchor.png"), runescape_window)
                                 # time.sleep(2+random.random())
                                 # ge_slot.set_image_of_slot()
-                                elif ge_slot.buy_or_sell == 'sell':
-                                    runescape_window.update_money(runescape_window.money + (
-                                    (ge_slot.item.quantity_to_buy - 1) * ge_slot.item.price_instant_bought_at))
-                                    runescape_window.update_profit((ge_slot.item.quantity_to_buy - 2) * (
-                                    ge_slot.item.price_instant_bought_at - ge_slot.item.price_instant_sold_at))
-                                    print('Total profit made from this window is {}'.format(runescape_window.profit))
-                                    # score the item
-                                    # check if the item has a score, if it does update the score, if not then set the score
-                                    if ge_slot.item.is_score_valid:
-                                        for i in range(len(list_of_item_names_with_scores)):
-                                            if list_of_item_names_with_scores[i][0] == ge_slot.item.item_name:
-                                                print(
-                                                "{} is about to have it's score updated, it's current score is {}".format(
-                                                    ge_slot.item.item_name, list_of_item_names_with_scores[i][1]))
-                                                list_of_item_names_with_scores[i][1] = int(((list_of_item_names_with_scores[
-                                                                                                 i][1] * 5) + ((
-                                                                                                               10 * ge_slot.item.quantity_to_buy * (
-                                                                                                               ge_slot.item.price_instant_bought_at - ge_slot.item.price_instant_sold_at)) / (
-                                                                                                               time.time() - ge_slot.item.time_buy_order_placed))) / 6)
-                                                print("{} has had it's score updated, it's new score is {}".format(
-                                                    ge_slot.item.item_name, list_of_item_names_with_scores[i][1]))
-                                                break
-                                            if list_of_item_names_with_scores[i] == list_of_item_names_with_scores[-1]:
-                                                list_of_item_names_with_scores.append([ge_slot.item.item_name, int(((
-                                                                                                                    10 * ge_slot.item.quantity_to_buy * (
-                                                                                                                    ge_slot.item.price_instant_bought_at - ge_slot.item.price_instant_sold_at)) / (
-                                                                                                                    time.time() - ge_slot.item.time_buy_order_placed)))])
-                                                print('{} was added to the list of scores with a score of {}'.format(
-                                                    ge_slot.item.item_name, list_of_item_names_with_scores[-1][1]))
-                                        if len(list_of_item_names_with_scores) == 0:
-                                            print("The list of scored items is about to have it's first entry added")
+                            elif ge_slot.buy_or_sell == 'sell':
+                                runescape_window.update_money(runescape_window.money + (
+                                (ge_slot.item.quantity_to_buy - 1) * ge_slot.item.price_instant_bought_at))
+                                runescape_window.update_profit((ge_slot.item.quantity_to_buy - 2) * (
+                                ge_slot.item.price_instant_bought_at - ge_slot.item.price_instant_sold_at))
+                                print('Total profit made from this window is {}'.format(runescape_window.profit))
+                                # score the item
+                                # check if the item has a score, if it does update the score, if not then set the score
+                                if ge_slot.item.is_score_valid:
+                                    for i in range(len(list_of_item_names_with_scores)):
+                                        if list_of_item_names_with_scores[i][0] == ge_slot.item.item_name:
+                                            print(
+                                            "{} is about to have it's score updated, it's current score is {}".format(
+                                                ge_slot.item.item_name, list_of_item_names_with_scores[i][1]))
+                                            list_of_item_names_with_scores[i][1] = int(((list_of_item_names_with_scores[
+                                                                                             i][1] * 5) + ((
+                                                                                                           10 * ge_slot.item.quantity_to_buy * (
+                                                                                                           ge_slot.item.price_instant_bought_at - ge_slot.item.price_instant_sold_at)) / (
+                                                                                                           time.time() - ge_slot.item.time_buy_order_placed))) / 6)
+                                            print("{} has had it's score updated, it's new score is {}".format(
+                                                ge_slot.item.item_name, list_of_item_names_with_scores[i][1]))
+                                            break
+                                        if list_of_item_names_with_scores[i] == list_of_item_names_with_scores[-1]:
                                             list_of_item_names_with_scores.append([ge_slot.item.item_name, int(((
-                                                                                                                ge_slot.item.quantity_to_buy * (
+                                                                                                                10 * ge_slot.item.quantity_to_buy * (
                                                                                                                 ge_slot.item.price_instant_bought_at - ge_slot.item.price_instant_sold_at)) / (
                                                                                                                 time.time() - ge_slot.item.time_buy_order_placed)))])
-                                    with (open("list_of_item_names_with_scores.txt", "wb")) as openfile:
-                                        pickle.dump(list_of_item_names_with_scores, (openfile))
-                                    # if the item was sold then we would score the item based on the profit it made us and the time it took to buy and sell
-                                    ge_slot.update_buy_or_sell_state(
-                                        None)  # updates the buy or sell state to none to indiate the slot is now empty
-                                    # still need to update lists of items in use accordingly
-                                    # perhaps like this
-                                    list_of_items_in_use.remove(ge_slot.item.item_name)
-                                    ge_slot.item.set_price_instant_bought_at(None)
-                                    ge_slot.item.set_price_instant_sold_at(None)
-                                    ge_slot.set_item_in_ge_slot(None)
-                                break
+                                            print('{} was added to the list of scores with a score of {}'.format(
+                                                ge_slot.item.item_name, list_of_item_names_with_scores[-1][1]))
+                                    if len(list_of_item_names_with_scores) == 0:
+                                        print("The list of scored items is about to have it's first entry added")
+                                        list_of_item_names_with_scores.append([ge_slot.item.item_name, int(((
+                                                                                                            ge_slot.item.quantity_to_buy * (
+                                                                                                            ge_slot.item.price_instant_bought_at - ge_slot.item.price_instant_sold_at)) / (
+                                                                                                            time.time() - ge_slot.item.time_buy_order_placed)))])
+                                with (open("list_of_item_names_with_scores.txt", "wb")) as openfile:
+                                    pickle.dump(list_of_item_names_with_scores, (openfile))
+                                # if the item was sold then we would score the item based on the profit it made us and the time it took to buy and sell
+                                ge_slot.update_buy_or_sell_state(
+                                    None)  # updates the buy or sell state to none to indiate the slot is now empty
+                                # still need to update lists of items in use accordingly
+                                # perhaps like this
+                                list_of_items_in_use.remove(ge_slot.item.item_name)
+                                ge_slot.item.set_price_instant_bought_at(None)
+                                ge_slot.item.set_price_instant_sold_at(None)
+                                ge_slot.set_item_in_ge_slot(None)
+                            break
 
             if not score_items:
                 print('Since we have just loaded from a save all scores are currently being marked as invalid and will not effect their rating')
@@ -558,16 +560,19 @@ if __name__ == '__main__':
                                         # once we have, so that we only place 1 order before going back through
                                         # the loop to check for completed offers and such
 
+
                 highest_cash = 0
                 for runescape_window in list_of_runescape_windows:
                     if runescape_window.number_of_empty_ge_slots > 0:
                         highest_cash = max(highest_cash, runescape_window.money)
+
 
                 for runescape_window in list_of_runescape_windows:
                     if runescape_window.money == highest_cash:  # scans until it finds the window with the most money in
                         for ge_slot in runescape_window.list_of_ge_slots:
                             if ge_slot.buy_or_sell == None:
                                 # we have found an empty slot, so lets place an order
+                                print "# we have found an empty slot, so lets place an order"
                                 list_of_items_available = []
                                 for item in runescape_window.items_to_merch:
                                     if item.item_name not in list_of_items_in_use:
@@ -608,142 +613,142 @@ if __name__ == '__main__':
                                                                 list_of_item_names_with_scores[i][1] = int(list_of_item_names_with_scores[i][1]*0.9)
                                                         break
                                                 break
-                                    ###########################################################################################################################################################################################################################################################################
-                                    else:
-                                        ge_slot.set_item_in_ge_slot(random.choice(list_of_items_available)) # This is the line where I will later be choosing items based on score instead of randomly
-                                        print('We picked {} from our list of items randomly since our list of item names with scores is empty'.format(ge_slot.item.item_name))
-                                    try:
-                                        list_of_items_in_use.append(ge_slot.item.item_name)
-                                        print(ge_slot.item.item_name)   #TESTING TAKING THIS BLOCK OF CODE OUT
-                                    except:
-                                        ge_slot.set_item_in_ge_slot(random.choice(list_of_items_available))
-                                        list_of_items_in_use.append(ge_slot.item.item_name)
-                                        print('We picked {} from our list of items randomly'.format(ge_slot.item.item_name))
-                                    RSTools.wait_for(os.path.join(GC.anchor_path, "status_buy_button.png"), ge_slot)
-                                    find_up_to_date_sell_price(runescape_window, ge_slot)
-                                    RSTools.wait_for(os.path.join(GC.anchor_path, "status_sell_button.png"), ge_slot)
-                                    find_up_to_date_buy_price(runescape_window, ge_slot)
-                                    if ge_slot.item.price_instant_bought_at < ge_slot.item.price_instant_sold_at:
-                                        temp = ge_slot.item.price_instant_bought_at
-                                        ge_slot.item.set_price_instant_bought_at(ge_slot.item.price_instant_sold_at)
-                                        ge_slot.item.set_price_instant_sold_at(temp)
-                                    if ge_slot.item.price_instant_bought_at - ge_slot.item.price_instant_sold_at > 5:
-                                        ge_slot.item.set_price_instant_bought_at(ge_slot.item.price_instant_bought_at -1)
-                                        ge_slot.item.set_price_instant_sold_at(ge_slot.item.price_instant_sold_at +1)
-                                    ge_slot.item.set_score_valid()
-                                    RSTools.wait_for(os.path.join(GC.anchor_path, "status_buy_button.png"),ge_slot)
-
-                                    buy_item(runescape_window, ge_slot)
-
-                                    RSTools.wait_for(os.path.join(GC.anchor_path, "main_ge_anchor.png"), runescape_window)
-                                    #time.sleep(2+random.random())
-                                    #ge_slot.set_image_of_slot()
-                                empty_slot_check = True
-                            if empty_slot_check == True:
-                                break
-                    if empty_slot_check == True:
-                        break
-            for runescape_window in list_of_runescape_windows:
-                runescape_window.check_for_empty_ge_slots() # this will update states of ge slots correctly
-                # we can also add other updates into here such as checking items on cooldown, more to add later
-                if len(runescape_window.list_of_items_on_cooldown) > 0:
-                    cooldown_tuple = runescape_window.list_of_items_on_cooldown[0]
-                    if time.time() - cooldown_tuple[1] > 14400: # then it has been 4 hours so remove from list
-                        for item in runescape_window.items_to_merch:
-                            if item.item_name == cooldown_tuple[0]:
-                                cooldown_tuple[3].update_number_available_to_buy(item.number_available_to_buy+cooldown_tuple[2])
-                                runescape_window.pop_oldest_item_on_cooldown()
-                                break
-                total_profit += runescape_window.profit
-            #if time.time()-time_of_last_update_check > 10:
-            break_check = False
-            for runescape_window in list_of_runescape_windows:
-                for ge_slot in runescape_window.list_of_ge_slots:
-                    if ge_slot.buy_or_sell != None:
-                        check_for_in_progress_or_view_offer(ge_slot)
-                        #print('Last screenshot of {} was taken {} seconds ago'.format(ge_slot.item.item_name, time.time()-ge_slot.time_of_last_screenshot))
-                        if not (ge_slot.image_of_slot==numpy.array(pyautogui.screenshot(region=(ge_slot.top_left_corner[0], ge_slot.top_left_corner[1] + 90, 165, 10)))).all():
-                            ge_slot.set_image_of_slot()
-                        elif time.time() - ge_slot.time_of_last_screenshot > 1800 and not completed_offer_check and not empty_slot_check:
-                            print('Image of {} has not been updated in 30 minutes so we are aborting the offer'.format(ge_slot.item.item_name))
-                            # run cancel offer code
-                            # first we cancel the offer
-                            #print('We are about to cancel an offer that we believe to be in the window with coords {}, we are at line 287'.format(runescape_window.bottom_right_corner))
-                            cancel_offer(ge_slot.top_left_corner, ge_slot.bottom_right_corner, runescape_window)
-                            wait_for('Tools/screenshots/red_cancel_bar.png', runescape_window)
-                            time.sleep(2+random.random())
-                            print("Cancelled {} since the offer hasn't been updated in a while".format(ge_slot.item.item_name))
-                            # then if the item was a buy we handle it
-                            if ge_slot.buy_or_sell == 'buy':
-                                handle_cancelling_buy(runescape_window, ge_slot, list_of_items_in_use)
-                            elif ge_slot.buy_or_sell == 'sell':
-                                handle_cancelling_sell(runescape_window, ge_slot, list_of_items_in_use)
-                            # we check if any of the item  bought and if so try to sell it
-                            # we could check the sale history to read the number of items bought and update accordingly
-                            # then if it was a sell we handle it
-                            # we would simply retrieve the items and money and update accordingly, then find the new sell price and sell
-                            break_check = True
-                        elif time.time() - ge_slot.time_of_last_screenshot > 3600 and ge_slot.buy_or_sell == 'sell':
-                            print('Image of {} has not been updated in 1 hour so we are aborting the offer'.format(ge_slot.item.item_name))
-                            # run cancel offer code
-                            # first we cancel the offer
-                            # print('We are about to cancel an offer that we believe to be in the window with coords {}, we are at line 287'.format(runescape_window.bottom_right_corner))
-                            cancel_offer(ge_slot.top_left_corner, ge_slot.bottom_right_corner, runescape_window)
-                            wait_for('Tools/screenshots/red_cancel_bar.png', runescape_window)
-                            time.sleep(2+random.random())
-                            # print("Cancelled {} since the offer hasn't been updated in a while".format(ge_slot.item.item_name))
-                            handle_cancelling_sell(runescape_window, ge_slot, list_of_items_in_use)
-                            # we check if any of the item  bought and if so try to sell it
-                            # we could check the sale history to read the number of items bought and update accordingly
-                            # then if it was a sell we handle it
-                            # we would simply retrieve the items and money and update accordingly, then find the new sell price and sell
-                            break_check = True
-                        elif time.time() - ge_slot.time_of_last_screenshot > 5400 and ge_slot.buy_or_sell == 'buy':
-                            print('Image of {} has not been updated in 1.5 hours so we are aborting the offer'.format(ge_slot.item.item_name))
-                            # run cancel offer code
-                            # first we cancel the offer
-                            # print('We are about to cancel an offer that we believe to be in the window with coords {}, we are at line 287'.format(runescape_window.bottom_right_corner))
-                            cancel_offer(ge_slot.top_left_corner, ge_slot.bottom_right_corner, runescape_window)
-                            wait_for('Tools/screenshots/red_cancel_bar.png', runescape_window)
-                            time.sleep(2+random.random())
-                            # print("Cancelled {} since the offer hasn't been updated in a while".format(ge_slot.item.item_name))
-                            handle_cancelling_buy(runescape_window, ge_slot, list_of_items_in_use)
-                            # we check if any of the item  bought and if so try to sell it
-                            # we could check the sale history to read the number of items bought and update accordingly
-                            # then if it was a sell we handle it
-                            # we would simply retrieve the items and money and update accordingly, then find the new sell price and sell
-                            break_check = True
-                    if break_check:
-                        break
-                if break_check:
-                    break
-                #time_of_last_update_check = time.time()
-
-            if time.time()-time_of_last_save > 60 or last_saved_list_of_runescape_windows != list_of_runescape_windows or last_saved_list_of_items_in_use != list_of_items_in_use or total_profit != previous_total_profit:
-                previous_total_profit = total_profit
-                last_saved_list_of_runescape_windows = list_of_runescape_windows
-                last_saved_list_of_items_in_use = list_of_items_in_use
-                time_of_last_save = time.time()
-                with (open("list_of_items_in_use.txt", "wb")) as openfile:
-                    pickle.dump(list_of_items_in_use,(openfile))
-                with (open("list_of_runescape_windows.txt", "wb")) as openfile:
-                    pickle.dump(list_of_runescape_windows,(openfile))
-                with (open("list_of_item_names_with_scores.txt", "wb")) as openfile:
-                    pickle.dump(list_of_item_names_with_scores,(openfile))
-                with (open("time_of_last_save.txt", "wb")) as openfile:
-                    pickle.dump(time_of_last_save,(openfile))
-                print('State has now been saved, you may be able to close the script and return from this point later')
-                print('Total profit made across all windows so far is {}. We have been running for {} minutes, this is a profit per hour of {}k per hour.'.format(total_profit, int((time.time()-start_time)/60), int(3.6*total_profit/(time.time()-start_time))))
-                time_of_last_save = time.time()
-                #print('Current scored item list {}'.format(list_of_item_names_with_scores))
-            '''if total_profit != previous_total_profit:
-                previous_total_profit = total_profit
-                #label = myfont.render("Current Total Profit: {}".format(total_profit), 1, (255,255,0))
-                #game_display.blit(label, (10, 10))
-                #pygame.display.update()
-                print('Total profit made across all windows so far is {}. We have been running for {} minutes, this is a profit per hour of {}k per hour.'.format(total_profit, int((time.time()-start_time)/60), int(3.6*total_profit/(time.time()-start_time))))'''
-    # if there are no completed orders then we need to
-    # check for empty ge slots and fill them with
-    # orders
-    # all orders should be unique, ie not buying coal on 2 windows at once, this would harm profit since they would be
-    # competing with eachother. Instead one window should buy it, then once it has sold the next window can start to buy
+    #                                 ###########################################################################################################################################################################################################################################################################
+    #                                 else:
+    #                                     ge_slot.set_item_in_ge_slot(random.choice(list_of_items_available)) # This is the line where I will later be choosing items based on score instead of randomly
+    #                                     print('We picked {} from our list of items randomly since our list of item names with scores is empty'.format(ge_slot.item.item_name))
+    #                                 try:
+    #                                     list_of_items_in_use.append(ge_slot.item.item_name)
+    #                                     print(ge_slot.item.item_name)   #TESTING TAKING THIS BLOCK OF CODE OUT
+    #                                 except:
+    #                                     ge_slot.set_item_in_ge_slot(random.choice(list_of_items_available))
+    #                                     list_of_items_in_use.append(ge_slot.item.item_name)
+    #                                     print('We picked {} from our list of items randomly'.format(ge_slot.item.item_name))
+    #                                 RSTools.wait_for(os.path.join(GC.anchor_path, "status_buy_button.png"), ge_slot)
+    #                                 find_up_to_date_sell_price(runescape_window, ge_slot)
+    #                                 RSTools.wait_for(os.path.join(GC.anchor_path, "status_sell_button.png"), ge_slot)
+    #                                 find_up_to_date_buy_price(runescape_window, ge_slot)
+    #                                 if ge_slot.item.price_instant_bought_at < ge_slot.item.price_instant_sold_at:
+    #                                     temp = ge_slot.item.price_instant_bought_at
+    #                                     ge_slot.item.set_price_instant_bought_at(ge_slot.item.price_instant_sold_at)
+    #                                     ge_slot.item.set_price_instant_sold_at(temp)
+    #                                 if ge_slot.item.price_instant_bought_at - ge_slot.item.price_instant_sold_at > 5:
+    #                                     ge_slot.item.set_price_instant_bought_at(ge_slot.item.price_instant_bought_at -1)
+    #                                     ge_slot.item.set_price_instant_sold_at(ge_slot.item.price_instant_sold_at +1)
+    #                                 ge_slot.item.set_score_valid()
+    #                                 RSTools.wait_for(os.path.join(GC.anchor_path, "status_buy_button.png"),ge_slot)
+    #
+    #                                 buy_item(runescape_window, ge_slot)
+    #
+    #                                 RSTools.wait_for(os.path.join(GC.anchor_path, "main_ge_anchor.png"), runescape_window)
+    #                                 #time.sleep(2+random.random())
+    #                                 #ge_slot.set_image_of_slot()
+    #                             empty_slot_check = True
+    #                         if empty_slot_check == True:
+    #                             break
+    #                 if empty_slot_check == True:
+    #                     break
+    #         for runescape_window in list_of_runescape_windows:
+    #             runescape_window.check_for_empty_ge_slots() # this will update states of ge slots correctly
+    #             # we can also add other updates into here such as checking items on cooldown, more to add later
+    #             if len(runescape_window.list_of_items_on_cooldown) > 0:
+    #                 cooldown_tuple = runescape_window.list_of_items_on_cooldown[0]
+    #                 if time.time() - cooldown_tuple[1] > 14400: # then it has been 4 hours so remove from list
+    #                     for item in runescape_window.items_to_merch:
+    #                         if item.item_name == cooldown_tuple[0]:
+    #                             cooldown_tuple[3].update_number_available_to_buy(item.number_available_to_buy+cooldown_tuple[2])
+    #                             runescape_window.pop_oldest_item_on_cooldown()
+    #                             break
+    #             total_profit += runescape_window.profit
+    #         #if time.time()-time_of_last_update_check > 10:
+    #         break_check = False
+    #         for runescape_window in list_of_runescape_windows:
+    #             for ge_slot in runescape_window.list_of_ge_slots:
+    #                 if ge_slot.buy_or_sell != None:
+    #                     check_for_in_progress_or_view_offer(ge_slot)
+    #                     #print('Last screenshot of {} was taken {} seconds ago'.format(ge_slot.item.item_name, time.time()-ge_slot.time_of_last_screenshot))
+    #                     if not (ge_slot.image_of_slot==numpy.array(pyautogui.screenshot(region=(ge_slot.top_left_corner[0], ge_slot.top_left_corner[1] + 90, 165, 10)))).all():
+    #                         ge_slot.set_image_of_slot()
+    #                     elif time.time() - ge_slot.time_of_last_screenshot > 1800 and not completed_offer_check and not empty_slot_check:
+    #                         print('Image of {} has not been updated in 30 minutes so we are aborting the offer'.format(ge_slot.item.item_name))
+    #                         # run cancel offer code
+    #                         # first we cancel the offer
+    #                         #print('We are about to cancel an offer that we believe to be in the window with coords {}, we are at line 287'.format(runescape_window.bottom_right_corner))
+    #                         cancel_offer(ge_slot.top_left_corner, ge_slot.bottom_right_corner, runescape_window)
+    #                         wait_for('Tools/screenshots/red_cancel_bar.png', runescape_window)
+    #                         time.sleep(2+random.random())
+    #                         print("Cancelled {} since the offer hasn't been updated in a while".format(ge_slot.item.item_name))
+    #                         # then if the item was a buy we handle it
+    #                         if ge_slot.buy_or_sell == 'buy':
+    #                             handle_cancelling_buy(runescape_window, ge_slot, list_of_items_in_use)
+    #                         elif ge_slot.buy_or_sell == 'sell':
+    #                             handle_cancelling_sell(runescape_window, ge_slot, list_of_items_in_use)
+    #                         # we check if any of the item  bought and if so try to sell it
+    #                         # we could check the sale history to read the number of items bought and update accordingly
+    #                         # then if it was a sell we handle it
+    #                         # we would simply retrieve the items and money and update accordingly, then find the new sell price and sell
+    #                         break_check = True
+    #                     elif time.time() - ge_slot.time_of_last_screenshot > 3600 and ge_slot.buy_or_sell == 'sell':
+    #                         print('Image of {} has not been updated in 1 hour so we are aborting the offer'.format(ge_slot.item.item_name))
+    #                         # run cancel offer code
+    #                         # first we cancel the offer
+    #                         # print('We are about to cancel an offer that we believe to be in the window with coords {}, we are at line 287'.format(runescape_window.bottom_right_corner))
+    #                         cancel_offer(ge_slot.top_left_corner, ge_slot.bottom_right_corner, runescape_window)
+    #                         wait_for('Tools/screenshots/red_cancel_bar.png', runescape_window)
+    #                         time.sleep(2+random.random())
+    #                         # print("Cancelled {} since the offer hasn't been updated in a while".format(ge_slot.item.item_name))
+    #                         handle_cancelling_sell(runescape_window, ge_slot, list_of_items_in_use)
+    #                         # we check if any of the item  bought and if so try to sell it
+    #                         # we could check the sale history to read the number of items bought and update accordingly
+    #                         # then if it was a sell we handle it
+    #                         # we would simply retrieve the items and money and update accordingly, then find the new sell price and sell
+    #                         break_check = True
+    #                     elif time.time() - ge_slot.time_of_last_screenshot > 5400 and ge_slot.buy_or_sell == 'buy':
+    #                         print('Image of {} has not been updated in 1.5 hours so we are aborting the offer'.format(ge_slot.item.item_name))
+    #                         # run cancel offer code
+    #                         # first we cancel the offer
+    #                         # print('We are about to cancel an offer that we believe to be in the window with coords {}, we are at line 287'.format(runescape_window.bottom_right_corner))
+    #                         cancel_offer(ge_slot.top_left_corner, ge_slot.bottom_right_corner, runescape_window)
+    #                         wait_for('Tools/screenshots/red_cancel_bar.png', runescape_window)
+    #                         time.sleep(2+random.random())
+    #                         # print("Cancelled {} since the offer hasn't been updated in a while".format(ge_slot.item.item_name))
+    #                         handle_cancelling_buy(runescape_window, ge_slot, list_of_items_in_use)
+    #                         # we check if any of the item  bought and if so try to sell it
+    #                         # we could check the sale history to read the number of items bought and update accordingly
+    #                         # then if it was a sell we handle it
+    #                         # we would simply retrieve the items and money and update accordingly, then find the new sell price and sell
+    #                         break_check = True
+    #                 if break_check:
+    #                     break
+    #             if break_check:
+    #                 break
+    #             #time_of_last_update_check = time.time()
+    #
+    #         if time.time()-time_of_last_save > 60 or last_saved_list_of_runescape_windows != list_of_runescape_windows or last_saved_list_of_items_in_use != list_of_items_in_use or total_profit != previous_total_profit:
+    #             previous_total_profit = total_profit
+    #             last_saved_list_of_runescape_windows = list_of_runescape_windows
+    #             last_saved_list_of_items_in_use = list_of_items_in_use
+    #             time_of_last_save = time.time()
+    #             with (open("list_of_items_in_use.txt", "wb")) as openfile:
+    #                 pickle.dump(list_of_items_in_use,(openfile))
+    #             with (open("list_of_runescape_windows.txt", "wb")) as openfile:
+    #                 pickle.dump(list_of_runescape_windows,(openfile))
+    #             with (open("list_of_item_names_with_scores.txt", "wb")) as openfile:
+    #                 pickle.dump(list_of_item_names_with_scores,(openfile))
+    #             with (open("time_of_last_save.txt", "wb")) as openfile:
+    #                 pickle.dump(time_of_last_save,(openfile))
+    #             print('State has now been saved, you may be able to close the script and return from this point later')
+    #             print('Total profit made across all windows so far is {}. We have been running for {} minutes, this is a profit per hour of {}k per hour.'.format(total_profit, int((time.time()-start_time)/60), int(3.6*total_profit/(time.time()-start_time))))
+    #             time_of_last_save = time.time()
+    #             #print('Current scored item list {}'.format(list_of_item_names_with_scores))
+    #         '''if total_profit != previous_total_profit:
+    #             previous_total_profit = total_profit
+    #             #label = myfont.render("Current Total Profit: {}".format(total_profit), 1, (255,255,0))
+    #             #game_display.blit(label, (10, 10))
+    #             #pygame.display.update()
+    #             print('Total profit made across all windows so far is {}. We have been running for {} minutes, this is a profit per hour of {}k per hour.'.format(total_profit, int((time.time()-start_time)/60), int(3.6*total_profit/(time.time()-start_time))))'''
+    # # if there are no completed orders then we need to
+    # # check for empty ge slots and fill them with
+    # # orders
+    # # all orders should be unique, ie not buying coal on 2 windows at once, this would harm profit since they would be
+    # # competing with eachother. Instead one window should buy it, then once it has sold the next window can start to buy
