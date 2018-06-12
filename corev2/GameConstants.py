@@ -20,3 +20,5 @@ KEY_F9 = 120
 item_path = r"C:\Users\PPC\git\RS_BOT_2.0\lib\merchant_bot\items\regular"
 anchor_path = r"C:\Users\PPC\git\RS_BOT_2.0\lib\merchant_bot\anchor"
 
+
+global_anchor = r"C:\Users\PPC\git\RS_BOT_2.0\lib\1414\anchor"

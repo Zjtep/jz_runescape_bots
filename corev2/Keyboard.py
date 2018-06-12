@@ -18,4 +18,10 @@ def type_this(strings):
         # delay after key UP--next key 
 
 
+def hold_key(key):
+    pyautogui.keyDown(key)
+    RandTime.randomTime(650, 750)
+    # RandTime.randomTime(0, 5)
+    pyautogui.keyUp(key)
+    print "done"
 
