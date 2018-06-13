@@ -158,6 +158,44 @@ def read_total_coins(img_rgb):
     return text
 
 
+class ImageNotFoundException(Exception):
+    pass
+
+def custom_locate_on_screen(image, minSearchTime=0, **kwargs):
+    """minSearchTime - amount of time in seconds to repeat taking
+    screenshots and trying to locate a match.  The default of 0 performs
+    a single search.
+    """
+    start = time.time()
+    while True:
+        try:
+            screenshotIm = _screenshot_win32(region=None) # the locateAll() function must handle cropping to return accurate coordinates, so don't pass a region here.
+            retVal = locate(image, screenshotIm, **kwargs)
+            try:
+                screenshotIm.fp.close()
+            except AttributeError:
+                # Screenshots on Windows won't have an fp since they came from
+                # ImageGrab, not a file. Screenshots on Linux will have fp set
+                # to None since the file has been unlinked
+                pass
+            if retVal or time.time() - start > minSearchTime:
+                return retVal
+        except ImageNotFoundException:
+            if time.time() - start > minSearchTime:
+                raise
+
+def locate(needleImage, haystackImage, **kwargs):
+    # Note: The gymnastics in this function is because we want to make sure to exhaust the iterator so that the needle and haystack files are closed in locateAll.
+    kwargs['limit'] = 1
+    points = tuple(_locateAll_opencv(needleImage, haystackImage, **kwargs))
+    if len(points) > 0:
+        return points[0]
+    else:
+        return None
+
+
+
+
 def custom_locate_all_on_screen(image, **kwargs):
 
     screenshotIm = _screenshot_win32(region=None) # the locateAll() function must handle cropping to return accurate coordinates, so don't pass a region here.

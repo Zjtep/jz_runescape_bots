@@ -22,3 +22,4 @@ anchor_path = r"C:\Users\PPC\git\RS_BOT_2.0\lib\merchant_bot\anchor"
 
 
 global_anchor = r"C:\Users\PPC\git\RS_BOT_2.0\lib\1414\anchor"
+global_inventory = r"C:\Users\PPC\git\RS_BOT_2.0\lib\inventory_tabs"

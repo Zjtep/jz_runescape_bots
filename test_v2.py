@@ -11,7 +11,7 @@ import numpy
 from PIL import Image
 import os
 import pyautogui
-
+from corev2 import stolen_mouse
 def transparent_test():
 
 
@@ -336,13 +336,54 @@ def test_pyautogui():
     print  blah
     print  blah2
 
+
+import pyautogui
+import random
+import scipy
+import time
+from scipy import interpolate
+import pyautogui
+import time
+import random
+
+def test():
+    import pyautogui
+    import time
+    import random
+    print "Randomized Mouse Started."
+    destx = 444;
+    desty = 631;
+    x, y = pyautogui.position()  # Current Position
+    moves = random.randint(2, 4)
+    pixelsx = destx - x
+    pixelsy = desty - y
+    if moves >= 4:
+        moves = random.randint(2, 4)
+    avgpixelsx = pixelsx / moves
+    avgpixelsy = pixelsy / moves
+    print "Pixels to be moved X: ", pixelsx, " Y: ", pixelsy, "Number of mouse movements: ", moves, "Avg Move X: ", avgpixelsx, " Y: ", avgpixelsy
+
+    while moves > 0:
+        offsetx = (avgpixelsx + random.randint(-8, random.randint(5, 10)));
+        offsety = (avgpixelsy + random.randint(-8, random.randint(5, 10)));
+        print x + offsetx, y + offsety, moves
+        pyautogui.moveTo(x + offsetx, y + offsety, duration=1)
+        moves = moves - 1
+        avgpixelsx = pixelsx / moves
+        avgpixelsy = pixelsy / moves
+
+
 import random
 if __name__ == '__main__':
 
-
+    test()
     # print test_pyautogui()
 
-    print random.randint(5,10)
+    # print random.randint(5,10)
+
+
+
+
 
     # transparent_test()
     # print tran_match()

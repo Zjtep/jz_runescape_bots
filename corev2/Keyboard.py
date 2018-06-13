@@ -15,7 +15,38 @@ def type_this(strings):
         pyautogui.keyDown(s)
         RandTime.randomTime(2, 7)
         pyautogui.keyUp(s)
-        # delay after key UP--next key 
+        # delay after key UP--next key
+
+def press(button):
+    if button == 'enter':
+        pyautogui.keyDown('enter')
+        RandTime.randomTime(2, 7)
+        pyautogui.keyUp('enter')
+    elif button == 'f1' or button == 'spec':
+        pyautogui.keyDown('f1')
+        RandTime.randomTime(2, 7)
+        pyautogui.keyUp('f1')
+    elif button == 'f2' or button == 'stats':
+        pyautogui.keyDown('f2')
+        RandTime.randomTime(2, 7)
+        pyautogui.keyUp('f2')
+    elif button == 'f4' or button == 'equipment':
+        pyautogui.keyDown('f4')
+        RandTime.randomTime(2, 7)
+        pyautogui.keyUp('f4')
+    elif button == 'f6' or button == 'magic':
+        pyautogui.keyDown('f6')
+        RandTime.randomTime(2, 7)
+        pyautogui.keyUp('f6')
+    elif button == 'f8' or button == 'friends':
+        pyautogui.keyDown('f8')
+        RandTime.randomTime(2, 7)
+        pyautogui.keyUp('f8')
+
+    elif button == 'exit' or button == 'inventory':
+        pyautogui.keyDown('esc')
+        RandTime.randomTime(2, 7)
+        pyautogui.keyUp('esc')
 
 
 def hold_key(key):
