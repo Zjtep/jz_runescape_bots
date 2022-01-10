@@ -1,4 +1,7 @@
 ![](https://imgur.com/a/zUhteau)
+
+There was a time when runescape botting through just basic openCV image recognition was undetectable. billions of gold were farmed from these bot scripts. Last I heard jagex was since patched/fixed many of these bots.
+
 # Runescape Bot
 Runescape Macro/Automations with openCV
 2.0 image
